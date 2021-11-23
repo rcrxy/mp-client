@@ -1,17 +1,26 @@
 <script>
-	export default {
-		onLaunch: function() {
-			console.log('App Launch')
-		},
-		onShow: function() {
-			console.log('App Show')
-		},
-		onHide: function() {
-			console.log('App Hide')
-		}
-	}
+import { getUserInfoAPI } from "@/servers/ServersCommon";
+import { mapMutations } from "vuex";
+export default {
+   onLaunch: function () {},
+   onShow: function () {},
+   onHide: function () {},
+   methods: {
+      ...mapMutations(["setUserInfo"]),
+   },
+};
 </script>
 
-<style>
-	/*每个页面公共css */
+<style lang="scss">
+// 引入uview样式
+@import "uview-ui/index.scss";
+
+/**引入vant样式 */
+@import "vant/lib/index.css";
+
+.gradientFont /* 渐变文字 */ {
+   color: transparent;
+   background-clip: text;
+   background-image: linear-gradient(to bottom, #00c0db 0%, #00cda2 100%);
+}
 </style>

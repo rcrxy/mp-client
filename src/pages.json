@@ -1,16 +1,244 @@
 {
-	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-		{
-			"path": "pages/index/index",
-			"style": {
-				"navigationBarTitleText": "uni-app"
-			}
-		}
-	],
-	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
-	}
+   /* 全局设置 */
+   "globalStyle": {
+      "navigationBarTextStyle": "black",
+      "enablePullDownRefresh": true,
+      "navigationBarBackgroundColor": "#FFFFFF"
+   },
+   /* 引入uni-ui */
+   "easycom": {
+      "autoscan": true,
+      "custom": {
+         "^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue", // 匹配components目录内的vue文件
+         "^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
+      }
+   },
+   /* 路由 */
+   "pages": [
+      /* 首页 HomeIndex */ { "path": "pages/home/HomeIndex", "style": { "navigationStyle": "custom" } },
+      /* 成绩查询 ScoreQuery */ {
+         "path": "pages/home/tabs/ScoreQuery",
+         "style": {
+            "navigationBarTitleText": "成绩查询",
+            "enablePullDownRefresh": false,
+            "app-plus": {
+               "titleNView": {
+                  "buttons": [
+                     {
+                        "type": "share",
+                        "float": "right"
+                     }
+                  ]
+               }
+            }
+         }
+      },
+      /* 成考指南 Guide */ {
+         "path": "pages/home/tabs/Guide",
+         "style": {
+            "navigationBarTitleText": "成考指南",
+            "enablePullDownRefresh": false,
+            "app-plus": {
+               "titleNView": {
+                  "buttons": [
+                     {
+                        "type": "share",
+                        "float": "right"
+                     }
+                  ]
+               }
+            }
+         }
+      },
+      /* 在线答疑 Answering */ { "path": "pages/home/tabs/Answering", "style": { "enablePullDownRefresh": false } },
+      /* 报名时间 Time */ {
+         "path": "pages/home/applyProcess/Time",
+         "style": {
+            "navigationBarTitleText": "报名时间",
+            "enablePullDownRefresh": false,
+            "app-plus": {
+               "titleNView": {
+                  "buttons": [
+                     {
+                        "type": "share",
+                        "float": "right"
+                     }
+                  ]
+               }
+            }
+         }
+      },
+      /* 报名入口 Entrance */ {
+         "path": "pages/home/applyProcess/Entrance",
+         "style": {
+            "navigationBarTitleText": "报名入口",
+            "enablePullDownRefresh": true,
+            "app-plus": {
+               "titleNView": {
+                  "buttons": [
+                     {
+                        "type": "share",
+                        "float": "right"
+                     }
+                  ]
+               }
+            }
+         }
+      },
+      /* 考试科目 ExamSubjects */ {
+         "path": "pages/home/applyProcess/ExamSubjects",
+         "style": {
+            "navigationBarTitleText": "考试科目",
+            "enablePullDownRefresh": false,
+            "app-plus": {
+               "titleNView": {
+                  "buttons": [
+                     {
+                        "type": "share",
+                        "float": "right"
+                     }
+                  ]
+               }
+            }
+         }
+      },
+      /* 报考条件 Condition */ {
+         "path": "pages/home/applyProcess/Condition",
+         "style": {
+            "navigationBarTitleText": "报考条件",
+            "enablePullDownRefresh": false,
+            "app-plus": {
+               "titleNView": {
+                  "buttons": [
+                     {
+                        "type": "share",
+                        "float": "right"
+                     }
+                  ]
+               }
+            }
+         }
+      },
+      /* 最新咨询 News */ {
+         "path": "pages/home/News",
+         "style": {
+            "navigationBarTitleText": "成考咨询",
+            "enablePullDownRefresh": true,
+            "app-plus": {
+               "titleNView": {
+                  "buttons": [
+                     {
+                        "type": "share",
+                        "float": "right"
+                     }
+                  ]
+               }
+            }
+         }
+      },
+      /* 院校专业 Specialized */ {
+         "path": "pages/home/Specialized",
+         "style": {
+            "navigationBarTitleText": "院校专业",
+            "enablePullDownRefresh": false
+         }
+      },
+      /* 专业详情 ProfessionalDetails */ {
+         "path": "pages/home/Specialized/ProfessionalDetails",
+         "style": {
+            "navigationBarTitleText": "专业详情",
+            "enablePullDownRefresh": false
+         }
+      },
+
+      /* 课程 ProjectIndex */ {
+         "path": "pages/project/ProjectIndex",
+         "style": {
+            "enablePullDownRefresh": false,
+            "app-plus": {
+               "titleNView": {
+                  "titleText": "课程",
+                  "titleAlign": "left",
+                  "buttons": [
+                     {
+                        "type": "none",
+                        "float": "right",
+                        "text": ""
+                     }
+                  ]
+               },
+               "pullToRefresh": {}
+            }
+         }
+      },
+      /* 课程详情 ProjectIndex */ { "path": "pages/project/ProjectContent", "style": { "navigationStyle": "custom", "enablePullDownRefresh": false } },
+
+      /* 题库 PracticeIndex */ { "path": "pages/practice/PracticeIndex", "style": { "navigationBarTitleText": "题库", "enablePullDownRefresh": false } },
+      /* 题库内容 info */ { "path": "pages/practice/info", "style": { "navigationBarTitleText": "题库", "enablePullDownRefresh": false } },
+      /* 每日一练 EverDay */ { "path": "pages/practice/common/info/EverDay", "style": { "navigationBarTitleText": "每日一练", "enablePullDownRefresh": false } },
+      /* 模拟练习 mockExam */ { "path": "pages/practice/common/info/mockExam", "style": { "navigationBarTitleText": "模拟练习", "enablePullDownRefresh": false } },
+
+      /* 我的 UserIndex */ { "path": "pages/user/UserIndex", "style": { "navigationStyle": "custom", "enablePullDownRefresh": false } },
+      /* 个人信息 Information */ { "path": "pages/user/Information", "style": { "navigationBarTitleText": "个人信息" } },
+      /* 通知消息 Notice */ { "path": "pages/user/Notice", "style": { "navigationBarTitleText": "系统通知" } },
+      /* 修改信息 ChangeInfo*/ { "path": "pages/user/Information/ChangeInfo", "style": { "navigationBarTitleText": "个人信息", "enablePullDownRefresh": false } },
+      /* 我的地址 ChangeSign */ { "path": "pages/user/Information/ChangeAddress", "style": { "navigationBarTitleText": "我的地址", "enablePullDownRefresh": false } },
+      /* 新增地址 AddAddress */ { "path": "pages/user/Information/AddAddress", "style": { "navigationBarTitleText": "新增地址", "enablePullDownRefresh": false } },
+
+      /* 我的订单 UserOrder */ { "path": "pages/user/UserOrder", "style": { "navigationBarTitleText": "我的订单" } },
+      /* 我的收藏 UserCollection */ { "path": "pages/user/UserCollection", "style": { "navigationBarTitleText": "我的收藏" } },
+
+      /* 软件设置 Setting */ { "path": "pages/user/Setting", "style": { "navigationBarTitleText": "软件设置", "enablePullDownRefresh": false } },
+
+      /* 意见反馈 Feedback */ { "path": "pages/user/common/Feedback", "style": { "navigationBarTitleText": "意见反馈", "enablePullDownRefresh": false } },
+      /* 关于我们 About */ { "path": "pages/user/common/About", "style": { "navigationBarTitleText": "关于我们", "enablePullDownRefresh": false } },
+
+      /* 登录 Login */ { "path": "pages/common/Login", "style": { "navigationStyle": "custom", "enablePullDownRefresh": false } }
+
+      // /* 专属客服 CustomerService */ { "path": "pages/user/CustomerService" },
+   ],
+   /* 导航栏 */
+   "tabBar": {
+      "color": "#7A7E83",
+      "selectedColor": "#3cc51f",
+      "borderStyle": "grey",
+      "backgroundColor": "#ffffff",
+      "list": [
+         {
+            "pagePath": "pages/home/HomeIndex",
+            "iconPath": "static/images/tabBar/home.png",
+            "selectedIconPath": "static/images/tabBar/home_hr.png",
+            "text": "首页"
+         },
+         {
+            "pagePath": "pages/project/ProjectIndex",
+            "iconPath": "static/images/tabBar/project.png",
+            "selectedIconPath": "static/images/tabBar/project_hr.png",
+            "text": "课程"
+         },
+         {
+            "pagePath": "pages/practice/PracticeIndex",
+            "iconPath": "static/images/tabBar/practice.png",
+            "selectedIconPath": "static/images/tabBar/practice_hr.png",
+            "text": "题库"
+         },
+         {
+            "pagePath": "pages/user/UserIndex",
+            "iconPath": "static/images/tabBar/user.png",
+            "selectedIconPath": "static/images/tabBar/user_hr.png",
+            "text": "我的"
+         }
+      ]
+   },
+   "condition": {
+      //模式配置，仅开发期间生效
+      "current": 0, //当前激活的模式(list 的索引项)
+      "list": [
+         {
+            "name": "", //模式名称
+            "path": "pages/practice/PracticeIndex", //启动页面，必选
+            "query": "" //启动参数，在页面的onLoad函数里面得到
+         }
+      ]
+   }
 }

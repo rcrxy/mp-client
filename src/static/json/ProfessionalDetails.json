@@ -1,0 +1,15 @@
+[
+   {
+      "id": "0",
+      "name": "中医学",
+      "label": "中医学1",
+      "category": "医学类",
+      "time": "3-5",
+      "course": [
+         { "serialNumber": 1, "courseName": "语文(专升本/高升专)", "timeLength": 30 },
+         { "serialNumber": 2, "courseName": "数学(专升本/高升专)", "timeLength": 30 },
+         { "serialNumber": 3, "courseName": "英语(专升本/高升专)", "timeLength": 30 },
+         { "serialNumber": 4, "courseName": "政治(专升本/高升专)", "timeLength": 30 }
+      ]
+   }
+]

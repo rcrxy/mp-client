@@ -1,0 +1,105 @@
+<template>
+   <view ref="my" class="my">
+      <view id="myCon" ref="myCon">
+         <view class="userInfo">
+            <view class="avatar" @click="jumpUrl('/pages/user/Information')">
+               <image src="https://img01.yzcdn.cn/vant/cat.jpeg" mode="aspectFill" />
+               <text class="text name">{{ userInfo.userName }}</text>
+               <text class="text sign">{{ userInfo.sign }}</text>
+            </view>
+         </view>
+         <u-cell-group :border="false">
+            <u-cell :border="false" isLink title="通知消息" icon="bell" @click="jumpUrl('/pages/user/Notice')"></u-cell>
+            <u-cell :border="false" isLink title="我的订单" icon="bag" @click="jumpUrl('/pages/user/UserOrder')"></u-cell>
+            <u-cell :border="false" isLink title="我的收藏" icon="star" @click="jumpUrl('/pages/user/UserCollection')"></u-cell>
+         </u-cell-group>
+         <u-cell-group :border="false">
+            <u-cell :border="false" isLink title="联系电话" icon="phone" @click="showModal = true"></u-cell>
+         </u-cell-group>
+         <u-cell-group :border="false">
+            <u-cell :border="false" isLink title="软件设置" icon="setting" @click="jumpUrl('/pages/user/Setting')"></u-cell>
+         </u-cell-group>
+      </view>
+      <!-- notice -->
+      <!-- 拨打电话 -->
+      <u-modal :show="showModal" :content="modalContent" showCancelButton @cancel="showModal = false" @confirm="confirm"></u-modal>
+   </view>
+</template>
+
+<script>
+export default {
+   data() {
+      return {
+         footerIndex: 3,
+         userInfo: {},
+         phoneNumber: "0723657823",
+         isIndex: true,
+         showModal: false,
+         modalContent: "拨打电话: 77788851523",
+      };
+   },
+   onShow() {
+      this.getUserInfo();
+   },
+   methods: {
+      getUserInfo() {
+         this.userInfo = this.$store.state.userInfo;
+      },
+      confirm() {
+         uni.makePhoneCall({ phoneNumber: this.phoneNumber });
+      },
+      jumpUrl(url) {
+         uni.navigateTo({ url });
+      },
+   },
+};
+</script>
+
+<style lang="scss" scoped>
+.my {
+   height: 100vh;
+   background-color: #f0f0f0;
+}
+#myCon {
+   width: 100vw;
+   flex-shrink: 0;
+
+   &::-webkit-scrollbar {
+      display: none;
+   }
+   .userInfo {
+      width: 750rpx;
+      background-image: url(../../static/images/myBack.png);
+      background-position: center center;
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      .avatar {
+         width: 750rpx;
+         height: 508rpx;
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         justify-content: center;
+         image {
+            width: 140rpx;
+            height: 140rpx;
+            border-radius: 50%;
+         }
+         .text {
+            color: #fff;
+            line-height: 45rpx;
+            text-align: center;
+            font-size: 30rpx;
+            margin: 5rpx 0;
+         }
+      }
+   }
+}
+.u-cell-group {
+   margin: 15rpx 0;
+   background: #fff;
+}
+</style>
