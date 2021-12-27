@@ -8,7 +8,7 @@
             <text>综合演练</text>
          </view>
          <view class="ul activity">
-            <view class="li" v-for="(item, index) in synthesisOptions" :key="index" @click="jumpUrl(item)">
+            <view class="li" v-for="(item, index) in synthesisOptions" :key="index" @click="mix_jumpUrl(item.url, item)">
                <image :src="item.image" mode="widthFix" />
                <text>{{ item.name }}</text>
             </view>
@@ -19,14 +19,14 @@
             <text>章节练习</text>
          </view>
          <view class="sublevel">
-            <u-cell class="li" v-for="(item, index) in sublevelOptions" :key="index" :title="item.name" isLink>
+            <u-cell class="li" v-for="(item, index) in sublevelOptions" :key="index" :title="item.name" isLink @click="mix_jumpUrl('/pages/practice/common/WorkProblem', item)">
                <template #label>
                   <view class="label">
-                     <u-line-progress :percentage="(item.completed / item.max) * 100" height="8" :showText="false"></u-line-progress>
+                     <u-line-progress :percentage="(item.completed / item.quantity) * 100" height="8" :showText="false"></u-line-progress>
                      <view>
                         <text class="left">{{ item.completed }}</text>
                         /
-                        <text class="right">{{ item.max }}</text>
+                        <text class="right">{{ item.quantity }}</text>
                      </view>
                   </view>
                </template>
@@ -37,46 +37,58 @@
 </template>
 
 <script>
+import { postQuestionsListAPI } from "@/servers/ServersPractice";
 export default {
    data() {
       return {
          synthesisOptions: [
-            { name: "每日一练", image: require("../../static/images/practiceIcon1.png") },
-            { name: "模拟考试", image: require("../../static/images/practiceIcon2.png") },
-            { name: "我的收藏", image: require("../../static/images/practiceIcon4.png") },
-            { name: "我的错题", image: require("../../static/images/practiceIcon5.png") },
-            { name: "题库纠错", image: require("../../static/images/practiceIcon6.png") },
+            { name: "每日一练", image: require("../../static/images/practiceIcon1.png"), url: "/pages/practice/common/WorkProblem" },
+            { name: "模拟考试", image: require("../../static/images/practiceIcon2.png"), url: "/pages/practice/common/info/mockExam" },
+            { name: "我的收藏", image: require("../../static/images/practiceIcon4.png"), url: "/pages/user/UserCollection" },
+            { name: "我的错题", image: require("../../static/images/practiceIcon5.png"), url: "" },
+            { name: "题库纠错", image: require("../../static/images/practiceIcon6.png"), url: "" },
          ],
-         sublevelOptions: [
-            { name: "第一章", max: 60, completed: 20 },
-            { name: "第二章", max: 30, completed: 21 },
-            { name: "第三章", max: 40, completed: 22 },
-            { name: "第四章", max: 20, completed: 10 },
-         ],
+         sublevelOptions: [],
+         allList: [],
+         info: "",
       };
    },
    onLoad(info) {
-      uni.setNavigationBarTitle({ title: info.name });
+      this.info = info;
+      uni.setNavigationBarTitle({ title: info.className });
+   },
+   created() {
+      this.postQuestionsList();
    },
    methods: {
-      jumpUrl({ name }) {
-         let url;
-         switch (name) {
-            case "每日一练":
-               url = "/pages/practice/common/info/EverDay";
-               break;
-            case "模拟考试":
-               url = "/pages/practice/common/info/mockExam";
-               break;
-            case "我的收藏":
-               url = "/pages/user/UserCollection";
-               break;
-            case "我的错题":
-               break;
-            case "题库纠错":
-               break;
+      async postQuestionsList() {
+         const sendData = {
+            course: "化学",
+         };
+         let { code, data } = await postQuestionsListAPI(sendData);
+         if (code === 200) {
+            this.allList = data;
+            this.getLength(data);
          }
-         uni.navigateTo({ url });
+      },
+      /**获取章节题目数量
+       * @param {Array} list
+       */
+      getLength(list) {
+         let nameList = [];
+         let lengthList = [];
+         list.forEach(item => {
+            if (nameList.indexOf(item.chapter) === -1) nameList.push(item.chapter);
+         });
+         nameList.forEach((item, index) => {
+            lengthList[index] = 0;
+         });
+         list.forEach(item => {
+            lengthList[nameList.indexOf(item.chapter)] += 1;
+         });
+         nameList.forEach((item, index) => {
+            this.sublevelOptions.push({ name: item, quantity: lengthList[index], completed: 0 });
+         });
       },
    },
 };
@@ -134,10 +146,13 @@ export default {
    }
    .sublevel {
       .label {
-         width: 80%;
+         width: 85%;
          display: flex;
          align-items: center;
-         justify-content: center;
+         justify-content: space-between;
+         /deep/ .u-line-progress {
+            width: 70% !important;
+         }
          .left {
             font-size: 28rpx;
             color: #696969;

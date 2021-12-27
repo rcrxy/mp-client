@@ -10,9 +10,8 @@ Vue.config.productionTip = false;
 import uView from "uview-ui";
 Vue.use(uView);
 
-// /**引入vant */
-// import Vant from "vant";
-// Vue.use(Vant);
+import mixin from "@/uitls/mixin";
+Vue.use(mixin);
 
 App.mpType = "app";
 

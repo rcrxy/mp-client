@@ -1,6 +1,26 @@
 import { get, post } from "@/uitls/axios.js";
 
-/**获取试题科目列表 */
-export function getSubjectPracticeAPI() {
-   return get("/api/subjectPractice");
+/**获取题目列表
+ * @param {Object} params
+ * @param {String} params.course - 科目名称
+ */
+export function postQuestionsListAPI(params) {
+   return post("/question/get", params);
+}
+
+/**收藏题目
+ * @param {Object} params
+ * @param {String} params.valueId - id
+ * @param {String} params.valueType - 收藏类型{题目: question}
+ */
+export function postAddCollectionAPI(params) {
+   return post("/collection/add", params);
+}
+
+/**删除收藏
+ * @param {Object} params
+ * @param {String} params.collectionId
+ */
+export function postCancelCollectionAPI(params) {
+   return post("/collection/cancel", params);
 }

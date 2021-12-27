@@ -5,7 +5,7 @@
             <view class="avatar" @click="jumpUrl('/pages/user/Information')">
                <image src="https://img01.yzcdn.cn/vant/cat.jpeg" mode="aspectFill" />
                <text class="text name">{{ userInfo.userName }}</text>
-               <text class="text sign">{{ userInfo.sign }}</text>
+               <text class="text sign">{{ userInfo.sign === "null" ? "还没设置签名~" : userInfo.sign }}</text>
             </view>
          </view>
          <u-cell-group :border="false">
@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import { getUserInfoAPI } from "@/servers/ServersCommon";
+import { mapMutations } from "vuex";
 export default {
    data() {
       return {
@@ -42,8 +44,13 @@ export default {
       this.getUserInfo();
    },
    methods: {
-      getUserInfo() {
-         this.userInfo = this.$store.state.userInfo;
+      ...mapMutations(["setUserInfo"]),
+      async getUserInfo() {
+         let { code, data } = await getUserInfoAPI();
+         if (code === 200) {
+            this.userInfo = data;
+            this.setUserInfo(data);
+         }
       },
       confirm() {
          uni.makePhoneCall({ phoneNumber: this.phoneNumber });
@@ -78,15 +85,16 @@ export default {
       justify-content: space-between;
       .avatar {
          width: 750rpx;
-         height: 508rpx;
+         height: 600rpx;
          display: flex;
          flex-direction: column;
          align-items: center;
          justify-content: center;
          image {
-            width: 140rpx;
-            height: 140rpx;
+            width: 160rpx;
+            height: 160rpx;
             border-radius: 50%;
+            margin-bottom: 30rpx;
          }
          .text {
             color: #fff;

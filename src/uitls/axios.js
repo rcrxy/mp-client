@@ -47,10 +47,16 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
    response => {
       if (response.data.code !== 200) {
+         console.log(response);
          uni.showModal({
-            title: process.env.NODE_ENV === "development" ? response.data.code : "",
             content: response.data.message,
             showCancel: false,
+            success: res => {
+               let { data } = response;
+               if (data.resultCode === "403") {
+                  uni.navigateTo({ url: "/pages/common/Login" });
+               }
+            },
          });
       }
       return Promise.resolve(response.data);
@@ -67,7 +73,6 @@ instance.interceptors.response.use(
 
 axios.defaults.adapter = function (config) {
    return new Promise((resolve, reject) => {
-      console.log(config);
       var settle = require("axios/lib/core/settle");
       var buildURL = require("axios/lib/helpers/buildURL");
       uni.request({
@@ -79,7 +84,6 @@ axios.defaults.adapter = function (config) {
          responseType: config.responseType,
          sslVerify: config.sslVerify,
          complete: function complete(response) {
-            console.log("执行完成：", response);
             response = {
                data: response.data,
                status: response.statusCode,

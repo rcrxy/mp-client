@@ -1,48 +1,60 @@
 <template>
    <view class="project">
-      <u-tabs :list="[{ name: '所有课程' }, { name: '我的课程' }]" :is-scroll="false"></u-tabs>
-      <view class="tabContent">
-         <view class="ul">
-            <view class="li" v-for="(item, index) in allProjectList" :key="index" @click="jumpUrl(item)">
-               <view class="bgImg">
-                  <image src="~static/images/projectBack.png" mode="widthFix" />
-                  <text class="name">{{ item.name }}</text>
-               </view>
-               <view class="footer">
-                  <text class="left">
-                     <text>{{ item.name }}</text>
-                     <br />
-                     <text>{{ item.number }}人购买</text>
-                  </text>
-                  <image class="rightIcon" src="~static/images/homePay.png" mode="widthFix" />
-               </view>
+      <c-tabs-group class="tabs" v-model="tabIndex" :list="['所有课程', '我的课程']"></c-tabs-group>
+      <swiper class="tabsContent" :current="tabIndex" @change="swiperChange">
+         <swiper-item>
+            <project-card v-for="(item, index) in allProjectList" :key="index" :data="item" text="点击试看" @click.native="mix_jumpUrl('/pages/project/ProjectContent', item)"></project-card>
+         </swiper-item>
+         <swiper-item>
+            <view class="emptyState" v-if="myProjectList.length === 0">
+               <image src="~static/images/emptyImg.png" mode="widthFix" />
             </view>
-         </view>
-      </view>
+            <view v-else>
+               <project-card v-for="(item, index) in myProjectList" :key="index" :data="item" text="立即观看" @click.native="mix_jumpUrl('/pages/project/ProjectContent', item)"></project-card>
+            </view>
+         </swiper-item>
+      </swiper>
    </view>
 </template>
 
 <script>
 import qs from "qs";
+import cTabsGroup from "@/components/customize/c-tabs-group.vue";
+import projectCard from "./components/projectIndex/projectCard.vue";
+import { postCourseListAPI } from "@/servers/ServersCommon";
 export default {
+   components: {
+      cTabsGroup,
+      projectCard,
+   },
    data() {
       return {
+         tabIndex: 0,
          active: 0,
          footerIndex: 1,
          searchValue: "",
-         allProjectList: [
-            { name: "大学语文(二)", number: 1024 },
-            { name: "高数", number: 1024 },
-            { name: "高数", number: 1024 },
-            { name: "高数", number: 1024 },
-            { name: "高数", number: 1024 },
-            { name: "高数", number: 1024 },
+         allProjectList: [],
+         myProjectList: [
+            { className: "高数", number: 2456, text: "立即观看" },
+            { className: "高数", number: 104, text: "立即观看" },
          ],
-         myProjectList: [],
       };
    },
+   created() {
+      this.postCourseList();
+   },
    methods: {
-      clickRight() {},
+      async postCourseList() {
+         let { code, data } = await postCourseListAPI();
+         if (code === 200) {
+            console.log(data);
+            this.allProjectList = data;
+            // this.allData.forEach((item, index) => {
+            //    item.id = index;
+            // });
+            // this.options = this.allData;
+         }
+      },
       search() {
          console.log(this.searchValue);
       },
@@ -50,6 +62,9 @@ export default {
          uni.navigateTo({
             url: `/pages/project/ProjectContent?${qs.stringify(info)}`,
          });
+      },
+      swiperChange({ detail: { current } }) {
+         this.tabIndex = current;
       },
    },
 };
@@ -63,59 +78,38 @@ export default {
    flex: 1;
 }
 .project {
-   .ul {
-      width: 90vw;
-      margin: auto;
-      .li {
-         // width: 100%;
-         margin: 20rpx 0;
-         .bgImg {
-            width: 100%;
-            font-size: 80rpx;
-            position: relative;
-            image {
-               position: relative;
-               width: 100%;
-               border-radius: 20rpx;
-               overflow: hidden;
-               vertical-align: top;
-            }
-            .name {
-               display: flex;
-               width: 4em;
-               color: #fff;
-               position: absolute;
-               top: 50%;
-               left: 0;
-               transform: translate(0.75em, -50%);
-               overflow: hidden;
-               white-space: nowrap;
-               text-overflow: ellipsis;
-               -o-text-overflow: ellipsis;
-            }
-         }
-         .footer {
-            width: 100%;
-            margin-top: 10rpx;
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
-            .left {
-               text {
-                  &:nth-of-type(1) {
-                     font-size: 35rpx;
-                  }
-                  &:nth-of-type(2) {
-                     font-size: 30rpx;
-                     opacity: 0.5;
-                  }
-               }
-            }
-            .rightIcon {
-               width: 150rpx;
-            }
-         }
+   width: 100vw;
+   height: 100vh;
+   display: flex;
+   flex-flow: column nowrap;
+   align-items: inherit;
+   justify-content: flex-start;
+   .tabs {
+      flex-shrink: 0;
+   }
+   .tabsContent {
+      flex: 1;
+      swiper-item {
+         width: 100%;
+         height: 100%;
+         display: flex;
+         flex-flow: column nowrap;
+         align-items: center;
+         justify-content: flex-start;
+         overflow: auto;
       }
+   }
+}
+.emptyState {
+   width: 100vw;
+   height: 100%;
+   position: relative;
+   image {
+      display: block;
+      width: 460rpx;
+      position: absolute;
+      left: 50%;
+      transform: translate(-50%, 100%);
    }
 }
 </style>

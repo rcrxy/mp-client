@@ -11,7 +11,7 @@
             <view class="contentText">
                <text>
                   成考招生中，点击进入：
-                  <navigator url="/pages/home/applyProcess/Entrance" redirect hover-class="className">【报名入口】</navigator>
+                  <navigator url="/pages/home/process/Entrance" redirect hover-class="className">【报名入口】</navigator>
                </text>
             </view>
          </view>
@@ -29,6 +29,9 @@
          </view>
       </view>
 
+      <image class="inset" src="~static/images/insetTime.png" mode="widthFix" />
+
+      <customize-tabs></customize-tabs>
       <!-- 分享 -->
       <uni-popup ref="popup" type="bottom">
          <uni-popup-share></uni-popup-share>
@@ -38,9 +41,11 @@
 
 <script>
 import uniPopupShare from "@/components/uni-popup-share.vue";
+import customizeTabs from "@/components/customizeTabs.vue";
 export default {
    components: {
       uniPopupShare,
+      customizeTabs,
    },
    data() {
       return {

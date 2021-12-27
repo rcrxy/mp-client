@@ -9,10 +9,10 @@
       <u-cell :border="false" isLink title="个性签名" :value="userInfo.sign" @click="jumpChangePage({ title: '签名', name: 'sign', info: userInfo.userName })"></u-cell>
       <u-cell :border="false" isLink title="手机号码" :value="userInfo.mobile" @click="jumpChangePage({ title: '手机', name: 'mobile', info: userInfo.userName })"></u-cell>
       <u-cell :border="false" isLink title="修改密码" @click="jumpChangePage({ title: '密码', name: 'password', info: userInfo.userName })"></u-cell>
-      <u-cell :border="false" isLink title="地址管理" @click="jumpUrl('/pages/user/Information/ChangeAddress')"></u-cell>
+      <u-cell :border="false" isLink title="地址管理" @click="jumpUrl('/pages/user/Information/Address')"></u-cell>
 
       <!-- 修改性别 -->
-      <u-picker :show="showSetSex" :columns="sexArray" keyName="label" @confirm="setSex" title="选择性别"></u-picker>
+      <u-picker :show="showSetSex" :columns="sexArray" keyName="label" @confirm="setSex" @cancel="showSetSex = false" title="选择性别"></u-picker>
    </view>
 </template>
 

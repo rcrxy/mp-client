@@ -8,7 +8,7 @@
                <text class="time">{{ item.time }}</text>
             </view>
             <view class="summary" ref="summary">
-               <u-notice-bar :text="item.summary" bgColor="#FFF" color="#000" icon=""></u-notice-bar>
+               <p>{{ item.summary }}</p>
             </view>
          </view>
       </view>
@@ -43,7 +43,7 @@ export default {
    padding-top: 10rpx;
    .li {
       width: 95vw;
-      height: 150rpx;
+      // height: 150rpx;
       margin: 0 auto 10rpx;
       box-sizing: border-box;
       padding: 10rpx;
@@ -53,7 +53,8 @@ export default {
       justify-content: space-between;
       .icon {
          width: 50rpx;
-         margin-right: 20rpx;
+         height: 50rpx;
+         margin-right: 15rpx;
       }
       .content {
          flex: 1;
@@ -67,7 +68,8 @@ export default {
             width: 100%;
             text {
                display: block;
-               font-size: 25rpx;
+               font-size: 30rpx;
+               margin: 10rpx 0;
             }
          }
          .summary {

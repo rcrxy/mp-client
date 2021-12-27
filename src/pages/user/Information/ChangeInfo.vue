@@ -58,6 +58,7 @@
 
 <script>
 import { postSetUserInfoAPI } from "@/servers/ServersUser";
+import { postSmsSendAPI } from "@/servers/ServersCommon";
 import { mapMutations } from "vuex";
 export default {
    data() {
@@ -68,7 +69,6 @@ export default {
             mobile: "",
             sign: "",
          },
-
          codeText: "发送验证码",
          codeTrue: false,
          oldPhone: "",
@@ -87,6 +87,7 @@ export default {
       ...mapMutations(["setUserInfo"]),
       getUserInfo() {
          this.sendData = this.$store.state.userInfo;
+         console.log(this.sendData);
       },
       /**设置页面内容 */
       setPage({ title, name, info }) {

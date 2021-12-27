@@ -1,5 +1,5 @@
 <template>
-   <view>
+   <view class="imageBox">
       <image src="~static/images/projectInfo.png" mode="widthFix" />
    </view>
 </template>
@@ -9,7 +9,10 @@ export default {};
 </script>
 
 <style lang="scss" scoped>
-image {
-   width: 100vw;
+.imageBox {
+   width: 100%;
+   image {
+      width: 100%;
+   }
 }
 </style>

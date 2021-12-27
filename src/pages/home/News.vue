@@ -11,6 +11,8 @@
          <navigator class="gradientFont right" url="" redirect>下一篇</navigator>
       </view>
 
+      <image class="inset" src="~static/images/insetNews.png" mode="widthFix" />
+
       <!-- 分享 -->
       <uni-popup ref="popup" type="bottom">
          <uni-popup-share></uni-popup-share>

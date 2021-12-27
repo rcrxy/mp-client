@@ -10,8 +10,8 @@
             <view class="table">
                <view class="tr">
                   <view class="th"><text>时间/日期</text></view>
+                  <view class="th"><text>10月23日</text></view>
                   <view class="th"><text>10月24日</text></view>
-                  <view class="th"><text>10月25日</text></view>
                </view>
                <view class="tr">
                   <view class="td"><text>9:00-11:00</text></view>
@@ -36,8 +36,8 @@
             <view class="table">
                <view class="tr">
                   <view class="th"><text>时间/日期</text></view>
+                  <view class="th"><text>10月23日</text></view>
                   <view class="th"><text>10月24日</text></view>
-                  <view class="th"><text>10月25日</text></view>
                </view>
                <view class="tr">
                   <view class="td"><text>9:00-11:00</text></view>
@@ -116,8 +116,8 @@ export default {
          time: {
             year: 2021,
             month: 10,
-            start: 24,
-            end: 25,
+            start: 23,
+            end: 24,
          },
          subjectsOptions,
          recommendOptions: ["房屋建筑工程【推荐】", "教育学【推荐】", "工程管理", "行政管理", "会计", "工商管理", "英语", "人力资源管理"],
@@ -259,6 +259,7 @@ export default {
          display: flex;
          .td,
          .th {
+            flex-shrink: 0;
             padding: 5rpx 0;
             text {
                white-space: nowrap;
@@ -267,16 +268,17 @@ export default {
                flex: 1;
             }
             &:nth-of-type(2) {
-               width: 3.5em;
+               width: 100rpx;
             }
             &:nth-of-type(3) {
-               width: 3.5em;
+               width: 100rpx;
             }
             &:nth-of-type(4) {
-               width: 5.5em;
+               width: 125rpx;
             }
          }
          .th {
+            font-size: 27rpx;
             font-weight: 500;
             background-color: #46b1eb;
             text {
@@ -285,6 +287,7 @@ export default {
          }
       }
       .td {
+         font-size: 25rpx;
          &:nth-of-type(1),
          &:nth-of-type(2) {
             color: #005d8f;

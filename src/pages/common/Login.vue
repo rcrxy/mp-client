@@ -15,14 +15,14 @@
                <view class="tabs left" v-show="tabIndex === 0">
                   <view class="input inputPhone">
                      <u-icon class="inputLeftIcon" name="account-fill" color="#cccccc" size="30"></u-icon>
-                     <u-input placeholder="输入手机号" border="none"></u-input>
+                     <u-input v-model="fromCode.mobile" placeholder="输入手机号" border="none"></u-input>
                   </view>
                   <view class="input code">
                      <view class="inputCode">
                         <u-icon class="inputLeftIcon" name="lock-fill" color="#cccccc" size="30"></u-icon>
-                        <u-input placeholder="输入验证码" border="none"></u-input>
+                        <u-input v-model="fromCode.smsCode" placeholder="输入验证码" border="none"></u-input>
                      </view>
-                     <text class="button">获取验证码</text>
+                     <send-messages :mobile="fromCode.mobile" @getCode="getCode" :scale="1.15"></send-messages>
                   </view>
                   <u-button class="submit" @click="onSubmit" type="success">登录</u-button>
                </view>
@@ -57,16 +57,21 @@
 </template>
 
 <script>
-import { postAccountLoginAPI, getUserInfoAPI } from "@/servers/ServersCommon";
+import { postAccountLoginAPI, getUserInfoAPI, postSmsLoginAPI, postSmsSendAPI } from "@/servers/ServersCommon";
 import { mapMutations } from "vuex";
+import sendMessages from "@/components/sendMessages.vue";
 export default {
+   components: {
+      sendMessages,
+   },
    data() {
       return {
          tabIndex: 0,
          protocolState: false,
          fromCode: {
-            phone: "",
-            code: "",
+            mobile: "",
+            smsCode: "",
+            smsId: "",
          },
          fromPwd: {
             mobile: "",
@@ -82,33 +87,38 @@ export default {
       async onSubmit() {
          try {
             uni.clearStorage();
-            let data;
             if (!this.protocolState) {
                this.$refs.uToast.show({ message: "请先阅读并同意协议及政策", type: "error" });
             } else {
+               let acceptInfo = {};
                switch (this.tabIndex) {
                   case 0:
-                     this.$refs.uToast.show({ message: "短信验证开发中请用账号登录", type: "error" });
+                     acceptInfo = await postSmsLoginAPI(this.fromCode);
                      break;
                   case 1:
-                     let { code, data } = await postAccountLoginAPI(this.fromPwd);
-                     if (code === 200) this.setToken(data.token);
+                     acceptInfo = await postAccountLoginAPI(this.fromPwd);
                      break;
                }
-               if (this.$store.state.token) {
-                  console.log(1);
-                  let { code, data } = await getUserInfoAPI();
-                  if (code === 200) {
-                     this.setUserInfo(data);
-                     uni.switchTab({ url: "/pages/home/HomeIndex" });
-                  }
+               if (acceptInfo.code === 200) {
+                  this.setToken(acceptInfo.data.token);
+                  uni.switchTab({ url: "/pages/home/HomeIndex" });
+               } else {
+                  uni.showModal({
+                     content: acceptInfo.message,
+                     showCancel: false,
+                     success: res => {
+                        console.log("res", res);
+                     },
+                  });
                }
             }
          } catch (error) {
             console.log(error);
          }
       },
-
+      getCode(info) {
+         this.smsId = info;
+      },
       tableChange(name) {
          console.log(name);
       },
@@ -116,10 +126,6 @@ export default {
       protocolChange(stateArr) {
          let state = stateArr[0];
          state === "protocol" ? (this.protocolState = true) : (this.protocolState = false);
-      },
-      /**发送验证码 */
-      sendMessages() {
-         console.log(1);
       },
    },
 };
@@ -243,11 +249,6 @@ $titleHeight: 95rpx;
                      align-items: center;
                      justify-content: space-between;
                      margin-right: 30rpx;
-                  }
-                  .button {
-                     font-size: 28rpx;
-                     color: #00cba1;
-                     white-space: nowrap;
                   }
                }
             }

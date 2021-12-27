@@ -2,27 +2,12 @@
    <view class="home">
       <v-nav-bar></v-nav-bar>
 
-      <image class="banner" src="~static/images/homeBanner.png" mode="widthFix" />
+      <u-swiper class="banner" :list="bannerList"></u-swiper>
 
-      <uni-grid class="synthesis" :column="4" :showBorder="false" :square="false">
-         <uni-grid-item>
-            <image src="~static/images/homeCol1.png" mode="widthFix" @click="jumpUrl('/pages/home/tabs/ScoreQuery')" />
-            <text class="text">成绩查询</text>
-         </uni-grid-item>
-         <uni-grid-item>
-            <image src="~static/images/homeCol2.png" mode="widthFix" @click="jumpUrl('')" />
-            <text class="text">我的课程</text>
-         </uni-grid-item>
-         <uni-grid-item>
-            <image src="~static/images/homeCol3.png" mode="widthFix" @click="jumpUrl('/pages/home/tabs/Guide')" />
-            <text class="text">成考指南</text>
-         </uni-grid-item>
-         <uni-grid-item>
-            <image src="~static/images/homeCol4.png" mode="widthFix" @click="jumpUrl('/pages/home/tabs/Answering')" />
-            <text class="text">在线答疑</text>
-         </uni-grid-item>
-      </uni-grid>
+      <!-- 快捷入口 -->
+      <synthesis-list></synthesis-list>
 
+      <!-- 报考流程 -->
       <view class="process">
          <view class="columnTitle">
             <view class="left">
@@ -30,21 +15,17 @@
                <text class="text">报考流程</text>
             </view>
          </view>
-         <uni-grid class="uniGrid" :column="2" :showBorder="false" :square="false">
-            <uni-grid-item><image src="~static/images/process1.png" mode="widthFix" @click="jumpUrl('/pages/home/applyProcess/Time')" /></uni-grid-item>
-            <uni-grid-item><image src="~static/images/process2.png" mode="widthFix" @click="jumpUrl('/pages/home/applyProcess/Entrance')" /></uni-grid-item>
-            <uni-grid-item><image src="~static/images/process3.png" mode="widthFix" @click="jumpUrl('/pages/home/applyProcess/ExamSubjects')" /></uni-grid-item>
-            <uni-grid-item><image src="~static/images/process4.png" mode="widthFix" @click="jumpUrl('/pages/home/applyProcess/Condition')" /></uni-grid-item>
-         </uni-grid>
+         <process-list></process-list>
       </view>
 
+      <!-- 最新咨询 -->
       <view class="news">
          <view class="columnTitle">
             <view class="left">
                <view class="leftIcon"></view>
                <text class="text">最新资讯</text>
             </view>
-            <view class="right" @click="jumpUrl('/pages/home/News')">
+            <view class="right" @click="mix_jumpUrl('/pages/home/News')">
                <text>更多资讯</text>
                <u-icon name="arrow-right"></u-icon>
             </view>
@@ -54,34 +35,28 @@
                <image src="~static/images/homeNews.png" mode="widthFix" />
             </view>
             <view class="right">
-               <text class="title">{{ news.title }}</text>
-               <text class="paragraph">{{ news.value }}</text>
+               <text class="title">{{ news.newsTitle }}</text>
+               <text class="paragraph">{{ news.newsAbstract }}</text>
 
-               <text class="goAll" @click="jumpUrl('/pages/home/News')">查看全部>></text>
+               <text class="goAll" @click="mix_jumpUrl('/pages/home/News')">查看全部>></text>
             </view>
          </view>
       </view>
 
+      <!-- 热门专业 -->
       <view class="specialized">
          <view class="columnTitle">
             <view class="left">
                <view class="leftIcon"></view>
-               <text class="text">院校专业</text>
+               <text class="text">热门专业</text>
             </view>
-            <view class="right" @click="jumpUrl('/pages/home/Specialized')">
+            <view class="right" @click="mix_jumpUrl('/pages/home/Specialized')">
                <text>更多院校</text>
                <u-icon name="arrow-right"></u-icon>
             </view>
          </view>
          <view class="content">
-            <view class="li" v-for="(item, index) in specializedList" :key="index">
-               <image class="left" :src="item.img" mode="widthFix" />
-               <view class="middle">
-                  <text class="title">{{ item.title }}</text>
-                  <text class="summary">{{ item.label }}</text>
-               </view>
-               <image class="right" src="~static/images/homeMore.png" mode="widthFix" @click="jumpUrl('/pages/home/Specialized')" />
-            </view>
+            <specialized-list></specialized-list>
          </view>
       </view>
 
@@ -96,67 +71,49 @@
                <u-icon name="arrow-right"></u-icon>
             </view>
          </view>
-         <view class="content">
-            <view class="li" v-for="(item, index) in projectList" :key="index" @click="jumpProject(item)">
-               <view class="left">
-                  <image src="~static/images/projectBack.png" mode="widthFix" />
-                  <text>{{ item.title }}</text>
-               </view>
-               <view class="middle">
-                  <text class="title">{{ item.title }}</text>
-                  <view class="purchases">
-                     <u-count-to :start-val="1" :end-val="item.label" separator="," font-size="13"></u-count-to>
-                     <text>人购买</text>
-                  </view>
-               </view>
-               <view class="right">
-                  <image src="~static/images/homePay.png" mode="widthFix" />
-               </view>
-            </view>
-         </view>
+         <project-list></project-list>
       </view>
    </view>
 </template>
 
 <script>
+import SynthesisList from "@/pages/home/common/index/SynthesisList.vue";
+import ProcessList from "@/pages/home/common/index/ProcessList.vue";
+import SpecializedList from "@/pages/home/common/index/SpecializedList.vue";
+import ProjectList from "@/pages/home/common/index/ProjectList.vue";
 import vNavBar from "@/components/NavBar.vue";
-import qs from "qs";
+import { getNewsAPI } from "@/servers/ServersHome";
+
 export default {
    components: {
+      SynthesisList,
+      SpecializedList,
+      ProcessList,
+      ProjectList,
       vNavBar,
    },
    data() {
       return {
          footerIndex: 0,
-         images: ["https://img01.yzcdn.cn/vant/apple-1.jpg", "https://img01.yzcdn.cn/vant/apple-2.jpg"],
+         bannerList: [require("@/static/images/HomeBanner1.png"), require("@/static/images/HomeBanner2.png"), require("@/static/images/HomeBanner3.png")],
          news: {
             title: "2021最新知识点",
             value: "会计学专业培养具有良好思想道德品质，进一步系统地掌握本科水平的会计...",
          },
-         specializedList: [
-            { title: "经管类热门专业", label: "电子商务、物流管理", img: require("static/images/specialized1.png") },
-            { title: "医学类热门专业", label: "护理学、动物医学", img: require("static/images/specialized2.png") },
-            { title: "理工类热门专业", label: "软件工程、电子信息工程", img: require("static/images/specialized3.png") },
-         ],
-         projectList: [
-            { title: "高数(一)", name: "高数(一)", label: "1021" },
-            { title: "大学语文", name: "大学语文", label: "234" },
-            { title: "高数(一)", name: "高数(一)", label: "1024" },
-            { title: "高数(一)", name: "高数(一)", label: "3068" },
-         ],
+         newsList: [],
       };
    },
+   created() {
+      this.getNews();
+   },
    methods: {
-      jumpUrl(url) {
-         uni.navigateTo({ url });
-      },
-      jumpProject(info) {
-         if (info === "more") {
-            uni.switchTab({ url: "/pages/project/ProjectIndex" });
-         } else if (info) {
-            uni.navigateTo({
-               url: `/pages/project/ProjectContent?${qs.stringify(info)}`,
-            });
+      async getNews() {
+         await getNewsAPI().then(res => {
+            console.log("res", res);
+         });
+         let { code, data } = await getNewsAPI();
+         if (code === 200) {
+            this.news = data[0];
          }
       },
    },
@@ -168,24 +125,6 @@ export default {
    display: block;
    width: 90vw;
    margin: 84px auto 20rpx;
-}
-
-.synthesis {
-   width: 90vw;
-   background-color: #fff;
-   // border-radius: 10px;
-   margin: 40rpx auto;
-   .uni-grid-item {
-      text-align: center;
-      image {
-         margin: auto;
-         width: 75%;
-         flex-shrink: 0;
-      }
-      text {
-         font-size: 28rpx;
-      }
-   }
 }
 
 .columnTitle {
@@ -229,17 +168,6 @@ export default {
    }
 }
 
-.process {
-   width: 90vw;
-   margin: auto;
-   .uniGrid {
-      width: 90vw;
-      image {
-         width: 100%;
-      }
-   }
-}
-
 .news {
    width: 90vw;
    margin: auto;
@@ -249,7 +177,7 @@ export default {
       margin: auto;
       display: flex;
       align-items: stretch;
-      justify-content: space-between;
+      justify-content: flex-start;
       .left {
          flex-shrink: 0;
          width: 200rpx;
@@ -262,6 +190,7 @@ export default {
          }
       }
       .right {
+         flex: 1;
          display: flex;
          flex-direction: column;
          justify-content: space-around;
@@ -295,47 +224,6 @@ export default {
 .specialized {
    width: 90vw;
    margin: auto;
-   .content {
-      width: 90vw;
-      .li {
-         width: 100%;
-         height: auto;
-         margin: 30rpx 0;
-         display: flex;
-         align-items: center;
-         justify-content: space-between;
-         .left {
-            width: 100rpx;
-            flex-shrink: 0;
-         }
-         .middle {
-            flex: 1;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: space-between;
-            box-sizing: border-box;
-            padding-left: 25rpx;
-            text {
-               display: block;
-               margin: 5rpx;
-            }
-            .title {
-               font-size: 35rpx;
-               color: #333333;
-            }
-            .summary {
-               font-size: 25rpx;
-            }
-         }
-         .right {
-            flex-shrink: 0;
-            width: 140rpx;
-         }
-      }
-   }
-
    .con {
       .van-cell--borderless {
          image {
@@ -358,70 +246,5 @@ export default {
 .project {
    width: 90vw;
    margin: auto;
-   .content {
-      width: 100%;
-      .li {
-         width: 100%;
-         margin: 20rpx 0;
-         display: flex;
-         align-items: stretch;
-         justify-content: space-between;
-         .left {
-            width: 250rpx;
-            position: relative;
-            image {
-               width: 100%;
-               vertical-align: top;
-            }
-            text {
-               position: absolute;
-               top: 50%;
-               left: 0;
-               transform: translateY(-50%);
-               font-size: 40rpx;
-               text-indent: 40rpx;
-               color: #fff;
-               white-space: nowrap;
-               overflow: hidden;
-               text-overflow: ellipsis;
-            }
-         }
-         .middle {
-            flex: 1;
-            box-sizing: border-box;
-            padding-left: 30rpx;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: space-evenly;
-            text {
-               display: block;
-            }
-            .title {
-               font-size: 35rpx;
-            }
-            .purchases {
-               opacity: 0.5;
-               font-size: 25rpx;
-               display: flex;
-               flex-flow: row nowrap;
-               align-items: center;
-               justify-content: center;
-               .u-count-num {
-                  vertical-align: bottom;
-               }
-            }
-         }
-         .right {
-            width: 140rpx;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            image {
-               width: 100%;
-            }
-         }
-      }
-   }
 }
 </style>

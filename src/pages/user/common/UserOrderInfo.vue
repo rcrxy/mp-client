@@ -1,7 +1,7 @@
 <template>
    <view>
       <van-empty v-if="isEmpty" class="custom-image" :image="require('../../../static/images/emptyImg.png')" />
-      <van-list v-if="!isEmpty" finished-text="没有更多数据了" @load="onLoad">
+      <!-- <van-list v-if="!isEmpty" finished-text="没有更多数据了" @load="onLoad">
          <van-cell-group inset v-for="(item, index) in list" :key="index">
             <van-cell :title="`订单号：${item.orderNumber}`" label-class="topLabel">
                <template #title>
@@ -40,7 +40,7 @@
                </template>
             </van-cell>
          </van-cell-group>
-      </van-list>
+      </van-list> -->
    </view>
 </template>
 
