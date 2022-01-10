@@ -10,7 +10,7 @@ Vue.config.productionTip = false;
 import uView from "uview-ui";
 Vue.use(uView);
 
-import mixin from "@/uitls/mixin";
+import mixin from "@/mixin/mixin";
 Vue.use(mixin);
 
 App.mpType = "app";

@@ -8,7 +8,7 @@
             <text>综合演练</text>
          </view>
          <view class="ul activity">
-            <view class="li" v-for="(item, index) in synthesisOptions" :key="index" @click="mix_jumpUrl(item.url, item)">
+            <view class="li" v-for="(item, index) in synthesisOptions" :key="index" @click="mix_jumpUrl(item.url, { name: item.name, subject: info.className })">
                <image :src="item.image" mode="widthFix" />
                <text>{{ item.name }}</text>
             </view>
@@ -50,7 +50,7 @@ export default {
          ],
          sublevelOptions: [],
          allList: [],
-         info: "",
+         info: {},
       };
    },
    onLoad(info) {
@@ -131,16 +131,16 @@ export default {
       justify-content: flex-start;
       .li {
          width: 33.33%;
-         margin: 1rem 0;
+         margin: 20rpx 0;
          display: flex;
          flex-direction: column;
          align-items: center;
          justify-content: center;
          image {
-            width: 3em;
+            width: 100rpx;
          }
          text {
-            font-size: 0.9rem;
+            font-size: 25rpx;
          }
       }
    }

@@ -9,6 +9,10 @@ export default {
             };
          },
          methods: {
+            /**跳转
+             * @param {String} url
+             * @param {Object} query
+             */
             mix_jumpUrl(url, query) {
                let tabList = ["pages/home/HomeIndex", "/pages/project/ProjectIndex", "pages/practice/PracticeIndex", "pages/user/UserIndex"];
                if (tabList.indexOf(url) !== -1) {

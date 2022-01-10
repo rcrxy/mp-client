@@ -1,23 +1,25 @@
 <template>
    <view>
-      <u-grid class="grid" col="4" :border="false" clickable>
-         <u-grid-item>
-            <u-icon size="25" color="#fec673" @click="isCollection = !isCollection" :name="isCollection ? 'star' : 'star-fill'"></u-icon>
-            <text>收藏</text>
-         </u-grid-item>
-         <u-grid-item>
-            <u-icon size="25" color="#00d4b9" name="checkmark-circle"></u-icon>
-            <text>{{ 0 }}</text>
-         </u-grid-item>
-         <u-grid-item>
-            <u-icon size="25" color="#d4000f" name="close-circle"></u-icon>
-            <text>{{ 0 }}</text>
-         </u-grid-item>
-         <u-grid-item @click="show = true">
-            <u-icon size="25" color="#666666" name="grid"></u-icon>
-            <text>{{ nowIndex }}/{{ quantity }}</text>
-         </u-grid-item>
-      </u-grid>
+      <view class="gridBox">
+         <u-grid class="grid" col="4" :border="false" clickable>
+            <u-grid-item>
+               <u-icon size="25" color="#fec673" @click="isCollection = !isCollection" :name="isCollection ? 'star' : 'star-fill'"></u-icon>
+               <text>收藏</text>
+            </u-grid-item>
+            <u-grid-item>
+               <u-icon size="25" color="#00d4b9" name="checkmark-circle"></u-icon>
+               <text>{{ 0 }}</text>
+            </u-grid-item>
+            <u-grid-item>
+               <u-icon size="25" color="#d4000f" name="close-circle"></u-icon>
+               <text>{{ 0 }}</text>
+            </u-grid-item>
+            <u-grid-item @click="show = true">
+               <u-icon size="25" color="#666666" name="grid"></u-icon>
+               <text>{{ nowIndex }}/{{ quantity }}</text>
+            </u-grid-item>
+         </u-grid>
+      </view>
       <u-popup class="popup" ref="popup" @close="popupClose" :show="show" safeAreaInsetBottom>
          <scroll-view class="roundBox" scroll-y="true">
             <view class="roundList">
@@ -36,13 +38,26 @@ export default {
    props: {
       valueId: String | Number,
       quantity: String | Number,
+      value: {
+         type: String | Number,
+         default: 1,
+      },
+   },
+   computed: {
+      nowIndex: {
+         get() {
+            return this.value;
+         },
+         set() {
+            this.$emit("update:value");
+         },
+      },
    },
    data() {
       return {
          show: false,
          nowCollectionId: "",
          isCollection: false,
-         nowIndex: 1,
       };
    },
    methods: {
@@ -68,22 +83,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.grid {
-   width: 100vw;
+.gridBox {
+   height: 50px;
    position: fixed;
    bottom: 0;
    left: 0;
    background: #fff;
-   padding: 15px 0;
-   .u-icon {
-      font-size: 30rpx;
-   }
-   text {
-      display: block;
-      margin-top: 5px;
-      font-size: 25rpx;
+   .grid {
+      width: 100vw;
+
+      .u-icon {
+         font-size: 30rpx;
+      }
+      text {
+         display: block;
+         margin-top: 5px;
+         font-size: 25rpx;
+      }
    }
 }
+
 .u-popup {
    .roundBox {
       width: 100%;
