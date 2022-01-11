@@ -84,7 +84,7 @@ export default {
 
 <style lang="scss" scoped>
 .gridBox {
-   height: 50px;
+   height: 65px;
    position: fixed;
    bottom: 0;
    left: 0;

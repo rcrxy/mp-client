@@ -1,17 +1,15 @@
 <template>
    <view class="mainBox">
       <view class="questionsContent">
-         <!-- 选择题 -->
-         <!-- <q-select></q-select> -->
-         <!-- 完型填空 / 阅读理解 -->
-         <!-- <q-cloze></q-cloze>  -->
-         <!-- 填空题 -->
-         <!-- 简答/作文/ -->
-
          <swiper class="swiper" v-if="!loading" :current="nowIndex - 1" @change="swiperChange">
             <swiper-item v-for="(item, index) in problemList" :key="index">
                <scroll-view scroll-y="true">
-                  <text>{{ item }}</text>
+                  <!-- 选择题 -->
+                  <q-select v-if="showType(item, 'select')" :info="item" @getUserAnswer="getUserAnswer"></q-select>
+                  <!-- 完型填空 / 阅读理解 -->
+                  <!-- <q-cloze></q-cloze>  -->
+                  <!-- 填空题 -->
+                  <!-- 简答/作文/ -->
                </scroll-view>
             </swiper-item>
          </swiper>
@@ -26,9 +24,12 @@
 <script>
 import { postQuestionsListAPI } from "@/servers/ServersPractice";
 import footerBar from "./WorkProblem/footerBar.vue";
+
+import qSelect from "./WorkProblem/qSelect.vue";
 export default {
    components: {
       footerBar,
+      qSelect,
    },
    data() {
       return {
@@ -55,14 +56,27 @@ export default {
       this.getProblemList(name, "化学");
       if (name) uni.setNavigationBarTitle({ title: name });
    },
-   created() {},
    methods: {
+      showType(info, type) {
+         const { questionType } = info;
+         switch (type) {
+            case "select":
+               const select = ["单选", "多选", "判断"];
+               if (select.indexOf(questionType) !== -1) return true;
+         }
+      },
+
+      getUserAnswer(an) {
+         console.log(an);
+      },
+
       async getProblemList(name, subject) {
          try {
             if (name === "每日一练") {
-               let { code, data } = await postQuestionsListAPI({ course: subject });
-               if (code === 200) {
-                  this.problemList = this.extract(data, 8);
+               const res = await postQuestionsListAPI({ course: subject });
+               if (res.code === 200) {
+                  this.problemList = this.extract(res.data, 8);
+                  console.log(this.problemList);
                }
             } else {
             }
@@ -122,7 +136,7 @@ export default {
    }
    .swiper {
       width: 100%;
-      height: calc(100vh - 50px);
+      height: calc(100vh - 65px);
       swiper-item {
          width: 100%;
          height: 100%;

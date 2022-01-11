@@ -52,7 +52,7 @@ export default {
    },
    methods: {
       async postCourseList() {
-         let { code, data } = await postCourseListAPI();
+         const { code, data } = await postCourseListAPI();
          if (code === 200) {
             this.allData = data;
             this.allData.forEach((item, index) => {
@@ -60,6 +60,7 @@ export default {
             });
             this.options = this.allData;
          }
+         if (this.options === 0) this.postCourseList();
       },
       // 返回搜索结果
       searchResult(val) {
