@@ -108,9 +108,7 @@ export default {
    },
    methods: {
       async getNews() {
-         await getNewsAPI().then(res => {
-            console.log("res", res);
-         });
+         await getNewsAPI().then(res => {});
          let { code, data } = await getNewsAPI();
          if (code === 200) {
             this.news = data[0];

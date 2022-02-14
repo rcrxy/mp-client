@@ -35,7 +35,7 @@ export default {
             uni.showToast({ title, icon: "none" });
          } else {
             uni.showLoading({ title: "正在发送短信" });
-            let { code, data } = await postSmsSendAPI({ mobile });
+            const { code, data } = await postSmsSendAPI({ mobile });
             uni.hideLoading();
             if (code === 200) {
                this.$emit("getCode", data);

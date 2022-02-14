@@ -54,6 +54,7 @@ export default {
       };
    },
    onLoad(info) {
+      console.log(info);
       this.info = info;
       uni.setNavigationBarTitle({ title: info.className });
    },
@@ -65,15 +66,13 @@ export default {
          const sendData = {
             course: "化学",
          };
-         let { code, data } = await postQuestionsListAPI(sendData);
+         const { code, data } = await postQuestionsListAPI(sendData);
          if (code === 200) {
             this.allList = data;
             this.getLength(data);
          }
       },
-      /**获取章节题目数量
-       * @param {Array} list
-       */
+      /** 获取章节题目数量 */
       getLength(list) {
          let nameList = [];
          let lengthList = [];

@@ -1001,7 +1001,7 @@
     "pako" "^1.0.11"
     "safe-area-insets" "^1.4.1"
 
-"@dcloudio/uni-helper-json@*":
+"@dcloudio/uni-helper-json@^1.0.13":
   "integrity" "sha512-FO9Iu4zW4td3Tr+eiCDWuele2ehkJ4qxQ/UhpAMLjso+ZdWz6NagK5Syh6cdy1hoDqbxpNoqnLynuJXe81Ereg=="
   "resolved" "https://registry.npmjs.org/@dcloudio/uni-helper-json/-/uni-helper-json-1.0.13.tgz"
   "version" "1.0.13"
@@ -1935,6 +1935,11 @@
   dependencies:
     "@types/node" "*"
 
+"@types/html5plus@^1.0.2":
+  "integrity" "sha512-OklP5lrmLq8/6TUOLgWc0LndUVvAiTWX5dnyoCFhIUtFW9opWsnCtG/UxPgeuC28Rv2XNbFfft/hEEI39P/4Ag=="
+  "resolved" "https://registry.npmjs.org/@types/html5plus/-/html5plus-1.0.2.tgz"
+  "version" "1.0.2"
+
 "@types/http-proxy@^1.17.5":
   "integrity" "sha512-9hdj6iXH64tHSLTY+Vt2eYOGzSogC+JQ2H7bdPWkuh7KXP5qLllWx++t+K9Wk556c3dkDdPws/SpMRi0sdCT1w=="
   "resolved" "https://registry.npmjs.org/@types/http-proxy/-/http-proxy-1.17.7.tgz"
@@ -2041,6 +2046,13 @@
   "version" "3.13.1"
   dependencies:
     "source-map" "^0.6.1"
+
+"@types/uni-app@^1.4.4":
+  "integrity" "sha512-ZTXnrCTblZyoLIoKbTv1Whz1nxrTcM7vg0qGXzDpXP8m9MqdjKt48N3FffQT1IsJWNkxbvJ1Eg5UHDaq+k+oBQ=="
+  "resolved" "https://registry.npmjs.org/@types/uni-app/-/uni-app-1.4.4.tgz"
+  "version" "1.4.4"
+  dependencies:
+    "vue" "^2.6.8"
 
 "@types/webpack-dev-server@^3.11.0":
   "integrity" "sha512-XCph0RiiqFGetukCTC3KVnY1jwLcZ84illFRMbyFzCcWl90B/76ew0tSqF46oBhnLC4obNDG7dMO0JfTN0MgMQ=="
@@ -12093,7 +12105,7 @@
   "resolved" "https://registry.npmjs.org/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz"
   "version" "1.9.1"
 
-"vue@^2 || ^3.0.0-0", "vue@^2.0.0", "vue@^2.6.11":
+"vue@^2 || ^3.0.0-0", "vue@^2.0.0", "vue@^2.6.11", "vue@^2.6.8":
   "integrity" "sha512-x2284lgYvjOMj3Za7kqzRcUSxBboHqtgRE2zlos1qWaOye5yUmHn42LB1250NJBLRwEcdrB0JRwyPTEPhfQjiQ=="
   "resolved" "https://registry.npmjs.org/vue/-/vue-2.6.14.tgz"
   "version" "2.6.14"

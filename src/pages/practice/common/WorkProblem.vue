@@ -52,6 +52,7 @@ export default {
       },
    },
    onLoad(info) {
+      console.log(info);
       const { name, subject } = info;
       this.getProblemList(name, "化学");
       if (name) uni.setNavigationBarTitle({ title: name });
@@ -84,10 +85,7 @@ export default {
             console.log(error);
          }
       },
-      /**抽取题目
-       * @param {Array} arr
-       * @param {Number} num
-       */
+      /** 抽取题目 */
       extract(arr, num) {
          let nowList = [];
          const max = arr.length;

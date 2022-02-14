@@ -59,6 +59,7 @@ export default {
                item.id = index;
             });
             this.options = this.allData;
+            console.log(this.options);
          }
          if (this.options === 0) this.postCourseList();
       },

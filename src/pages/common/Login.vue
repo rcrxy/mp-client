@@ -91,14 +91,13 @@ export default {
                this.$refs.uToast.show({ message: "请先阅读并同意协议及政策", type: "error" });
             } else {
                let acceptInfo = {};
-               switch (this.tabIndex) {
-                  case 0:
-                     acceptInfo = await postSmsLoginAPI(this.fromCode);
-                     break;
-                  case 1:
-                     acceptInfo = await postAccountLoginAPI(this.fromPwd);
-                     break;
+
+               if (this.tabIndex === 0) {
+                  acceptInfo = await postSmsLoginAPI(this.fromCode);
+               } else {
+                  acceptInfo = await postAccountLoginAPI(this.fromPwd);
                }
+
                if (acceptInfo.code === 200) {
                   this.setToken(acceptInfo.data.token);
                   uni.switchTab({ url: "/pages/home/HomeIndex" });
@@ -106,9 +105,7 @@ export default {
                   uni.showModal({
                      content: acceptInfo.message,
                      showCancel: false,
-                     success: res => {
-                        console.log("res", res);
-                     },
+                     success: res => {},
                   });
                }
             }
@@ -118,9 +115,6 @@ export default {
       },
       getCode(info) {
          this.smsId = info;
-      },
-      tableChange(name) {
-         console.log(name);
       },
       /**协议选中状态 */
       protocolChange(stateArr) {

@@ -1,20 +1,8 @@
 <script>
-import { getUserInfoAPI } from "@/servers/ServersCommon";
-import { mapMutations } from "vuex";
-import store from "./store";
-
 export default {
-   onLaunch: function () {
-      const { state } = store;
-      if (!state.token) {
-         uni.navigateTo({ url: "/pages/common/Login" });
-      }
-   },
+   onLaunch: function () {},
    onShow: function () {},
    onHide: function () {},
-   methods: {
-      ...mapMutations(["setUserInfo"]),
-   },
 };
 </script>
 
