@@ -4,12 +4,7 @@
          <swiper class="swiper" v-if="!loading" :current="nowIndex - 1" @change="swiperChange">
             <swiper-item v-for="(item, index) in problemList" :key="index">
                <scroll-view scroll-y="true">
-                  <!-- 选择题 -->
-                  <q-select v-if="showType(item, 'select')" :info="item" @getUserAnswer="getUserAnswer"></q-select>
-                  <!-- 完型填空 / 阅读理解 -->
-                  <!-- <q-cloze></q-cloze>  -->
-                  <!-- 填空题 -->
-                  <!-- 简答/作文/ -->
+                  <components :is="setType(item)" :info="item" @getUserAnswer="getUserAnswer"></components>
                </scroll-view>
             </swiper-item>
          </swiper>
@@ -17,7 +12,7 @@
             <u-loading-icon></u-loading-icon>
          </view>
       </view>
-      <footer-bar v-model="nowIndex" :valueId="valueId" :quantity="problemList.length || 5" @indexChange="indexChange"></footer-bar>
+      <footer-bar v-model="nowIndex" :valueId="valueId" :problemList="problemList" :quantity="problemList.length || 8" @indexChange="indexChange"></footer-bar>
    </view>
 </template>
 
@@ -26,10 +21,17 @@ import { postQuestionsListAPI } from "@/servers/ServersPractice";
 import footerBar from "./WorkProblem/footerBar.vue";
 
 import qSelect from "./WorkProblem/qSelect.vue";
+import qJudgment from "./WorkProblem/qJudment.vue";
+import qMultiSelect from "./WorkProblem/qMultiSelect.vue";
+import otherType from "./WorkProblem/otherType.vue";
+
 export default {
    components: {
       footerBar,
       qSelect,
+      qJudgment,
+      qMultiSelect,
+      otherType,
    },
    data() {
       return {
@@ -37,13 +39,15 @@ export default {
          nowIndex: 1,
          valueId: 1,
          completed: 0,
+         maxlength: 8,
          problemList: [],
+         collectionList: [],
+         showParse: false,
       };
    },
    watch: {
       nowIndex(newVal, oldVal) {
          if (oldVal - newVal >= 2 || oldVal - newVal <= -2) {
-            console.log(newVal);
             this.loading = true;
             setTimeout(() => {
                this.loading = false;
@@ -52,18 +56,25 @@ export default {
       },
    },
    onLoad(info) {
-      console.log(info);
       const { name, subject } = info;
       this.getProblemList(name, "化学");
       if (name) uni.setNavigationBarTitle({ title: name });
    },
    methods: {
-      showType(info, type) {
+      /**识别题型 */
+      setType(info) {
          const { questionType } = info;
-         switch (type) {
-            case "select":
-               const select = ["单选", "多选", "判断"];
-               if (select.indexOf(questionType) !== -1) return true;
+         const typeList = [
+            { name: "判断", type: "qJudgment" },
+            { name: "单选", type: "qSelect" },
+            { name: "多选", type: "qMultiSelect" },
+         ];
+
+         const nowType = typeList.find(item => item.name === questionType);
+         if (Boolean(nowType)) {
+            return nowType.type;
+         } else {
+            return "otherType";
          }
       },
 
@@ -76,8 +87,7 @@ export default {
             if (name === "每日一练") {
                const res = await postQuestionsListAPI({ course: subject });
                if (res.code === 200) {
-                  this.problemList = this.extract(res.data, 8);
-                  console.log(this.problemList);
+                  this.problemList = this.extract(res.data, this.maxlength);
                }
             } else {
             }
@@ -87,7 +97,7 @@ export default {
       },
       /** 抽取题目 */
       extract(arr, num) {
-         let nowList = [];
+         const nowList = [];
          const max = arr.length;
 
          for (let i = 0; i < num; i++) {
@@ -104,6 +114,7 @@ export default {
          nowList.forEach((item, index) => {
             list[index] = arr[item];
          });
+         console.log(list);
          return list;
       },
 
@@ -130,18 +141,86 @@ export default {
       flex: 1;
       width: 100vw;
       box-sizing: border-box;
-      padding: 10rpx 20rpx;
    }
    .swiper {
       width: 100%;
-      height: calc(100vh - 65px);
+      height: calc(100% - 125rpx);
       swiper-item {
          width: 100%;
          height: 100%;
          scroll-view {
             width: 100%;
             height: 100%;
+            padding: 10rpx 25rpx;
+            box-sizing: border-box;
          }
+      }
+   }
+}
+
+.parse {
+   width: 100%;
+}
+
+.footerBox {
+   width: 100vw;
+   height: 125rpx;
+   background: #fff;
+   border-top: 1px solid rgba($color: #000000, $alpha: 0.1);
+   display: flex;
+   align-items: center;
+   justify-content: space-evenly;
+   position: fixed;
+   left: 0;
+   bottom: 0;
+   z-index: 999;
+   .u-button {
+      width: 45% !important;
+      flex-shrink: 0;
+   }
+   .line {
+      flex-shrink: 0;
+      width: 1px;
+      height: 100%;
+      background-color: rgba($color: #000000, $alpha: 0.1);
+   }
+}
+
+::v-deep img {
+   max-width: 100%;
+   vertical-align: middle;
+}
+
+::v-deep .parse {
+   margin-top: 30rpx;
+
+   .showParse {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      > text {
+         font-size: 30rpx;
+         color: #00cba1;
+      }
+   }
+
+   .answer {
+      display: block;
+      border-radius: 10rpx;
+      font-size: 35rpx;
+      margin: 10rpx 0;
+   }
+   .analysis {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 30rpx;
+      background-color: #f5f5f5;
+      border-radius: 10rpx;
+      font-size: 35rpx;
+      .title {
+         margin-bottom: 10rpx;
+         font-weight: 500;
       }
    }
 }

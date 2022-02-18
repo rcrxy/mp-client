@@ -6,28 +6,28 @@
          <rich-text :nodes="info.question"></rich-text>
       </view>
 
-      <radio-group @change="radioChange">
+      <checkbox-group @change="radioChange">
          <label>
-            <radio value="A" />
+            <checkbox value="A" />
             A.
             <rich-text :nodes="info.a"></rich-text>
          </label>
          <label>
-            <radio value="B" />
+            <checkbox value="B" />
             B.
             <rich-text :nodes="info.b"></rich-text>
          </label>
          <label>
-            <radio value="C" />
+            <checkbox value="C" />
             C.
             <rich-text :nodes="info.c"></rich-text>
          </label>
          <label>
-            <radio value="D" />
+            <checkbox value="D" />
             D.
             <rich-text :nodes="info.d"></rich-text>
          </label>
-      </radio-group>
+      </checkbox-group>
 
       <view class="showParse">
          <text @click="showParse = !showParse">{{ showParse ? "隐藏解析" : "显示解析" }}</text>
@@ -59,12 +59,11 @@ export default {
       };
    },
    methods: {
-      radioChange(val) {
+      radioChange(res) {
+         console.log(res);
          const {
             detail: { value },
-         } = val;
-         this.userAnswer = value;
-         this.$emit("getUserAnswer", value);
+         } = res;
       },
    },
 };
@@ -89,14 +88,14 @@ export default {
    vertical-align: middle;
 }
 
-radio-group {
+checkbox-group {
    width: 100%;
    label {
       display: flex;
       align-items: flex-start;
       justify-content: flex-start;
       margin: 10rpx 0;
-      radio {
+      checkbox {
          flex-shrink: 0;
          font-size: initial;
       }

@@ -1,5 +1,5 @@
 <template>
-   <view>
+   <view class="footer_bar">
       <view class="gridBox">
          <u-grid class="grid" col="4" :border="false" clickable>
             <u-grid-item>
@@ -34,6 +34,7 @@
 
 <script>
 import { postAddCollectionAPI, postCancelCollectionAPI } from "@/servers/ServersPractice";
+import { postUserCollectionAPI } from "@/servers/ServersUser";
 export default {
    props: {
       valueId: String | Number,
@@ -42,6 +43,8 @@ export default {
          type: String | Number,
          default: 1,
       },
+      collection: Function,
+      problemList: Array,
    },
    computed: {
       nowIndex: {
@@ -60,7 +63,17 @@ export default {
          isCollection: false,
       };
    },
+
+   created() {
+      this.postUserCollection();
+   },
    methods: {
+      async postUserCollection() {
+         console.log(this.problemList);
+         const res = await postUserCollectionAPI({ valueType: "question" });
+         console.log(res);
+      },
+
       async postAddCollection() {
          const sendData = { valueId: this.valueId, valueType: "question" };
          const { code } = await postAddCollectionAPI(sendData);
@@ -84,11 +97,15 @@ export default {
 
 <style lang="scss" scoped>
 .gridBox {
-   height: 65px;
+   height: 125rpx;
    position: fixed;
    bottom: 0;
    left: 0;
    background: #fff;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   border-top: 1px solid rgba($color: #000000, $alpha: 0.1);
    .grid {
       width: 100vw;
 

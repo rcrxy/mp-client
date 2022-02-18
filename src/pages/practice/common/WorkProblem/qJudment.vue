@@ -6,35 +6,23 @@
          <rich-text :nodes="info.question"></rich-text>
       </view>
 
-      <radio-group @change="radioChange">
+      <checkbox-group>
          <label>
-            <radio value="A" />
-            A.
-            <rich-text :nodes="info.a"></rich-text>
+            <checkbox value="cb" checked="true" />
+            正确
          </label>
          <label>
-            <radio value="B" />
-            B.
-            <rich-text :nodes="info.b"></rich-text>
+            <checkbox value="cb" />
+            错误
          </label>
-         <label>
-            <radio value="C" />
-            C.
-            <rich-text :nodes="info.c"></rich-text>
-         </label>
-         <label>
-            <radio value="D" />
-            D.
-            <rich-text :nodes="info.d"></rich-text>
-         </label>
-      </radio-group>
+      </checkbox-group>
 
       <view class="showParse">
          <text @click="showParse = !showParse">{{ showParse ? "隐藏解析" : "显示解析" }}</text>
       </view>
       <view class="parse" v-if="showParse">
          <text class="answer">正确答案：{{ info.answer }}</text>
-         <text class="answer" v-if="Boolean(userAnswer)">你的答案：{{ userAnswer }}</text>
+         <text class="answer">你的答案：{{ userAnswer }}</text>
          <view class="analysis">
             <text class="title">解析：</text>
             <rich-text v-if="info.analysis !== 'undefined'" :nodes="info.analysis"></rich-text>
@@ -65,6 +53,10 @@ export default {
          } = val;
          this.userAnswer = value;
          this.$emit("getUserAnswer", value);
+
+         if (this.userAnswer) {
+            this.showParse = true;
+         }
       },
    },
 };
@@ -73,6 +65,7 @@ export default {
 <style lang="scss" scoped>
 .q_box {
    width: 100%;
+   height: 100%;
    font-size: 35rpx;
 }
 
@@ -82,11 +75,6 @@ export default {
       display: inline-block;
       vertical-align: middle;
    }
-}
-
-::v-deep img {
-   max-width: 100%;
-   vertical-align: middle;
 }
 
 radio-group {
@@ -105,7 +93,6 @@ radio-group {
       }
    }
 }
-
 .showParse {
    width: 100%;
    margin-top: 30rpx;
