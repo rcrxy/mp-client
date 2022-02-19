@@ -1,6 +1,6 @@
 <template>
    <view class="content">
-      <view class="li" v-for="(item, index) in options" :key="index" @click="mix_jumpUrl('/pages/project/ProjectContent', item)">
+      <view class="li" v-for="(item, index) in options" :key="index" @click="mix_jumpUrl('/pages/project/ProjectContent', item, true)">
          <view class="left">
             <image src="~static/images/projectBack.png" mode="widthFix" />
             <text>{{ item.title }}</text>

@@ -66,7 +66,7 @@
                <view class="leftIcon"></view>
                <text class="text">热门课程</text>
             </view>
-            <view class="right" @click="jumpProject('more')">
+            <view class="right" @click="mix_jumpUrl('/pages/project/project')">
                <text>更多课程</text>
                <u-icon name="arrow-right"></u-icon>
             </view>
@@ -77,10 +77,10 @@
 </template>
 
 <script>
-import SynthesisList from "@/pages/home/common/index/SynthesisList.vue";
-import ProcessList from "@/pages/home/common/index/ProcessList.vue";
-import SpecializedList from "@/pages/home/common/index/SpecializedList.vue";
-import ProjectList from "@/pages/home/common/index/ProjectList.vue";
+import SynthesisList from "@/pages/home/components/home/SynthesisList.vue";
+import ProcessList from "@/pages/home/components/home/ProcessList.vue";
+import SpecializedList from "@/pages/home/components/home/SpecializedList.vue";
+import ProjectList from "@/pages/home/components/home/ProjectList.vue";
 import vNavBar from "@/components/NavBar.vue";
 import { getNewsAPI } from "@/servers/ServersHome";
 

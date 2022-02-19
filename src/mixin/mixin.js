@@ -9,16 +9,18 @@ export default {
             };
          },
          methods: {
-            /**跳转
-             * @param {String} url
-             * @param {Object} query
-             */
-            mix_jumpUrl(url, query) {
-               let tabList = ["pages/home/HomeIndex", "/pages/project/ProjectIndex", "pages/practice/PracticeIndex", "pages/user/UserIndex"];
-               if (tabList.indexOf(url) !== -1) {
-                  uni.switchTab({ url });
+            /**跳转 */
+            mix_jumpUrl(url, query, shield) {
+               shield = shield || false;
+               if (shield) {
+                  uni.showToast({ title: "当前板块正在开发中", icon: "none" });
                } else {
-                  uni.navigateTo({ url: url + (query ? `?${qs.stringify(query)}` : "") });
+                  let tabList = ["pages/home/HomeIndex", "/pages/project/ProjectIndex", "pages/practice/PracticeIndex", "pages/user/UserIndex"];
+                  if (tabList.indexOf(url) !== -1) {
+                     uni.switchTab({ url });
+                  } else {
+                     uni.navigateTo({ url: url + (query ? `?${qs.stringify(query)}` : "") });
+                  }
                }
             },
          },

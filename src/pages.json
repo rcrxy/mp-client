@@ -17,7 +17,7 @@
    "pages": [
       /* 空白页 */ { "path": "pages/common/blank", "style": { "navigationStyle": "custom" } },
 
-      /* 首页 HomeIndex */ { "path": "pages/home/HomeIndex", "style": { "navigationStyle": "custom" } },
+      /* 首页 HomeIndex */ { "path": "pages/home/home", "style": { "navigationStyle": "custom" } },
       /* 成绩查询 ScoreQuery */ {
          "path": "pages/home/tabs/ScoreQuery",
          "style": {
@@ -135,9 +135,10 @@
       /* 院校专业 Specialized */ { "path": "pages/home/Specialized", "style": { "navigationBarTitleText": "院校专业" } },
       /* 专业详情 ProfessionalDetails */ { "path": "pages/home/Specialized/ProfessionalDetails", "style": { "navigationBarTitleText": "专业详情" } },
 
-      /* 课程 ProjectIndex */ {
-         "path": "pages/project/ProjectIndex",
+      /* 课程 project */ {
+         "path": "pages/project/project",
          "style": {
+            // "enablePullDownRefresh": true,
             "app-plus": {
                "titleNView": {
                   "titleText": "课程",
@@ -157,7 +158,7 @@
       /* 课程详情 ProjectIndex */ { "path": "pages/project/ProjectContent", "style": { "navigationStyle": "custom" } },
       /* 播放视频 PlayVideo */ { "path": "pages/project/PlayVideo", "style": { "navigationBarTitleText": "观看视频" } },
 
-      /* 题库 PracticeIndex */ { "path": "pages/practice/PracticeIndex", "style": { "navigationStyle": "custom" } },
+      /* 题库 practice */ { "path": "pages/practice/practice", "style": { "navigationStyle": "custom", "enablePullDownRefresh": true } },
       /* 题库内容 info */ { "path": "pages/practice/info", "style": { "navigationBarTitleText": "题库" } },
       /* 每日一练 EverDay */ { "path": "pages/practice/common/info/EverDay", "style": { "navigationBarTitleText": "每日一练" } },
       /* 模拟练习 mockExam */ { "path": "pages/practice/common/info/mockExam", "style": { "navigationBarTitleText": "模拟练习" } },
@@ -189,19 +190,19 @@
       "backgroundColor": "#ffffff",
       "list": [
          {
-            "pagePath": "pages/home/HomeIndex",
+            "pagePath": "pages/home/home",
             "iconPath": "static/images/tabBar/home.png",
             "selectedIconPath": "static/images/tabBar/home_hr.png",
             "text": "首页"
          },
          {
-            "pagePath": "pages/project/ProjectIndex",
+            "pagePath": "pages/project/project",
             "iconPath": "static/images/tabBar/project.png",
             "selectedIconPath": "static/images/tabBar/project_hr.png",
             "text": "课程"
          },
          {
-            "pagePath": "pages/practice/PracticeIndex",
+            "pagePath": "pages/practice/practice",
             "iconPath": "static/images/tabBar/practice.png",
             "selectedIconPath": "static/images/tabBar/practice_hr.png",
             "text": "题库"
@@ -220,7 +221,7 @@
       "list": [
          {
             "name": "", //模式名称
-            "path": "pages/practice/PracticeIndex", //启动页面，必选
+            "path": "pages/home/home", //启动页面，必选
             "query": "" //启动参数，在页面的onLoad函数里面得到
          }
       ]

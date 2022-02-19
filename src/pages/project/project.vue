@@ -3,14 +3,14 @@
       <c-tabs-group class="tabs" v-model="tabIndex" :list="['所有课程', '我的课程']"></c-tabs-group>
       <swiper class="tabsContent" :current="tabIndex" @change="swiperChange">
          <swiper-item>
-            <project-card v-for="(item, index) in allProjectList" :key="index" :data="item" text="点击试看" @click.native="mix_jumpUrl('/pages/project/ProjectContent', item)"></project-card>
+            <project-card v-for="(item, index) in allProjectList" :key="index" :data="item" text="点击试看" @click.native="mix_jumpUrl('/pages/project/ProjectContent', item, true)"></project-card>
          </swiper-item>
          <swiper-item>
             <view class="emptyState" v-if="myProjectList.length === 0">
                <image src="~static/images/emptyImg.png" mode="widthFix" />
             </view>
             <view v-else>
-               <project-card v-for="(item, index) in myProjectList" :key="index" :data="item" text="立即观看" @click.native="mix_jumpUrl('/pages/project/ProjectContent', item)"></project-card>
+               <project-card v-for="(item, index) in myProjectList" :key="index" :data="item" text="立即观看" @click.native="mix_jumpUrl('/pages/project/ProjectContent', item, true)"></project-card>
             </view>
          </swiper-item>
       </swiper>
@@ -18,7 +18,6 @@
 </template>
 
 <script>
-import qs from "qs";
 import cTabsGroup from "@/components/customize/c-tabs-group.vue";
 import projectCard from "./components/projectIndex/projectCard.vue";
 import { postCourseListAPI } from "@/servers/ServersCommon";
@@ -32,7 +31,6 @@ export default {
          tabIndex: 0,
          active: 0,
          footerIndex: 1,
-         searchValue: "",
          allProjectList: [],
          myProjectList: [
             { className: "高数", number: 2456, text: "立即观看" },
@@ -43,6 +41,11 @@ export default {
    created() {
       this.postCourseList();
    },
+   // 下拉刷新重载数据
+   // async onPullDownRefresh() {
+   //    await this.postCourseList();
+   //    uni.stopPullDownRefresh();
+   // },
    methods: {
       async postCourseList() {
          let { code, data } = await postCourseListAPI();
@@ -54,14 +57,6 @@ export default {
             // });
             // this.options = this.allData;
          }
-      },
-      search() {
-         console.log(this.searchValue);
-      },
-      jumpUrl(info) {
-         uni.navigateTo({
-            url: `/pages/project/ProjectContent?${qs.stringify(info)}`,
-         });
       },
       swiperChange({ detail: { current } }) {
          this.tabIndex = current;

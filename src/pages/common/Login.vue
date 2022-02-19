@@ -102,11 +102,7 @@ export default {
                   this.setToken(acceptInfo.data.token);
                   uni.switchTab({ url: "/pages/home/HomeIndex" });
                } else {
-                  uni.showModal({
-                     content: acceptInfo.message,
-                     showCancel: false,
-                     success: res => {},
-                  });
+                  uni.uToast.show({ message: "网路错误，请稍后重试", type: "error" });
                }
             }
          } catch (error) {

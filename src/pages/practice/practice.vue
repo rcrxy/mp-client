@@ -50,6 +50,11 @@ export default {
          this.searchResult(val);
       });
    },
+   // 下拉刷新重载数据
+   async onPullDownRefresh() {
+      await this.postCourseList();
+      uni.stopPullDownRefresh();
+   },
    methods: {
       async postCourseList() {
          const { code, data } = await postCourseListAPI();
@@ -59,7 +64,6 @@ export default {
                item.id = index;
             });
             this.options = this.allData;
-            console.log(this.options);
          }
          if (this.options === 0) this.postCourseList();
       },

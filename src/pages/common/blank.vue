@@ -7,13 +7,13 @@ import store from "@/store/index";
 
 export default {
    beforeCreate() {
-      uni.preloadPage({ url: "/pages/home/HomeIndex" });
+      uni.preloadPage({ url: "/pages/home/home" });
       uni.preloadPage({ url: "/pages/common/Login" });
 
       const { state } = store;
       console.log(state);
       if (state.token) {
-         uni.switchTab({ url: "/pages/home/HomeIndex" });
+         uni.switchTab({ url: "/pages/home/home" });
       } else {
          uni.navigateTo({ url: "/pages/common/Login" });
       }
