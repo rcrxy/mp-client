@@ -1,14 +1,14 @@
 <template>
    <view class="main">
-      <text class="topTitle gradientFont">成考资讯</text>
+      <text class="topTitle gradientFont">{{ nowNews.newsTitle }}</text>
       <view class="content">
-         <text>2019年江苏成人高考成绩查询时间：11月25日</text>
-         <text>2019年江苏成人高考成绩查询时间11月25日。考生可在11月25日18:00后，登陆江苏省教育考试院门户网站(网址：http://www.jseea.cn/)查询个人成绩。</text>
-         <text>如考生对本人成人高考成绩有疑问，可于11月26日至27日携带本人身份证和准考证，向报名信息确认地招(考)办提交复核成绩的书面申请。</text>
+         <text>
+            {{ nowNews.newsContent }}
+         </text>
       </view>
       <view class="button">
-         <navigator class="gradientFont left" url="" redirect>上一篇</navigator>
-         <navigator class="gradientFont right" url="" redirect>下一篇</navigator>
+         <navigator class="gradientFont left" @click="prev" :style="nowIndex === 0 ? 'opacity: 0.5' : ''">上一篇</navigator>
+         <navigator class="gradientFont right" @click="next" :style="nowIndex === maxLength - 1 ? 'opacity: 0.5' : ''">下一篇</navigator>
       </view>
 
       <image class="inset" src="~static/images/insetNews.png" mode="widthFix" />
@@ -21,26 +21,59 @@
 </template>
 
 <script>
+import { getNewsAPI } from "@/servers/ServersHome";
 import uniPopupShare from "@/components/uni-popup-share.vue";
+import qs from "qs";
 export default {
    components: {
       uniPopupShare,
    },
    data() {
-      return {};
+      return {
+         nowNews: {},
+         nowIndex: 0,
+         maxLength: 1,
+      };
    },
-   created() {},
-   methods: {},
+   async onLoad({ id }) {
+      const newsList = await this.getNews();
+      const nowIndex = newsList.findIndex(item => item.newsId == id);
+      this.nowNews = newsList[nowIndex];
+      this.nowIndex = nowIndex;
+      this.maxLength = newsList.length;
+   },
    /**分享按钮 */
    onNavigationBarButtonTap() {
       this.$refs.popup.open();
+   },
+   methods: {
+      async getNews() {
+         const { code, data } = await getNewsAPI();
+         if (code === 200) {
+            return data;
+         }
+      },
+      prev() {
+         if (this.nowIndex === 0) {
+            uni.showToast({ title: "已经是第一篇了", icon: "none" });
+         } else {
+            uni.redirectTo({ url: "/pages/home/News?" + qs.stringify({ id: this.nowIndex - 1 }) });
+         }
+      },
+      next() {
+         if (this.nowIndex === this.maxLength - 1) {
+            uni.showToast({ title: "已经是最后一篇了", icon: "none" });
+         } else {
+            uni.redirectTo({ url: "/pages/home/News?" + qs.stringify({ id: this.nowIndex + 1 }) });
+         }
+      },
    },
 };
 </script>
 <style lang="scss" scoped>
 .topTitle {
    display: block;
-   font-size: 45rpx;
+   font-size: 40rpx;
    margin: 0.5em auto;
    text-align: center;
 }
@@ -50,6 +83,7 @@ export default {
       width: 90vw;
       margin: 1em auto;
       text-indent: 2em;
+      font-size: 30rpx;
    }
 }
 .button {

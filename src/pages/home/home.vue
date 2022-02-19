@@ -25,20 +25,18 @@
                <view class="leftIcon"></view>
                <text class="text">最新资讯</text>
             </view>
-            <view class="right" @click="mix_jumpUrl('/pages/home/News')">
+            <view class="right" @click="mix_jumpUrl('/pages/home/newsList')">
                <text>更多资讯</text>
                <u-icon name="arrow-right"></u-icon>
             </view>
          </view>
-         <view class="content">
+         <view class="content" @click="mix_jumpUrl('/pages/home/News', { id: news.newsId })">
             <view class="left">
                <image src="~static/images/homeNews.png" mode="widthFix" />
             </view>
             <view class="right">
                <text class="title">{{ news.newsTitle }}</text>
                <text class="paragraph">{{ news.newsAbstract }}</text>
-
-               <text class="goAll" @click="mix_jumpUrl('/pages/home/News')">查看全部>></text>
             </view>
          </view>
       </view>
@@ -108,8 +106,7 @@ export default {
    },
    methods: {
       async getNews() {
-         await getNewsAPI().then(res => {});
-         let { code, data } = await getNewsAPI();
+         const { code, data } = await getNewsAPI();
          if (code === 200) {
             this.news = data[0];
          }

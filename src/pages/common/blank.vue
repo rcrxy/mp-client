@@ -7,8 +7,11 @@ import store from "@/store/index";
 
 export default {
    beforeCreate() {
-      uni.preloadPage({ url: "/pages/home/home" });
       uni.preloadPage({ url: "/pages/common/Login" });
+      uni.preloadPage({ url: "/pages/home/home" });
+      uni.preloadPage({ url: "/pages/project/project" });
+      uni.preloadPage({ url: "/pages/practice/practice" });
+      uni.preloadPage({ url: "/pages/user/user" });
 
       const { state } = store;
       console.log(state);

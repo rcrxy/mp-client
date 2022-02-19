@@ -15,7 +15,7 @@ export default {
                if (shield) {
                   uni.showToast({ title: "当前板块正在开发中", icon: "none" });
                } else {
-                  let tabList = ["pages/home/HomeIndex", "/pages/project/ProjectIndex", "pages/practice/PracticeIndex", "pages/user/UserIndex"];
+                  let tabList = ["pages/home/home", "/pages/project/project", "pages/practice/practice", "pages/user/user"];
                   if (tabList.indexOf(url) !== -1) {
                      uni.switchTab({ url });
                   } else {
