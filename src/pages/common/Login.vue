@@ -100,7 +100,7 @@ export default {
 
                if (acceptInfo.code === 200) {
                   this.setToken(acceptInfo.data.token);
-                  uni.switchTab({ url: "/pages/home/HomeIndex" });
+                  uni.switchTab({ url: "/pages/home/home" });
                } else {
                   uni.uToast.show({ message: "网路错误，请稍后重试", type: "error" });
                }

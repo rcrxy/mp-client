@@ -69,7 +69,6 @@ export default {
             { name: "单选", type: "qSelect" },
             { name: "多选", type: "qMultiSelect" },
          ];
-
          const nowType = typeList.find(item => item.name === questionType);
          if (Boolean(nowType)) {
             return nowType.type;

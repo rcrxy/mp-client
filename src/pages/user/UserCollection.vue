@@ -34,12 +34,6 @@ export default {
       swiperChange({ detail: { current } }) {
          this.tabIndex = current;
       },
-      // 获取用户收藏内容
-      async getUserCollection() {
-         
-
-
-      },
    },
 };
 </script>
