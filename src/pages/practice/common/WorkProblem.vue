@@ -24,6 +24,7 @@ import qSelect from "./WorkProblem/qSelect.vue";
 import qJudgment from "./WorkProblem/qJudment.vue";
 import qMultiSelect from "./WorkProblem/qMultiSelect.vue";
 import otherType from "./WorkProblem/otherType.vue";
+import { data } from "uview-ui/libs/mixin/mixin";
 
 export default {
    components: {
@@ -83,12 +84,14 @@ export default {
 
       async getProblemList(name, subject) {
          try {
-            if (name === "每日一练") {
-               const res = await postQuestionsListAPI({ course: subject });
-               if (res.code === 200) {
-                  this.problemList = this.extract(res.data, this.maxlength);
+            const { code, data } = await postQuestionsListAPI({ course: subject });
+            if (code === 200) {
+               if (name === "每日一练") {
+                  this.problemList = this.extract(data, this.maxlength);
+               } else {
+                  const list = data.filter(item => item.chapter === name);
+                  this.problemList = this.extract(list, 5);
                }
-            } else {
             }
          } catch (error) {
             console.log(error);
