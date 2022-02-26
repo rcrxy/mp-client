@@ -1,6 +1,6 @@
 <template>
    <view class="mainBox">
-      <u-cell class="problemCell" v-for="(item, index) in collectList" :key="item.questionId" isLink @click="mix_jumpUrl('/pages/practice/common/WorkProblem', { index, name: '收藏练习', subject: item.course })">
+      <u-cell class="problemCell" v-for="(item, index) in collectList" :key="index" isLink @click="mix_jumpUrl('/pages/practice/common/WorkProblem', { index, name: '收藏练习', subject: item.course })">
          <template #title>
             <view class="celltitle">
                <u-tag class="tag" :text="item.questionType" size="mini" type="warning"></u-tag>
@@ -22,16 +22,17 @@ export default {
    async onLoad({ subject }) {
       subject = "化学";
       const data = await this.postUserCollection();
-      const list = data.map(item => {
-         if (item.valueType === "question") {
-            return item.value;
-         }
-      });
-      this.collectList = list.map(item => {
-         if (item.course === subject) {
-            return item;
-         }
-      });
+      this.collectList = data
+         .map(item => {
+            if (item.valueType === "question") {
+               return item.value;
+            }
+         })
+         .map(item => {
+            if (item.course === subject) {
+               return item;
+            }
+         });
    },
    filters: {
       as_text(val) {
@@ -39,6 +40,7 @@ export default {
          return newVal;
       },
    },
+   onPullDownRefresh() {},
    methods: {
       async postUserCollection() {
          const sendData = { valueType: "question" };

@@ -18,13 +18,12 @@
 
 <script>
 import { postQuestionsListAPI } from "@/servers/ServersPractice";
+import { postUserCollectionAPI } from "@/servers/ServersUser";
 import footerBar from "./WorkProblem/footerBar.vue";
-
 import qSelect from "./WorkProblem/qSelect.vue";
 import qJudgment from "./WorkProblem/qJudment.vue";
 import qMultiSelect from "./WorkProblem/qMultiSelect.vue";
 import otherType from "./WorkProblem/otherType.vue";
-import { data } from "uview-ui/libs/mixin/mixin";
 
 export default {
    components: {
@@ -57,10 +56,12 @@ export default {
       },
    },
    onLoad(info) {
-      const { name, subject } = info;
+      const { name, subject, index } = info;
       this.getProblemList(name, "化学");
       if (name) uni.setNavigationBarTitle({ title: name });
+      if (index) this.nowIndex = index * 1 + 1;
    },
+
    methods: {
       /**识别题型 */
       setType(info) {
@@ -79,24 +80,53 @@ export default {
       },
 
       getUserAnswer(an) {
-         console.log(an);
+         // console.log(an);
       },
 
       async getProblemList(name, subject) {
          try {
-            const { code, data } = await postQuestionsListAPI({ course: subject });
-            if (code === 200) {
-               if (name === "每日一练") {
-                  this.problemList = this.extract(data, this.maxlength);
-               } else {
-                  const list = data.filter(item => item.chapter === name);
-                  this.problemList = this.extract(list, 5);
-               }
+            if (name === "每日一练") {
+               const data = await getQuestions(subject);
+               this.problemList = this.extract(data, this.maxlength);
+            } else if (name === "收藏练习") {
+               this.problemList = await this.getUserCollection(subject);
+            } else {
+               const data = await getQuestions(subject);
+               const list = data.filter(item => item.chapter === name);
+               this.problemList = this.extract(list, 5);
             }
          } catch (error) {
             console.log(error);
          }
       },
+      /**获取题目列表 */
+      async getQuestions(subject) {
+         const { code, data } = await postQuestionsListAPI({ course: subject });
+         if (code === 200) {
+            return data;
+         }
+      },
+      /**获取收藏列表 */
+      async getUserCollection(subject = "") {
+         const sendData = { valueType: "question" };
+         const { code, data } = await postUserCollectionAPI(sendData);
+         if (code === 200) {
+            const list = data
+               .map(item => {
+                  if (item.valueType === "question") {
+                     return item.value;
+                  }
+               })
+               .map(item => {
+                  if (item.course === subject) {
+                     return item;
+                  }
+               });
+
+            return list;
+         }
+      },
+
       /** 抽取题目 */
       extract(arr, num) {
          const nowList = [];
