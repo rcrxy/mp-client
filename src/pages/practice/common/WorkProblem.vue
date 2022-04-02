@@ -12,7 +12,7 @@
             <u-loading-icon></u-loading-icon>
          </view>
       </view>
-      <footer-bar v-model="nowIndex" :valueId="valueId" :problemList="problemList" :quantity="problemList.length || 8" @indexChange="indexChange"></footer-bar>
+      <footer-bar v-model="nowIndex" :isCollection="isCollection" :valueId="valueId" :problemList="problemList" :quantity="problemList.length || 8" @indexChange="indexChange"></footer-bar>
    </view>
 </template>
 
@@ -36,33 +36,67 @@ export default {
    data() {
       return {
          loading: false,
-         nowIndex: 1,
+         nowIndex: 0,
          valueId: 1,
          completed: 0,
          maxlength: 8,
          problemList: [],
          collectionList: [],
          showParse: false,
+         isCollection: false,
       };
    },
    watch: {
-      nowIndex(newVal, oldVal) {
-         if (oldVal - newVal >= 2 || oldVal - newVal <= -2) {
-            this.loading = true;
-            setTimeout(() => {
-               this.loading = false;
-            }, 300);
-         }
+      nowIndex: {
+         handler(newVal, oldVal) {
+            if (oldVal - newVal >= 2 || oldVal - newVal <= -2) {
+               this.loading = true;
+               setTimeout(() => {
+                  this.loading = false;
+               }, 300);
+            }
+            this.isCollection = this.problemList[newVal - 1].isCollection;
+         },
+      },
+      isCollection(val) {
+         // console.log(val);
       },
    },
-   onLoad(info) {
+   async onLoad(info) {
       const { name, subject, index } = info;
-      this.getProblemList(name, "化学");
-      if (name) uni.setNavigationBarTitle({ title: name });
-      if (index) this.nowIndex = index * 1 + 1;
-   },
+      this.collectionList = await this.getUserCollection("化学");
+      await this.getProblemList(name, "化学");
 
+      if (name) uni.setNavigationBarTitle({ title: name });
+
+      this.nowIndex = index ? index * 1 + 1 : 1;
+   },
    methods: {
+      async getProblemList(name, subject) {
+         try {
+            let list = [];
+            if (name === "每日一练") {
+               const data = await this.getQuestions(subject);
+               list = this.extract(data, this.maxlength);
+            } else if (name === "收藏练习") {
+               list = this.collectionList;
+            } else {
+               const data = await this.getQuestions(subject);
+               const filterList = data.filter(item => item.chapter === name);
+               list = this.extract(filterList, 5);
+            }
+
+            const colIdList = this.collectionList.map(item => item.questionId);
+            this.problemList = list.map(item => {
+               return {
+                  ...item,
+                  isCollection: colIdList.includes(item.questionId),
+               };
+            });
+         } catch (error) {
+            console.log(error);
+         }
+      },
       /**识别题型 */
       setType(info) {
          const { questionType } = info;
@@ -83,22 +117,6 @@ export default {
          // console.log(an);
       },
 
-      async getProblemList(name, subject) {
-         try {
-            if (name === "每日一练") {
-               const data = await getQuestions(subject);
-               this.problemList = this.extract(data, this.maxlength);
-            } else if (name === "收藏练习") {
-               this.problemList = await this.getUserCollection(subject);
-            } else {
-               const data = await getQuestions(subject);
-               const list = data.filter(item => item.chapter === name);
-               this.problemList = this.extract(list, 5);
-            }
-         } catch (error) {
-            console.log(error);
-         }
-      },
       /**获取题目列表 */
       async getQuestions(subject) {
          const { code, data } = await postQuestionsListAPI({ course: subject });

@@ -16,23 +16,14 @@ import { postUserCollectionAPI } from "@/servers/ServersUser";
 export default {
    data() {
       return {
+         subject: null,
          collectList: [],
       };
    },
    async onLoad({ subject }) {
       subject = "化学";
-      const data = await this.postUserCollection();
-      this.collectList = data
-         .map(item => {
-            if (item.valueType === "question") {
-               return item.value;
-            }
-         })
-         .map(item => {
-            if (item.course === subject) {
-               return item;
-            }
-         });
+      this.subject = subject;
+      this.collectList = await this.postUserCollection(subject);
    },
    filters: {
       as_text(val) {
@@ -40,13 +31,27 @@ export default {
          return newVal;
       },
    },
-   onPullDownRefresh() {},
+   async onPullDownRefresh() {
+      this.collectList = await this.postUserCollection(this.subject);
+      uni.stopPullDownRefresh();
+   },
    methods: {
-      async postUserCollection() {
+      /**获取题目收藏列表 */
+      async postUserCollection(subject) {
          const sendData = { valueType: "question" };
          const { code, data } = await postUserCollectionAPI(sendData);
          if (code === 200) {
-            return data;
+            return data
+               .map(item => {
+                  if (item.valueType === "question") {
+                     return item.value;
+                  }
+               })
+               .map(item => {
+                  if (item.course === subject) {
+                     return item;
+                  }
+               });
          }
       },
       /**分组筛选 */

@@ -32,30 +32,17 @@ export default {
          active: 0,
          footerIndex: 1,
          allProjectList: [],
-         myProjectList: [
-            { className: "高数", number: 2456, text: "立即观看" },
-            { className: "高数", number: 104, text: "立即观看" },
-         ],
+         myProjectList: [],
       };
    },
    created() {
       this.postCourseList();
    },
-   // 下拉刷新重载数据
-   // async onPullDownRefresh() {
-   //    await this.postCourseList();
-   //    uni.stopPullDownRefresh();
-   // },
    methods: {
       async postCourseList() {
-         let { code, data } = await postCourseListAPI();
+         const { code, data } = await postCourseListAPI();
          if (code === 200) {
-            console.log(data);
             this.allProjectList = data;
-            // this.allData.forEach((item, index) => {
-            //    item.id = index;
-            // });
-            // this.options = this.allData;
          }
       },
       swiperChange({ detail: { current } }) {

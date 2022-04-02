@@ -3,7 +3,7 @@
       <view class="gridBox">
          <u-grid class="grid" col="4" :border="false" clickable>
             <u-grid-item>
-               <u-icon size="25" color="#fec673" @click="isCollection = !isCollection" :name="isCollection ? 'star' : 'star-fill'"></u-icon>
+               <u-icon size="25" color="#fec673" @click="changeCollect" :name="collect ? 'star-fill' : 'star'"></u-icon>
                <text>收藏</text>
             </u-grid-item>
             <u-grid-item>
@@ -34,7 +34,6 @@
 
 <script>
 import { postAddCollectionAPI, postCancelCollectionAPI } from "@/servers/ServersPractice";
-import { postUserCollectionAPI } from "@/servers/ServersUser";
 export default {
    props: {
       valueId: String | Number,
@@ -45,6 +44,7 @@ export default {
       },
       collection: Function,
       problemList: Array,
+      isCollection: Boolean,
    },
    computed: {
       nowIndex: {
@@ -55,23 +55,29 @@ export default {
             this.$emit("update:value");
          },
       },
+      collect: {
+         get() {
+            return this.isCollection;
+         },
+         set() {
+            this.$emit("update:isCollection");
+         },
+      },
    },
    data() {
       return {
          show: false,
          nowCollectionId: "",
-         isCollection: false,
       };
    },
 
-   created() {
-      this.postUserCollection();
-   },
    methods: {
-      async postUserCollection() {
-         console.log(this.problemList);
-         const res = await postUserCollectionAPI({ valueType: "question" });
-         console.log(res);
+      changeCollect() {
+         const condition = this.collect;
+         
+         this.collect = !condition;
+         this.collect = true;
+         console.log(this.collect);
       },
 
       async postAddCollection() {
