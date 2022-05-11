@@ -15,9 +15,9 @@ module.exports = {
       proxy: {
          "/api": {
             //代理api
-            target: "http://yang.guco.vip:2001", //服务器api地址
+            target: process.env.BASE_URL, //服务器api地址
             changeOrigin: true, //是否跨域
-            ws: true, //websocket支持
+            // ws: true, //websocket支持
             pathRewrite: {
                // 重写路径
                "^/api": "",

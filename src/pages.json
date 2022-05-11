@@ -15,7 +15,7 @@
    },
    /* 路由 */
    "pages": [
-      /* 空白页 */ { "path": "pages/common/blank", "style": { "navigationStyle": "custom" } },
+      // /* 空白页 */ { "path": "pages/common/blank", "style": { "navigationStyle": "custom" } },
 
       /* 首页 HomeIndex */ { "path": "pages/home/home", "style": { "navigationStyle": "custom" } },
       /* 成绩查询 ScoreQuery */ {
@@ -50,7 +50,7 @@
             }
          }
       },
-      /* 在线答疑 Answering */ { "path": "pages/home/tabs/Answering" },
+      /* 在线答疑 Answering */ { "path": "pages/home/tabs/Answering", "style": { "navigationBarTitleText": "在线答疑" } },
       /* 报名时间 Time */ {
          "path": "pages/home/process/Time",
          "style": {
@@ -184,14 +184,17 @@
       /* 意见反馈 Feedback */ { "path": "pages/user/common/Feedback", "style": { "navigationBarTitleText": "意见反馈" } },
       /* 关于我们 About */ { "path": "pages/user/common/About", "style": { "navigationBarTitleText": "关于我们" } },
 
-      /* 登录 Login */ { "path": "pages/common/Login", "style": { "navigationStyle": "custom" } }
+      /* 登录 Login */ { "path": "pages/common/Login", "style": { "navigationStyle": "custom" } },
 
       // /* 专属客服 CustomerService */ { "path": "pages/user/CustomerService" },
+
+      /* 用户协议 */ { "path": "pages/common/protocol", "style": { "navigationBarTitleText": "用户协议" } },
+      /* 隐私政策 */ { "path": "pages/common/privacy", "style": { "navigationBarTitleText": "隐私政策" } }
    ],
    /* 导航栏 */ "tabBar": {
       "color": "#7A7E83",
       "selectedColor": "#3cc51f",
-      "borderStyle": "grey",
+      "borderStyle": "white",
       "backgroundColor": "#ffffff",
       "list": [
          {
@@ -226,8 +229,8 @@
       "list": [
          {
             "name": "", //模式名称
-            "path": "pages/practice/practice", //启动页面，必选
-            "query": "id=1" //启动参数，在页面的onLoad函数里面得到
+            "path": "", //启动页面，必选
+            "query": "" //启动参数，在页面的onLoad函数里面得到
          }
       ]
    }

@@ -74,7 +74,6 @@ export default {
    methods: {
       changeCollect() {
          const condition = this.collect;
-         
          this.collect = !condition;
          this.collect = true;
          console.log(this.collect);

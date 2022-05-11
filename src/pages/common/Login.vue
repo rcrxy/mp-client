@@ -44,9 +44,9 @@
                </u-checkbox-group>
                <text class="radioText">
                   我已阅读并同意
-                  <text class="name">《用户协议》</text>
+                  <text class="name" @click="mix_jumpUrl('/pages/common/protocol')">《用户协议》</text>
                   和
-                  <text class="name">《隐私政策》</text>
+                  <text class="name" @click="mix_jumpUrl('/pages/common/privacy')">《隐私政策》</text>
                </text>
             </view>
          </view>
@@ -81,6 +81,9 @@ export default {
    },
    mounted() {
       this.isLoading = false;
+   },
+   onBackPress() {
+      return true;
    },
    methods: {
       ...mapMutations(["setToken", "setUserInfo"]),
