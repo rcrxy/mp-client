@@ -4,7 +4,7 @@
       <view class="content">
          <view class="time">
             <view class="columnTitle"><text class="title gradientFont">考试时间</text></view>
-            <text class="timeText">2021年成人高考的考试时间：10月23日——24日</text>
+            <text class="timeText">2022年成人高考的考试时间：10月23日——24日</text>
             <text class="fraction">考试总分：高起专（450分）、高起本（600分）、 专升本（450分）</text>
             <view class="table">
                <text class="tableTitle"><text class="gradientFont">高起专、高起本考试时间</text></text>
@@ -263,8 +263,12 @@ export default {
    },
    data() {
       return {
-         nowYear: 2021,
+         nowYear: 2022,
       };
+   },
+   onShow() {
+      const time = new Date();
+      this.nowYear = time.getFullYear();
    },
    /**分享按钮 */
    onNavigationBarButtonTap() {

@@ -63,7 +63,7 @@ export default {
    methods: {
       async postQuestionsList() {
          const sendData = {
-            course: "化学",
+            course: this.info.className,
          };
          const { code, data } = await postQuestionsListAPI(sendData);
          if (code === 200) {
@@ -76,7 +76,7 @@ export default {
          let nameList = [];
          let lengthList = [];
          list.forEach(item => {
-            if (nameList.indexOf(item.chapter) === -1) nameList.push(item.chapter);
+            if (!nameList.includes(item.chapter)) nameList.push(item.chapter);
          });
          nameList.forEach((item, index) => {
             lengthList[index] = 0;

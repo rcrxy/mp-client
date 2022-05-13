@@ -7,20 +7,6 @@
             <text>所属类型：{{ info.category }}</text>
          </view>
       </view>
-      <u-grid :col="3" :border="false">
-         <u-grid-item>
-            <image src="~static/images/specialized1.png" mode="widthFix" />
-            <text class="grid-text">咨询解答</text>
-         </u-grid-item>
-         <u-grid-item>
-            <image src="~static/images/specialized2.png" mode="widthFix" />
-            <text class="grid-text">在线报名</text>
-         </u-grid-item>
-         <u-grid-item>
-            <image src="~static/images/specialized3.png" mode="widthFix" />
-            <text class="grid-text">招生院校</text>
-         </u-grid-item>
-      </u-grid>
       <view class="hr">
          <view class="line"></view>
          <text>考试课程安排</text>
@@ -43,7 +29,9 @@
             <view class="th">
                <text>{{ item.timeLength }}</text>
             </view>
-            <view class="th"><navigator url="" redirect hover-class="className">在线试听</navigator></view>
+            <view class="th">
+               <text class="link" @click="mix_jumpUrl('/pages/common/CustomerService', '', true)">立即咨询</text>
+            </view>
          </view>
       </view>
    </view>
@@ -54,12 +42,16 @@ export default {
    data() {
       return {
          info: {},
-         course: [],
+         course: [
+            { serialNumber: "1", courseName: "语文（高起专/高起本）", timeLength: "30" },
+            { serialNumber: "2", courseName: "英语（高起专/高起本）", timeLength: "30" },
+            { serialNumber: "3", courseName: "数学（高起专/高起本）", timeLength: "30" },
+            { serialNumber: "4", courseName: "政治（高起专/高起本）", timeLength: "30" },
+         ],
       };
    },
    onLoad(res) {
       this.info = res;
-      this.getProfessionalDetails(res.id);
    },
    onReady() {
       if (this.info) {
@@ -68,11 +60,7 @@ export default {
          });
       }
    },
-   methods: {
-      getProfessionalDetails(id) {
-         console.log("id", id);
-      },
-   },
+   methods: {},
 };
 </script>
 
@@ -96,18 +84,6 @@ export default {
          color: #fff;
          line-height: 50rpx;
       }
-   }
-}
-.u-grid {
-   width: 90vw;
-   margin: 20rpx auto;
-   border-radius: 20rpx;
-   overflow: hidden;
-   box-shadow: 0 0 5rpx 1rpx rgba($color: #000000, $alpha: 0.25);
-   image {
-      width: 55rpx;
-      vertical-align: top;
-      margin-bottom: 10rpx;
    }
 }
 .hr {
@@ -140,6 +116,7 @@ export default {
       }
       .td,
       .th {
+         font-size: 30rpx;
          padding: 10rpx 0;
          text-align: center;
          &:nth-of-type(1) {

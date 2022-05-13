@@ -49,7 +49,7 @@
                <text class="text">热门专业</text>
             </view>
             <view class="right" @click="mix_jumpUrl('/pages/home/Specialized')">
-               <text>更多院校</text>
+               <text>更多专业</text>
                <u-icon name="arrow-right"></u-icon>
             </view>
          </view>

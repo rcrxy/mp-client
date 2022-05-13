@@ -186,7 +186,7 @@
 
       /* 登录 Login */ { "path": "pages/common/Login", "style": { "navigationStyle": "custom" } },
 
-      // /* 专属客服 CustomerService */ { "path": "pages/user/CustomerService" },
+      /* 专属客服  */ { "path": "pages/common/CustomerService", "style": { "navigationBarTitleText": "专属客服" } },
 
       /* 用户协议 */ { "path": "pages/common/protocol", "style": { "navigationBarTitleText": "用户协议" } },
       /* 隐私政策 */ { "path": "pages/common/privacy", "style": { "navigationBarTitleText": "隐私政策" } }

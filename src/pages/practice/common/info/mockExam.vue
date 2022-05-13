@@ -1,7 +1,7 @@
 <template>
    <view class="mainBox">
       <u-cell-group>
-         <u-cell v-for="(item, index) in list" :key="index" isLink>
+         <u-cell v-for="(item, index) in list" :key="index" isLink @click="jump()">
             <template #title>
                <text class="title">{{ item.name }}</text>
             </template>
@@ -10,6 +10,8 @@
             </template>
          </u-cell>
       </u-cell-group>
+
+      <u-toast ref="uToast"></u-toast>
    </view>
 </template>
 
@@ -24,7 +26,15 @@ export default {
          ],
       };
    },
-   methods: {},
+   methods: {
+      jump() {
+         this.$refs.uToast.show({
+            type: "loading",
+            loading: true,
+            message: "题目内容整理中",
+         });
+      },
+   },
 };
 </script>
 

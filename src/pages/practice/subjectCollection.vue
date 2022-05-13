@@ -21,7 +21,7 @@ export default {
       };
    },
    async onLoad({ subject }) {
-      subject = "化学";
+      // subject = "化学";
       this.subject = subject;
       this.collectList = await this.postUserCollection(subject);
    },

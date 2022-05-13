@@ -1,20 +1,6 @@
 <template>
    <view class="main">
       <image class="banner" src="~static/images/specializedBanner.png" mode="widthFix" />
-      <u-grid class="grid" :col="3" :border="false">
-         <u-grid-item>
-            <image src="~static/images/specialized1.png" mode="widthFix" />
-            <text class="grid-text">咨询解答</text>
-         </u-grid-item>
-         <u-grid-item>
-            <image src="~static/images/specialized2.png" mode="widthFix" />
-            <text class="grid-text">在线报名</text>
-         </u-grid-item>
-         <u-grid-item>
-            <image src="~static/images/specialized3.png" mode="widthFix" />
-            <text class="grid-text">招生院校</text>
-         </u-grid-item>
-      </u-grid>
       <view class="tree">
          <view class="left">
             <view :class="nowIndex === index ? 'active' : ''" v-for="(item, index) in treeSelectOptios" :key="index" @click="leftClick(item, index)">
@@ -24,7 +10,8 @@
          </view>
          <view class="right">
             <view class="right_ul">
-               <view class="right_li" v-for="(item, index) in professionalList" :key="index" @click="jumpUrl(item)">
+               <!-- <view class="right_li" v-for="(item, index) in professionalList" :key="index" @click="mix_jumpUrl('/pages/home/Specialized/ProfessionalDetails', item)"> -->
+               <view class="right_li" v-for="(item, index) in professionalList" :key="index" @click="mix_jumpUrl('/pages/home/Specialized/ProfessionalDetails', item)">
                   <text class="title">{{ item.name }}</text>
                   <text class="label">{{ item.label || item.name }}</text>
                </view>
@@ -36,7 +23,6 @@
 
 <script>
 import { getProfessionalClassificationAPI } from "@/servers/ServersHome";
-import qs from "qs";
 export default {
    data() {
       return {
@@ -55,7 +41,6 @@ export default {
          let { code, data } = await getProfessionalClassificationAPI();
          if (code === 200) {
             this.treeSelectOptios = data;
-            console.log(this.treeSelectOptios);
             this.leftClick(data[0], 0);
          }
       },
@@ -63,12 +48,6 @@ export default {
       leftClick(info, index) {
          this.nowIndex = index;
          this.professionalList = info.list;
-      },
-
-      jumpUrl(info) {
-         uni.navigateTo({
-            url: `/pages/home/Specialized/ProfessionalDetails?${qs.stringify(info)}`,
-         });
       },
    },
 };
@@ -86,19 +65,11 @@ export default {
       vertical-align: top;
       flex-shrink: 0;
    }
-   .u-grid {
-      width: 90vw;
-      margin: 20rpx auto;
-      image {
-         width: 55rpx;
-         vertical-align: top;
-         margin-bottom: 10rpx;
-      }
-   }
    .tree {
       flex: 1;
-      width: 95vw;
+      width: 100vw;
       height: 55vw;
+      box-sizing: border-box;
       display: flex;
       flex-flow: row nowrap;
       align-items: flex-start;

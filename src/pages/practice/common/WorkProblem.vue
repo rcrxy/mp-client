@@ -58,14 +58,11 @@ export default {
             this.isCollection = this.problemList[newVal - 1].isCollection;
          },
       },
-      isCollection(val) {
-         // console.log(val);
-      },
    },
    async onLoad(info) {
       const { name, subject, index } = info;
-      this.collectionList = await this.getUserCollection("化学");
-      await this.getProblemList(name, "化学");
+      this.collectionList = await this.getUserCollection(subject);
+      await this.getProblemList(name, subject);
 
       if (name) uni.setNavigationBarTitle({ title: name });
 
