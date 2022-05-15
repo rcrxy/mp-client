@@ -6,7 +6,7 @@
             <text class="title">{{ item.title }}</text>
             <text class="summary">{{ item.label }}</text>
          </view>
-         <text class="right" @click="mix_jumpUrl('/pages/home/Specialized')">更多详情 ></text>
+         <text class="right" @click="mix_jumpUrl('/pages/home/Specialized', { name: item.name })">更多详情 ></text>
       </view>
    </view>
 </template>
@@ -16,9 +16,9 @@ export default {
    data() {
       return {
          options: [
-            { title: "经管类热门专业", label: "电子商务、物流管理", img: require("static/images/specialized1.png") },
-            { title: "医学类热门专业", label: "护理学、动物医学", img: require("static/images/specialized2.png") },
-            { title: "理工类热门专业", label: "软件工程、电子信息工程", img: require("static/images/specialized3.png") },
+            { title: "经管类热门专业", name: "经管类", label: "电子商务、物流管理", img: require("static/images/specialized1.png") },
+            { title: "医学类热门专业", name: "医学类", label: "护理学、动物医学", img: require("static/images/specialized2.png") },
+            { title: "理工类热门专业", name: "理工类", label: "软件工程、电子信息工程", img: require("static/images/specialized3.png") },
          ],
       };
    },

@@ -15,127 +15,18 @@
    },
    /* 路由 */
    "pages": [
-      // /* 空白页 */ { "path": "pages/common/blank", "style": { "navigationStyle": "custom" } },
+      /* 空白页 */ { "path": "pages/common/blank", "style": { "navigationStyle": "custom" } },
 
       /* 首页 HomeIndex */ { "path": "pages/home/home", "style": { "navigationStyle": "custom" } },
-      /* 成绩查询 ScoreQuery */ {
-         "path": "pages/home/tabs/ScoreQuery",
-         "style": {
-            "navigationBarTitleText": "成绩查询",
-            "app-plus": {
-               "titleNView": {
-                  "buttons": [
-                     {
-                        "type": "share",
-                        "float": "right"
-                     }
-                  ]
-               }
-            }
-         }
-      },
-      /* 成考指南 Guide */ {
-         "path": "pages/home/tabs/Guide",
-         "style": {
-            "navigationBarTitleText": "成考指南",
-            "app-plus": {
-               "titleNView": {
-                  "buttons": [
-                     {
-                        "type": "share",
-                        "float": "right"
-                     }
-                  ]
-               }
-            }
-         }
-      },
+      /* 成绩查询 ScoreQuery */ { "path": "pages/home/tabs/ScoreQuery", "style": { "navigationBarTitleText": "成绩查询" } },
+      /* 成考指南 Guide */ { "path": "pages/home/tabs/Guide", "style": { "navigationBarTitleText": "成考指南" } },
       /* 在线答疑 Answering */ { "path": "pages/home/tabs/Answering", "style": { "navigationBarTitleText": "在线答疑" } },
-      /* 报名时间 Time */ {
-         "path": "pages/home/process/Time",
-         "style": {
-            "navigationBarTitleText": "报名时间",
-            "app-plus": {
-               "titleNView": {
-                  "buttons": [
-                     {
-                        "type": "share",
-                        "float": "right"
-                     }
-                  ]
-               }
-            }
-         }
-      },
-      /* 报名入口 Entrance */ {
-         "path": "pages/home/process/Entrance",
-         "style": {
-            "navigationBarTitleText": "报名入口",
-            "app-plus": {
-               "titleNView": {
-                  "buttons": [
-                     {
-                        "type": "share",
-                        "float": "right"
-                     }
-                  ]
-               }
-            }
-         }
-      },
-      /* 考试科目 ExamSubjects */ {
-         "path": "pages/home/process/ExamSubjects",
-         "style": {
-            "navigationBarTitleText": "考试科目",
-            "app-plus": {
-               "titleNView": {
-                  "buttons": [
-                     {
-                        "type": "share",
-                        "float": "right"
-                     }
-                  ]
-               }
-            }
-         }
-      },
-      /* 报考条件 Condition */ {
-         "path": "pages/home/process/Condition",
-         "style": {
-            "navigationBarTitleText": "报考条件",
-            "app-plus": {
-               "titleNView": {
-                  "buttons": [
-                     {
-                        "type": "share",
-                        "float": "right"
-                     }
-                  ]
-               }
-            }
-         }
-      },
-      /* 最新咨询 News */ {
-         "path": "pages/home/News",
-         "style": {
-            "navigationBarTitleText": "成考咨询",
-            "enablePullDownRefresh": false,
-            "app-plus": {
-               "titleNView": {
-                  "buttons": [
-                     {
-                        "type": "share",
-                        "float": "right"
-                     }
-                  ]
-               }
-            }
-         }
-      },
-      /* 资讯列表 newsList */ {
-         "path": "pages/home/newsList",
-         "style": { "navigationBarTitleText": "成考咨询", "enablePullDownRefresh": true }
-      },
+      /* 报名时间 Time */ { "path": "pages/home/process/Time", "style": { "navigationBarTitleText": "报名时间" } },
+      /* 报名入口 Entrance */ { "path": "pages/home/process/Entrance", "style": { "navigationBarTitleText": "报名入口" } },
+      /* 考试科目 ExamSubjects */ { "path": "pages/home/process/ExamSubjects", "style": { "navigationBarTitleText": "考试科目" } },
+      /* 报考条件 Condition */ { "path": "pages/home/process/Condition", "style": { "navigationBarTitleText": "报考条件" } },
+      /* 最新咨询 News */ { "path": "pages/home/News", "style": { "navigationBarTitleText": "成考咨询", "enablePullDownRefresh": false } },
+      /* 资讯列表 newsList */ { "path": "pages/home/newsList", "style": { "navigationBarTitleText": "成考咨询", "enablePullDownRefresh": true } },
       /* 院校专业 Specialized */ { "path": "pages/home/Specialized", "style": { "navigationBarTitleText": "院校专业" } },
       /* 专业详情 ProfessionalDetails */ { "path": "pages/home/Specialized/ProfessionalDetails", "style": { "navigationBarTitleText": "专业详情" } },
 
@@ -171,7 +62,7 @@
 
       /* 我的 user */ { "path": "pages/user/user", "style": { "navigationStyle": "custom" } },
       /* 个人信息 Information */ { "path": "pages/user/Information", "style": { "navigationBarTitleText": "个人信息", "enablePullDownRefresh": true } },
-      /* 通知消息 Notice */ { "path": "pages/user/Notice", "style": { "navigationBarTitleText": "系统通知" } },
+      /* 通知消息 Notice */ { "path": "pages/user/Notice", "style": { "navigationBarTitleText": "通知消息" } },
       /* 修改信息 ChangeInfo*/ { "path": "pages/user/Information/ChangeInfo", "style": { "navigationBarTitleText": "修改信息" } },
       /* 我的地址 Address */ { "path": "pages/user/Information/Address", "style": { "navigationBarTitleText": "我的地址" } },
       /* 新增地址 AddAddress */ { "path": "pages/user/Information/AddAddress", "style": { "navigationBarTitleText": "新增地址" } },
@@ -186,7 +77,7 @@
 
       /* 登录 Login */ { "path": "pages/common/Login", "style": { "navigationStyle": "custom" } },
 
-      /* 专属客服  */ { "path": "pages/common/CustomerService", "style": { "navigationBarTitleText": "专属客服" } },
+      /* 专属客服 */ { "path": "pages/common/CustomerService", "style": { "navigationBarTitleText": "专属客服" } },
 
       /* 用户协议 */ { "path": "pages/common/protocol", "style": { "navigationBarTitleText": "用户协议" } },
       /* 隐私政策 */ { "path": "pages/common/privacy", "style": { "navigationBarTitleText": "隐私政策" } }

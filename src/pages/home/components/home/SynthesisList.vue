@@ -9,7 +9,7 @@
          </uni-grid-item>
          <uni-grid-item>
             <view class="itemContent">
-               <image src="~static/images/homeCol2.png" mode="widthFix" @click="mix_jumpUrl('/pages/project/ProjectIndex', '', true)" />
+               <image src="~static/images/homeCol2.png" mode="widthFix" @click="mix_jumpUrl('/pages/project/project')" />
                <text class="text">我的课程</text>
             </view>
          </uni-grid-item>
@@ -21,7 +21,7 @@
          </uni-grid-item>
          <uni-grid-item>
             <view class="itemContent">
-               <image src="~static/images/homeCol4.png" mode="widthFix" @click="mix_jumpUrl('/pages/common/CustomerService', { title: '在线答疑' }, true)" />
+               <image src="~static/images/homeCol4.png" mode="widthFix" @click="mix_jumpUrl('/pages/common/CustomerService', { title: '在线答疑' }, false)" />
                <text class="text">在线答疑</text>
             </view>
          </uni-grid-item>

@@ -1,6 +1,11 @@
 <template>
    <view class="mainBox">
-      <view class="li" v-for="(item, index) in list" :key="index">
+      <view class="emptyState" v-if="list.length === 0">
+         <image src="~static/images/emptyImg.png" mode="widthFix" />
+         <text>暂无通知</text>
+      </view>
+
+      <view v-else class="li" v-for="(item, index) in list" :key="index">
          <image class="icon" :src="item.src" mode="widthFix" />
          <view class="content">
             <view class="top">
@@ -21,15 +26,9 @@ export default {
       return {
          width: 0,
          textWidth: 0,
-         list: [
-            { icon: "", type: "system", time: "2021年11月20日", summary: "1111111111111111111111111111111111111111111111111111111111111111111" },
-            { icon: "", type: "system", time: "2021年11月20日", summary: "2222222222222222" },
-            { icon: "", type: "system", time: "2021年11月20日", summary: "33333333333333" },
-            { icon: "", type: "system", time: "2021年11月20日", summary: "444444444444444" },
-         ],
+         list: [],
       };
    },
-   mounted() {},
    methods: {},
 };
 </script>
@@ -40,7 +39,27 @@ export default {
    min-height: 100vh;
    box-sizing: border-box;
    background: #f5f5f5;
-   padding-top: 10rpx;
+
+   .emptyState {
+      width: 100vw;
+      height: 100vh;
+      background-color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      image {
+         display: block;
+         width: 460rpx;
+      }
+      text {
+         margin-top: 20rpx;
+         display: block;
+         font-size: 30rpx;
+         text-align: center;
+         opacity: 0.5;
+      }
+   }
    .li {
       width: 95vw;
       // height: 150rpx;

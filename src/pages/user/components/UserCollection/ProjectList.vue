@@ -52,19 +52,8 @@ export default {
       return {
          allOrder: "",
          dataOptions: {
-            purchased: [
-               { name: "语文", name2: "大学语文(一)", teacher: "您老师" },
-               { name: "数学", name2: "大学数学(二)", teacher: "您老师" },
-               { name: "英语", name2: "大学英语", teacher: "您老师" },
-               { name: "语文", name2: "大学语文(一)", teacher: "您老师" },
-               { name: "数学", name2: "大学数学(二)", teacher: "您老师" },
-               { name: "英语", name2: "大学英语", teacher: "您老师" },
-            ],
-            notPurchased: [
-               { name: "语文", name2: "大学语文(一)", teacher: "您老师" },
-               { name: "数学", name2: "大学数学(二)", teacher: "您老师" },
-               { name: "英语", name2: "大学英语", teacher: "您老师" },
-            ],
+            purchased: [],
+            notPurchased: [],
          },
          arr: [],
       };

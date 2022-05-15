@@ -44,14 +44,7 @@ export default {
          allOrder: null,
          unCompletedOrder: null,
          CompletedOrder: null,
-         orderList: [
-            { orderId: "202164356835654314", state: 0, name: "高数(一)", name2: "成考高数(一)", classType: "课程精讲班", addTime: "2021-10-22", price: 50, amount: 49.99 },
-            { orderId: "202164356835654315", state: 1, name: "高数(一)", name2: "成考高数(一)", classType: "课程精讲班", addTime: "2021-10-23", price: 100, amount: 99 },
-            { orderId: "202164356835654316", state: 1, name: "高数(一)", name2: "成考高数(一)", classType: "课程精讲班", addTime: "2021-10-24", price: 75, amount: 60 },
-            { orderId: "202164356835654317", state: 0, name: "高数(一)", name2: "成考高数(一)", classType: "课程精讲班", addTime: "2021-10-25", price: 50, amount: 45 },
-            { orderId: "202164356835654318", state: 1, name: "高数(一)", name2: "成考高数(一)", classType: "课程精讲班", addTime: "2021-10-26", price: 25, amount: 25 },
-            { orderId: "202164356835654319", state: 0, name: "高数(一)", name2: "成考高数(一)", classType: "课程精讲班", addTime: "2021-10-27", price: 200, amount: 188 },
-         ],
+         orderList: [],
          paid: [],
          notPaid: [],
       };

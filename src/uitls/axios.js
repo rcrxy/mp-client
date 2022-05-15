@@ -2,7 +2,8 @@ import axios from "axios";
 
 // 根据环境修改baseURL
 const baseURL = (() => {
-   let { VUE_APP_PLATFORM } = process.env;
+   console.log(process.env);
+   const { VUE_APP_PLATFORM } = process.env;
    if (VUE_APP_PLATFORM === "app-plus") {
       return "http://yang.guco.vip:2001";
    } else {

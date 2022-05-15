@@ -32,16 +32,23 @@ export default {
          professionalList: [],
       };
    },
-   onLoad() {},
-   created() {
-      this.getProfessionalClassification();
+   onLoad(info) {
+      this.getProfessionalClassification(info);
    },
+   created() {},
    methods: {
-      async getProfessionalClassification() {
+      async getProfessionalClassification(info) {
          let { code, data } = await getProfessionalClassificationAPI();
          if (code === 200) {
             this.treeSelectOptios = data;
-            this.leftClick(data[0], 0);
+
+            if (info.name) {
+               const { name } = info;
+               const index = this.treeSelectOptios.findIndex(item => item.title === name);
+               this.leftClick(data[index], index);
+            } else {
+               this.leftClick(data[0], 0);
+            }
          }
       },
 

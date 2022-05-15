@@ -9,13 +9,12 @@ export default {
    data() {
       return {};
    },
-
    onLoad(info) {
-      console.log(info.title);
-      if (info) {
+      if (Boolean(info)) {
          uni.setNavigationBarTitle({ title: info.title });
       }
    },
+   methods: {},
 };
 </script>
 

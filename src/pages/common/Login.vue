@@ -71,7 +71,7 @@ export default {
          fromCode: {
             mobile: "",
             smsCode: "",
-            smsId: "",
+            smsId: "165257920159500001",
          },
          fromPwd: {
             mobile: "",
