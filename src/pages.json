@@ -20,7 +20,6 @@
       /* 首页 HomeIndex */ { "path": "pages/home/home", "style": { "navigationStyle": "custom" } },
       /* 成绩查询 ScoreQuery */ { "path": "pages/home/tabs/ScoreQuery", "style": { "navigationBarTitleText": "成绩查询" } },
       /* 成考指南 Guide */ { "path": "pages/home/tabs/Guide", "style": { "navigationBarTitleText": "成考指南" } },
-      /* 在线答疑 Answering */ { "path": "pages/home/tabs/Answering", "style": { "navigationBarTitleText": "在线答疑" } },
       /* 报名时间 Time */ { "path": "pages/home/process/Time", "style": { "navigationBarTitleText": "报名时间" } },
       /* 报名入口 Entrance */ { "path": "pages/home/process/Entrance", "style": { "navigationBarTitleText": "报名入口" } },
       /* 考试科目 ExamSubjects */ { "path": "pages/home/process/ExamSubjects", "style": { "navigationBarTitleText": "考试科目" } },

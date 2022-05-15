@@ -2,27 +2,27 @@
    <view ref="my" class="my">
       <view id="myCon" ref="myCon">
          <view class="userInfo">
-            <view class="avatar" @click="jumpUrl('/pages/user/Information')">
+            <view class="avatar" @click="mix_jumpUrl('/pages/user/Information')">
                <image src="https://img01.yzcdn.cn/vant/cat.jpeg" mode="aspectFill" />
                <text class="text name">{{ userInfo.userName }}</text>
                <text class="text sign">{{ userInfo.sign === "null" ? "还没设置签名~" : userInfo.sign }}</text>
             </view>
          </view>
          <u-cell-group :border="false">
-            <u-cell :border="false" isLink title="通知消息" icon="bell" @click="jumpUrl('/pages/user/Notice')"></u-cell>
-            <u-cell :border="false" isLink title="我的订单" icon="bag" @click="jumpUrl('/pages/user/UserOrder')"></u-cell>
-            <u-cell :border="false" isLink title="我的收藏" icon="star" @click="jumpUrl('/pages/user/UserCollection')"></u-cell>
+            <u-cell :border="false" isLink title="通知消息" icon="bell" @click="mix_jumpUrl('/pages/user/Notice')"></u-cell>
+            <u-cell :border="false" isLink title="我的订单" icon="bag" @click="mix_jumpUrl('/pages/user/UserOrder')"></u-cell>
+            <u-cell :border="false" isLink title="我的收藏" icon="star" @click="mix_jumpUrl('/pages/user/UserCollection')"></u-cell>
          </u-cell-group>
          <u-cell-group :border="false">
             <u-cell :border="false" isLink title="联系电话" icon="phone" @click="showModal = true"></u-cell>
          </u-cell-group>
          <u-cell-group :border="false">
-            <u-cell :border="false" isLink title="软件设置" icon="setting" @click="jumpUrl('/pages/user/Setting')"></u-cell>
+            <u-cell :border="false" isLink title="软件设置" icon="setting" @click="mix_jumpUrl('/pages/user/Setting')"></u-cell>
          </u-cell-group>
       </view>
       <!-- notice -->
       <!-- 拨打电话 -->
-      <u-modal :show="showModal" :content="modalContent" showCancelButton @cancel="showModal = false" @confirm="confirm"></u-modal>
+      <u-modal :show="showModal" :content="'拨打电话: ' + phone" showCancelButton @cancel="showModal = false" @confirm="confirm"></u-modal>
    </view>
 </template>
 
@@ -34,10 +34,9 @@ export default {
       return {
          footerIndex: 3,
          userInfo: {},
-         phoneNumber: "0723657823",
+         phone: "0723657823",
          isIndex: true,
          showModal: false,
-         modalContent: "拨打电话: 77788851523",
       };
    },
    onShow() {
@@ -53,10 +52,7 @@ export default {
          }
       },
       confirm() {
-         uni.makePhoneCall({ phoneNumber: this.phoneNumber });
-      },
-      jumpUrl(url) {
-         uni.navigateTo({ url });
+         uni.makePhoneCall({ phoneNumber: this.phone });
       },
    },
 };
