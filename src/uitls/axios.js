@@ -2,10 +2,9 @@ import axios from "axios";
 
 // 根据环境修改baseURL
 const baseURL = (() => {
-   console.log(process.env);
    const { VUE_APP_PLATFORM } = process.env;
    if (VUE_APP_PLATFORM === "app-plus") {
-      return "http://yang.guco.vip:2001";
+      return "http://www.njjcjykj.cn:23099";
    } else {
       return "/api";
    }
@@ -18,18 +17,6 @@ const instance = axios.create({
    timeout: 10000, // request timeout
    // crossDomain: true,
 });
-
-let httpCode = {
-   //这里我简单列出一些常见的http状态码信息，可以自己去调整配置
-   400: "请求参数错误",
-   401: "权限不足, 请重新登录",
-   403: "服务器拒绝本次访问",
-   404: "请求资源未找到",
-   500: "内部服务器错误",
-   501: "服务器不支持该请求中使用的方法",
-   502: "网关错误",
-   504: "网关超时",
-};
 
 /** 添加请求拦截器 **/
 instance.interceptors.request.use(

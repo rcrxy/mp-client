@@ -14,7 +14,7 @@
                </u-form-item>
                <u-form-item label="验证码" class="code">
                   <u-input v-model="code" placeholder="请填写验证码"></u-input>
-                  <u-button :text="codeText" @click="sendCode" :disabled="disabled" size="mini" type="success"></u-button>
+                  <send-messages :mobile="phone" @getCode="getCode" :scale="1.15"></send-messages>
                </u-form-item>
             </u-form>
          </view>
@@ -37,7 +37,7 @@
             </u-form-item>
             <u-form-item label="验证码" class="code">
                <u-input v-model="code" placeholder="请填写验证码"></u-input>
-               <u-button :text="codeText" @click="sendCode" :disabled="disabled" size="mini" type="success"></u-button>
+               <send-messages :mobile="phone" @getCode="getCode" :scale="1.15"></send-messages>
             </u-form-item>
             <u-form-item label="新的密码">
                <u-input v-model="newPassword" placeholder="请输入新的密码"></u-input>
@@ -58,9 +58,12 @@
 
 <script>
 import { postSetUserInfoAPI } from "@/servers/ServersUser";
-import { postSmsSendAPI } from "@/servers/ServersCommon";
 import { mapMutations } from "vuex";
+import sendMessages from "@/components/sendMessages.vue";
 export default {
+   components: {
+      sendMessages,
+   },
    data() {
       return {
          name: "",
@@ -73,10 +76,12 @@ export default {
          codeTrue: false,
          oldPhone: "",
          code: "",
+         phone: "",
          newPhone: "",
          newPassword: "",
          repeatPassword: "",
          disabled: false,
+         smsId: "",
       };
    },
    onLoad(data) {
@@ -87,7 +92,6 @@ export default {
       ...mapMutations(["setUserInfo"]),
       getUserInfo() {
          this.sendData = this.$store.state.userInfo;
-         console.log(this.sendData);
       },
       /**设置页面内容 */
       setPage({ title, name, info }) {
@@ -98,18 +102,17 @@ export default {
       async submit() {
          let { code, data } = await postSetUserInfoAPI(this.sendData);
          if (code === 200) {
+            // console.log(data);
             this.setUserInfo(data);
-            uni.navigateBack();
+            uni.navigateBack({
+               success() {
+                  uni.showToast({
+                     title: "修改成功",
+                     icon: "none",
+                  });
+               },
+            });
          }
-      },
-      /**发送短信 */
-      sendCode() {
-         // this.showPopup = true;
-         uni.showLoading({ title: "正在发送短信" });
-         setTimeout(() => {
-            this.changetag();
-            uni.hideLoading();
-         }, 1000);
       },
       /**倒计时 */
       changetag() {
@@ -125,6 +128,9 @@ export default {
       /**验证验证码 */
       verify() {
          this.codeTrue = !this.codeTrue;
+      },
+      getCode(info) {
+         this.smsId = info;
       },
    },
 };

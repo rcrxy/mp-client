@@ -10,6 +10,11 @@ export function postSetUserInfoAPI(params) {
    return post("/user/modify", params);
 }
 
+/** 修改密码 */
+export function postModifyPasswordAPI(params) {
+   return post("/user/modifyPassword", params);
+}
+
 /**获取用户地址 */
 export function getAddressListAPI() {
    return get("/address/list");

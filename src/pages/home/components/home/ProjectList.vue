@@ -7,7 +7,7 @@
          </view>
          <view class="middle">
             <text class="title">{{ item.title }}</text>
-            <view class="purchases">
+            <view class="purchases" v-if="item.label">
                <u-count-to :start-val="1" :end-val="item.label" separator="," font-size="13"></u-count-to>
                <text>人购买</text>
             </view>

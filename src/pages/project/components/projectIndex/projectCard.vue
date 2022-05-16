@@ -6,8 +6,8 @@
       </view>
       <view class="cardBottom">
          <view class="cardBottomLeft">
-            <text>{{ data.className }}</text>
-            <text>{{ data.number }}人购买</text>
+            <text class="name">{{ data.className }}</text>
+            <text v-if="data.number" class="number">{{ data.number }}人购买</text>
          </view>
          <view class="cardBottomRight">
             <text>{{ text }}</text>
@@ -66,14 +66,14 @@ export default {
          text {
             display: block;
             line-height: 40rpx;
-            &:first-of-type {
-               font-size: 35rpx;
-               margin-bottom: 15rpx;
-            }
-            &:last-of-type {
-               font-size: 25rpx;
-               color: gray;
-            }
+         }
+         .name {
+            font-size: 35rpx;
+            margin-bottom: 15rpx;
+         }
+         .number {
+            font-size: 25rpx;
+            color: gray;
          }
       }
       .cardBottomRight {

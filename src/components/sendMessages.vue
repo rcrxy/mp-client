@@ -38,6 +38,7 @@ export default {
             const { code, data } = await postSmsSendAPI({ mobile });
             uni.hideLoading();
             if (code === 200) {
+               uni.showToast({ title: "发送成功", icon: "none" });
                this.$emit("getCode", data);
                this.changetag();
             } else {

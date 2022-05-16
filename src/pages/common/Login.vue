@@ -33,7 +33,7 @@
                   </view>
                   <view class="input">
                      <u-icon class="inputLeftIcon" name="lock-fill" color="#cccccc" size="30"></u-icon>
-                     <u-input v-model="fromPwd.password" placeholder="输入密码" border="none"></u-input>
+                     <u-input type="password" v-model="fromPwd.password" placeholder="输入密码" border="none"></u-input>
                   </view>
                   <u-button class="submit" @click="onSubmit" type="success">登录</u-button>
                </view>
@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import { postAccountLoginAPI, getUserInfoAPI, postSmsLoginAPI, postSmsSendAPI } from "@/servers/ServersCommon";
+import { postAccountLoginAPI, postSmsLoginAPI } from "@/servers/ServersCommon";
 import { mapMutations } from "vuex";
 import sendMessages from "@/components/sendMessages.vue";
 export default {
@@ -71,7 +71,7 @@ export default {
          fromCode: {
             mobile: "",
             smsCode: "",
-            smsId: "165257920159500001",
+            smsId: "",
          },
          fromPwd: {
             mobile: "",
@@ -113,7 +113,7 @@ export default {
          }
       },
       getCode(info) {
-         this.smsId = info;
+         this.fromCode.smsId = info;
       },
       /**协议选中状态 */
       protocolChange(stateArr) {
