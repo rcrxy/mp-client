@@ -19,18 +19,20 @@
             <text>章节练习</text>
          </view>
          <view class="sublevel">
-            <u-cell class="li" v-for="(item, index) in sublevelOptions" :key="index" :title="item.name" isLink @click="mix_jumpUrl('/pages/practice/common/WorkProblem', item)">
-               <template #label>
-                  <view class="label">
-                     <u-line-progress :percentage="(item.completed / item.quantity) * 100" height="8" :showText="false"></u-line-progress>
-                     <view>
-                        <text class="left">{{ item.completed }}</text>
-                        /
-                        <text class="right">{{ item.quantity }}</text>
+            <u-skeleton :rows="6" :loading="loading">
+               <u-cell class="li" v-for="(item, index) in sublevelOptions" :key="index" :title="item.name" isLink @click="mix_jumpUrl('/pages/practice/common/WorkProblem', item)">
+                  <template #label>
+                     <view class="label">
+                        <u-line-progress :percentage="(item.completed / item.quantity) * 100" height="8" :showText="false"></u-line-progress>
+                        <view>
+                           <text class="left">{{ item.completed }}</text>
+                           /
+                           <text class="right">{{ item.quantity }}</text>
+                        </view>
                      </view>
-                  </view>
-               </template>
-            </u-cell>
+                  </template>
+               </u-cell>
+            </u-skeleton>
          </view>
       </view>
    </view>
@@ -51,6 +53,7 @@ export default {
          sublevelOptions: [],
          allList: [],
          info: {},
+         loading: false,
       };
    },
    onLoad(info) {
@@ -58,6 +61,7 @@ export default {
       uni.setNavigationBarTitle({ title: info.className });
    },
    created() {
+      this.loading = true;
       this.postQuestionsList();
    },
    methods: {
@@ -87,6 +91,7 @@ export default {
          nameList.forEach((item, index) => {
             this.sublevelOptions.push({ name: item, quantity: lengthList[index], completed: 0 });
          });
+         this.loading = false;
       },
    },
 };

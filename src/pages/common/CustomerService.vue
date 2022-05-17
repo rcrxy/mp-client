@@ -16,16 +16,16 @@ export default {
       }
    },
    onReady() {
-      // #ifdef APP-PLUS
-      var currentWebview = this.$scope.$getAppWebview();
-      // setTimeout(function () {
-      //    wv = currentWebview.children()[0];
-      //    wv.setStyle({ top: 0, height: "100vh" });
-      // }, 1000);
-      wv = currentWebview.children()[0];
+      // // #ifdef APP-PLUS
+      // var currentWebview = this.$scope.$getAppWebview();
+      // // setTimeout(function () {
+      // //    wv = currentWebview.children()[0];
+      // //    wv.setStyle({ top: 0, height: "100vh" });
+      // // }, 1000);
+      // wv = currentWebview.children()[0];
       // wv.setStyle({ top: 34, height: "100vh" });
-      console.log(wv);
-      // #endif
+      // console.log(wv);
+      // // #endif
    },
    methods: {},
 };

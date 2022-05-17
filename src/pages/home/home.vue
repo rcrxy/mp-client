@@ -81,6 +81,7 @@ import SpecializedList from "@/pages/home/components/home/SpecializedList.vue";
 import ProjectList from "@/pages/home/components/home/ProjectList.vue";
 import vNavBar from "@/components/NavBar.vue";
 import { getNewsAPI } from "@/servers/ServersHome";
+import news from "@/static/json/news.json";
 
 export default {
    components: {
@@ -106,10 +107,11 @@ export default {
    },
    methods: {
       async getNews() {
-         const { code, data } = await getNewsAPI();
-         if (code === 200) {
-            this.news = data[0];
-         }
+         this.news = news[0];
+         // const { code, data } = await getNewsAPI();
+         // if (code === 200) {
+         //    this.news = data[0];
+         // }
       },
    },
 };

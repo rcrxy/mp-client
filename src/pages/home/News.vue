@@ -1,15 +1,16 @@
 <template>
-   <view class="main">
+   <view class="mainBox">
       <text class="topTitle gradientFont">{{ nowNews.newsTitle }}</text>
       <view class="content">
-         <text>
+         <!-- <text>
             {{ nowNews.newsContent }}
-         </text>
+         </text> -->
+         <rich-text :nodes="nowNews.newsContent"></rich-text>
       </view>
-      <view class="button">
+      <!-- <view class="button">
          <navigator class="gradientFont left" @click="prev" :style="nowIndex === 0 ? 'opacity: 0.5' : ''">上一篇</navigator>
          <navigator class="gradientFont right" @click="next" :style="nowIndex === maxLength - 1 ? 'opacity: 0.5' : ''">下一篇</navigator>
-      </view>
+      </view> -->
 
       <image class="inset" src="~static/images/insetNews.png" mode="widthFix" />
 
@@ -24,6 +25,7 @@
 import { getNewsAPI } from "@/servers/ServersHome";
 import uniPopupShare from "@/components/uni-popup-share.vue";
 import qs from "qs";
+import news from "@/static/json/news.json";
 export default {
    components: {
       uniPopupShare,
@@ -36,7 +38,8 @@ export default {
       };
    },
    async onLoad({ id }) {
-      const newsList = await this.getNews();
+      // const newsList = await this.getNews();
+      const newsList = news;
       const nowIndex = newsList.findIndex(item => item.newsId == id);
       this.nowNews = newsList[nowIndex];
       this.nowIndex = nowIndex;
@@ -71,6 +74,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.mainBox {
+   padding: 0 0 30rpx 0;
+}
 .topTitle {
    display: block;
    font-size: 40rpx;
@@ -78,6 +84,10 @@ export default {
    text-align: center;
 }
 .content {
+   width: 90vw;
+   margin: 1em auto;
+   font-size: 30rpx;
+   line-height: 45rpx;
    text {
       display: block;
       width: 90vw;

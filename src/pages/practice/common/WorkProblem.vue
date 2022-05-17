@@ -1,5 +1,6 @@
 <template>
    <view class="mainBox">
+      <u-loading-page :loading="skeleton" loading-text="整理题目中..."></u-loading-page>
       <view class="questionsContent">
          <swiper class="swiper" v-if="!loading" :current="nowIndex - 1" @change="swiperChange">
             <swiper-item v-for="(item, index) in problemList" :key="index">
@@ -12,7 +13,7 @@
             <u-loading-icon></u-loading-icon>
          </view>
       </view>
-      <footer-bar v-model="nowIndex" :isCollection="isCollection" :valueId="valueId" :problemList="problemList" :quantity="problemList.length || 8" @indexChange="indexChange"></footer-bar>
+      <footer-bar v-if="!skeleton" v-model="nowIndex" :isCollection="isCollection" :valueId="valueId" :problemList="problemList" :quantity="problemList.length || 8" @indexChange="indexChange"></footer-bar>
    </view>
 </template>
 
@@ -44,6 +45,7 @@ export default {
          collectionList: [],
          showParse: false,
          isCollection: false,
+         skeleton: false,
       };
    },
    watch: {
@@ -60,6 +62,7 @@ export default {
       },
    },
    async onLoad(info) {
+      this.skeleton = true;
       const { name, subject, index } = info;
       this.collectionList = await this.getUserCollection(subject);
       await this.getProblemList(name, subject);
@@ -90,6 +93,7 @@ export default {
                   isCollection: colIdList.includes(item.questionId),
                };
             });
+            this.skeleton = false;
          } catch (error) {
             console.log(error);
          }
@@ -161,7 +165,6 @@ export default {
          nowList.forEach((item, index) => {
             list[index] = arr[item];
          });
-         console.log(list);
          return list;
       },
 

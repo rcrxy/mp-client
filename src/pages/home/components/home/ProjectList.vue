@@ -1,6 +1,6 @@
 <template>
    <view class="content">
-      <view class="li" v-for="(item, index) in options" :key="index" @click="mix_jumpUrl('/pages/project/ProjectContent', item, true)">
+      <view class="li" v-for="(item, index) in options" :key="index" @click="mix_jumpUrl('/pages/project/ProjectContent', item)">
          <view class="left">
             <image src="~static/images/projectBack.png" mode="widthFix" />
             <text>{{ item.title }}</text>
@@ -24,10 +24,10 @@ export default {
    data() {
       return {
          options: [
-            { title: "高数(一)", name: "高数(一)", label: "1021" },
-            { title: "大学语文", name: "大学语文", label: "234" },
-            { title: "高数(一)", name: "高数(一)", label: "1024" },
-            { title: "高数(一)", name: "高数(一)", label: "3068" },
+            { title: "高数(一)", className: "高数(一)", label: "1021" },
+            { title: "大学语文", className: "大学语文", label: "234" },
+            { title: "高数(一)", className: "高数(一)", label: "1024" },
+            { title: "高数(一)", className: "高数(一)", label: "3068" },
          ],
       };
    },

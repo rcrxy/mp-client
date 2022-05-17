@@ -24,7 +24,7 @@ export default {
          tabbarList: [
             { text: "在线答疑", icon: require("@/static/images/customizeTabs1.png"), url: "/pages/common/CustomerService" },
             { text: "网上报名", icon: require("@/static/images/customizeTabs2.png"), url: "/pages/home/process/Entrance" },
-            { text: "电话咨询", icon: require("@/static/images/customizeTabs3.png"), url: "" },
+            { text: "电话咨询", icon: require("@/static/images/customizeTabs3.png"), url: "/pages/common/CustomerService" },
          ],
          showModal: false,
          phone: "0723657823",

@@ -11,14 +11,14 @@
 
       <view class="banner" :style="`height:${bannerHeight}px`">
          <image src="~static/images/projectBack.png" mode="windthFix" />
-         <text>{{ info.name }}</text>
+         <text>{{ info.className }}</text>
       </view>
 
       <view class="tabsBox">
          <view class="info">
-            <text :class="scrollTop >= 180 ? 'title titleActive' : 'title'">{{ info.name }}</text>
+            <text :class="scrollTop >= 180 ? 'title titleActive' : 'title'">{{ info.className }}</text>
             <view>
-               <text>课时: {{ info.time || "1" }} 课时</text>
+               <text>课时: {{ info.time || "30" }} 课时</text>
                <text>老师: {{ info.teacher || "老师" }}</text>
                <text>时长: {{ info.timeLength || "120" }}分钟</text>
             </view>
@@ -32,12 +32,12 @@
 
       <u-back-top :scroll-top="scrollTop" icon="arrow-up"></u-back-top>
 
-      <view class="bottomCell">
+      <!-- <view class="bottomCell">
          <view class="icon">
             <u-icon name="kefu-ermai" color="#000000" size="30"></u-icon>
          </view>
          <u-button type="primary" text="立即购买" color="#00cba1"></u-button>
-      </view>
+      </view> -->
    </view>
 </template>
 

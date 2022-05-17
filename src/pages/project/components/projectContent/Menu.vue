@@ -2,10 +2,11 @@
    <view class="menuBox">
       <u-collapse>
          <u-collapse-item v-for="(item, index) in options" :key="index" :title="item.name">
-            <u-cell v-for="(key, i) in item.videos" :key="i" :title="key.name" :border="false" clickable @click="mix_jumpUrl('/pages/project/PlayVideo', info)">
-               <template #value>
+            <!-- <u-cell v-for="(key, i) in item.videos" :key="i" :title="key.name" :border="false" clickable @click="mix_jumpUrl('/pages/project/PlayVideo', info)"> -->
+            <u-cell v-for="(key, i) in item.videos" :key="i" :title="key.name" :border="false">
+               <!-- <template #value>
                   <u-icon :name="index < 2 ? 'play-right' : 'lock'"></u-icon>
-               </template>
+               </template> -->
             </u-cell>
          </u-collapse-item>
       </u-collapse>

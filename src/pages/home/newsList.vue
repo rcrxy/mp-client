@@ -16,6 +16,7 @@
 
 <script>
 import { getNewsAPI } from "@/servers/ServersHome";
+import news from "@/static/json/news.json";
 export default {
    data() {
       return {
@@ -42,10 +43,11 @@ export default {
          //    { newsPoster: "", newsTitle: "成人高考高升专分数线", newsAbstract: "因为成人高考的考试题目相对于比较简单，而且考试科目又少，所以分数线比较低。总分加在一起450分左右，而且成人高考的录取分数线较低，一般学校120分左右就会录取。平均算下来，每科只需考40分就可以达到录取分数线了。" },
          //    { newsPoster: "https://www.jcjyjy.com/upload/images/2021/12/56062da455d836c5.jpg", newsTitle: "2022年江苏成人高考加分政策", newsAbstract: "1、25周岁及以上（1994年8月31日及以前出生者），生活能够自理，且不影响本人所报专业学习的残疾人，省教育考试院可在考生文化考试成绩基础上增加50分投档，是否录取由招生院校确定。" },
          // ];
-         const { code, data } = await getNewsAPI();
-         if (code === 200) {
-            this.newsList = data;
-         }
+         // const { code, data } = await getNewsAPI();
+         // if (code === 200) {
+         //    this.newsList = data;
+         // }
+         this.newsList = news;
       },
    },
 };

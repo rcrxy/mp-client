@@ -14,8 +14,8 @@
             <tr v-for="(item, index) in tableData" :key="index">
                <td>{{ item.name }}</td>
                <td>{{ item.time }}</td>
-               <td><a :href="item.entrance">分数查询</a></td>
-               <td><a :href="item.score">录取分数线</a></td>
+               <td><a @click="mix_jumpUrl('/pages/common/CustomerService')">分数查询</a></td>
+               <td><a @click="mix_jumpUrl('/pages/common/CustomerService')">录取分数线</a></td>
             </tr>
          </table>
       </view>
