@@ -40,6 +40,7 @@
 
 <script>
 import { postQuestionsListAPI } from "@/servers/ServersPractice";
+import { mapMutations } from "vuex";
 export default {
    data() {
       return {
@@ -47,8 +48,8 @@ export default {
             { name: "每日一练", image: require("../../static/images/practiceIcon1.png"), url: "/pages/practice/common/WorkProblem" },
             { name: "模拟考试", image: require("../../static/images/practiceIcon2.png"), url: "/pages/practice/common/info/mockExam" },
             { name: "我的收藏", image: require("../../static/images/practiceIcon4.png"), url: "/pages/practice/subjectCollection" },
-            { name: "我的错题", image: require("../../static/images/practiceIcon5.png"), url: "" },
-            { name: "题库纠错", image: require("../../static/images/practiceIcon6.png"), url: "" },
+            { name: "我的错题", image: require("../../static/images/practiceIcon5.png"), url: "/pages/practice/subjectCollection" },
+            { name: "题库纠错", image: require("../../static/images/practiceIcon6.png"), url: "/pages/user/common/Feedback" },
          ],
          sublevelOptions: [],
          allList: [],
@@ -65,6 +66,7 @@ export default {
       this.postQuestionsList();
    },
    methods: {
+      ...mapMutations(["setQuestions"]),
       async postQuestionsList() {
          const sendData = {
             course: this.info.className,
@@ -73,19 +75,20 @@ export default {
          if (code === 200) {
             this.allList = data;
             this.getLength(data);
+            this.setQuestions(data);
          }
       },
       /** 获取章节题目数量 */
       getLength(list) {
          let nameList = [];
          let lengthList = [];
-         list.forEach(item => {
+         list.forEach((item) => {
             if (!nameList.includes(item.chapter)) nameList.push(item.chapter);
          });
          nameList.forEach((item, index) => {
             lengthList[index] = 0;
          });
-         list.forEach(item => {
+         list.forEach((item) => {
             lengthList[nameList.indexOf(item.chapter)] += 1;
          });
          nameList.forEach((item, index) => {

@@ -49,7 +49,7 @@
                     "<uses-permission android:name=\"android.permission.INSTALL_PACKAGES\"/>",
                     "<uses-permission android:name=\"android.permission.REQUEST_INSTALL_PACKAGES\"/>"
                 ],
-                "abiFilters" : [ "armeabi-v7a" ]
+                "abiFilters" : [ "arm64-v8a" ]
             },
             "ios" : {},
             /* ios打包配置 */

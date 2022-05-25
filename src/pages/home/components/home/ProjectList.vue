@@ -13,7 +13,7 @@
             </view>
          </view>
          <view class="right">
-            <text>点击试看 ></text>
+            <text>点击查看 ></text>
          </view>
       </view>
    </view>

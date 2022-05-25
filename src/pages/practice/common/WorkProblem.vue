@@ -1,6 +1,6 @@
 <template>
    <view class="mainBox">
-      <u-loading-page :loading="skeleton" loading-text="整理题目中..."></u-loading-page>
+      <u-loading-page :loading="skeleton" loading-text="抽取题目中..."></u-loading-page>
       <view class="questionsContent">
          <swiper class="swiper" v-if="!loading" :current="nowIndex - 1" @change="swiperChange">
             <swiper-item v-for="(item, index) in problemList" :key="index">
@@ -25,6 +25,7 @@ import qSelect from "./WorkProblem/qSelect.vue";
 import qJudgment from "./WorkProblem/qJudment.vue";
 import qMultiSelect from "./WorkProblem/qMultiSelect.vue";
 import otherType from "./WorkProblem/otherType.vue";
+import { mapState } from "vuex";
 
 export default {
    components: {
@@ -48,6 +49,9 @@ export default {
          skeleton: false,
       };
    },
+   computed: {
+      ...mapState(["questions"]),
+   },
    watch: {
       nowIndex: {
          handler(newVal, oldVal) {
@@ -63,7 +67,8 @@ export default {
    },
    async onLoad(info) {
       this.skeleton = true;
-      const { name, subject, index } = info;
+      const { name, subject, index, max } = info;
+      this.maxlength = max ? max * 1 : 8;
       this.collectionList = await this.getUserCollection(subject);
       await this.getProblemList(name, subject);
 
@@ -75,19 +80,18 @@ export default {
       async getProblemList(name, subject) {
          try {
             let list = [];
-            if (name === "每日一练") {
-               const data = await this.getQuestions(subject);
-               list = this.extract(data, this.maxlength);
+            if (name === "每日一练" || name === "模拟练习") {
+               list = this.extract(this.questions, this.maxlength);
             } else if (name === "收藏练习") {
                list = this.collectionList;
             } else {
-               const data = await this.getQuestions(subject);
-               const filterList = data.filter(item => item.chapter === name);
-               list = this.extract(filterList, 5);
+               console.log(this.questions);
+               const filterList = this.questions.filter((item) => item.chapter === name);
+               list = this.extract(filterList, this.maxlength);
             }
 
-            const colIdList = this.collectionList.map(item => item.questionId);
-            this.problemList = list.map(item => {
+            const colIdList = this.collectionList.map((item) => item.questionId);
+            this.problemList = list.map((item) => {
                return {
                   ...item,
                   isCollection: colIdList.includes(item.questionId),
@@ -95,6 +99,7 @@ export default {
             });
             this.skeleton = false;
          } catch (error) {
+            this.skeleton = false;
             console.log(error);
          }
       },
@@ -106,7 +111,7 @@ export default {
             { name: "单选", type: "qSelect" },
             { name: "多选", type: "qMultiSelect" },
          ];
-         const nowType = typeList.find(item => item.name === questionType);
+         const nowType = typeList.find((item) => item.name === questionType);
          if (Boolean(nowType)) {
             return nowType.type;
          } else {
@@ -127,16 +132,18 @@ export default {
       },
       /**获取收藏列表 */
       async getUserCollection(subject = "") {
-         const sendData = { valueType: "question" };
+         const sendData = {
+            valueType: "question",
+         };
          const { code, data } = await postUserCollectionAPI(sendData);
          if (code === 200) {
             const list = data
-               .map(item => {
+               .map((item) => {
                   if (item.valueType === "question") {
                      return item.value;
                   }
                })
-               .map(item => {
+               .map((item) => {
                   if (item.course === subject) {
                      return item;
                   }
@@ -162,6 +169,7 @@ export default {
             }
          }
          let list = [];
+         console.log();
          nowList.forEach((item, index) => {
             list[index] = arr[item];
          });

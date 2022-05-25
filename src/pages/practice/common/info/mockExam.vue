@@ -1,7 +1,7 @@
 <template>
    <view class="mainBox">
       <u-cell-group>
-         <u-cell v-for="(item, index) in list" :key="index" isLink @click="jump()">
+         <u-cell v-for="(item, index) in list" :key="index" isLink @click="mix_jumpUrl('/pages/practice/common/WorkProblem', { name: '模拟练习', subject: item.subject, max: item.num })">
             <template #title>
                <text class="title">{{ item.name }}</text>
             </template>
@@ -19,22 +19,22 @@
 export default {
    data() {
       return {
+         subject: "",
          list: [
-            { name: "全国语文专升本2019真题（卷一）", label: "全国", num: 50 },
-            { name: "全国语文专升本2018真题（卷二）", label: "全国", num: 50 },
-            { name: "全国语文专升本2017真题（卷一）", label: "全国", num: 50 },
+            { name: "模拟试题（一）", label: "全国", num: 10, subject: "" },
+            { name: "模拟试题（二）", label: "全国", num: 10, subject: "" },
+            { name: "模拟试题（三）", label: "全国", num: 10, subject: "" },
          ],
       };
    },
-   methods: {
-      jump() {
-         this.$refs.uToast.show({
-            type: "loading",
-            loading: true,
-            message: "题目内容整理中",
-         });
-      },
+   onLoad(info) {
+      const { subject } = info;
+      this.list.forEach((item) => {
+         item.subject = subject;
+      });
+      console.log(subject, this.list);
    },
+   methods: {},
 };
 </script>
 

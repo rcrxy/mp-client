@@ -30,7 +30,7 @@
                <text>{{ item.timeLength }}</text>
             </view>
             <view class="th">
-               <text class="link" @click="mix_jumpUrl('/pages/common/CustomerService', '', true)">立即咨询</text>
+               <text class="link" @click="mix_jumpUrl('/pages/common/CustomerService')">立即咨询</text>
             </view>
          </view>
       </view>

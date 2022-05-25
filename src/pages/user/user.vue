@@ -34,7 +34,7 @@ export default {
       return {
          footerIndex: 3,
          userInfo: {},
-         phone: "0723657823",
+         phone: "025-86595985",
          isIndex: true,
          showModal: false,
       };

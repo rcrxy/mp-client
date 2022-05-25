@@ -54,7 +54,6 @@
 
       /* 题库 practice */ { "path": "pages/practice/practice", "style": { "navigationStyle": "custom", "enablePullDownRefresh": true } },
       /* 题库内容 info */ { "path": "pages/practice/info", "style": { "navigationBarTitleText": "题库" } },
-      /* 每日一练 EverDay */ { "path": "pages/practice/common/info/EverDay", "style": { "navigationBarTitleText": "每日一练" } },
       /* 模拟练习 mockExam */ { "path": "pages/practice/common/info/mockExam", "style": { "navigationBarTitleText": "模拟练习" } },
       /* 做题 WorkProblem */ { "path": "pages/practice/common/WorkProblem", "style": { "navigationBarTitleText": "模拟练习" } },
       /* 我的收藏(仅当前科目) */ { "path": "pages/practice/subjectCollection", "style": { "navigationBarTitleText": "我的收藏", "enablePullDownRefresh": true } },

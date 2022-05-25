@@ -27,7 +27,7 @@ export default {
             { text: "电话咨询", icon: require("@/static/images/customizeTabs3.png"), url: "/pages/common/CustomerService" },
          ],
          showModal: false,
-         phone: "0723657823",
+         phone: "025-86595985",
       };
    },
    methods: {
