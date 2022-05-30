@@ -14,7 +14,6 @@ export default {
       uni.preloadPage({ url: "/pages/user/user" });
 
       const { state } = store;
-      console.log(state);
       if (state.token) {
          uni.switchTab({ url: "/pages/home/home" });
       } else {

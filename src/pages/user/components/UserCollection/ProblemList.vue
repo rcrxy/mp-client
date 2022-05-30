@@ -4,18 +4,7 @@
          <image src="~static/images/emptyImg.png" mode="widthFix" />
       </view>
       <view class="dataBox" v-else>
-         <u-collapse accordion :border="false">
-            <u-collapse-item v-for="(item, index) in problemList" :key="index" :title="item.name">
-               <u-cell class="problemCell" v-for="key in item.problems" :key="key.collectionId" isLink>
-                  <template #title>
-                     <view class="celltitle">
-                        <u-tag class="tag" :text="key.value.questionType" size="mini" type="warning"></u-tag>
-                        <rich-text :nodes="key.value.question | as_text"></rich-text>
-                     </view>
-                  </template>
-               </u-cell>
-            </u-collapse-item>
-         </u-collapse>
+         <u-cell v-for="(item, index) in problemList" :key="index" :title="item" isLink @click="mix_jumpUrl('/pages/practice/subjectCollection', { subject: item })"></u-cell>
       </view>
    </view>
 </template>
@@ -47,25 +36,15 @@ export default {
    created() {
       this.postUserCollection();
    },
+
    methods: {
       async postUserCollection() {
          let { code, data } = await postUserCollectionAPI({ valueType: "question" });
          if (code === 200) {
-            let arr = [];
-            let list = [];
-            data.forEach(item => {
-               arr.push(item.value.course);
+            let list = data.map((item) => item.value);
+            list.forEach((item) => {
+               if (!this.problemList.includes(item.course)) this.problemList.push(item.course);
             });
-            arr = Array.from(new Set(arr));
-            arr.forEach(item => {
-               list.push({ name: item, problems: [] });
-            });
-            list.forEach(item => {
-               data.forEach(key => {
-                  if (key.value.course === item.name) item.problems.push(key);
-               });
-            });
-            this.problemList = list;
          }
       },
    },

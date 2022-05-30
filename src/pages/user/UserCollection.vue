@@ -25,11 +25,14 @@ export default {
    data() {
       return {
          tabIndex: 0,
-         // tabsList: [{ name: "课程" }, { name: "题目" }],
          tabsList: ["课程", "题目"],
       };
    },
-
+   // FIXME: 无效
+   async onPullDownRefresh() {
+      await this.$refs.problemList.postUserCollection();
+      uni.stopPullDownRefresh();
+   },
    methods: {
       swiperChange({ detail: { current } }) {
          this.tabIndex = current;

@@ -8,10 +8,10 @@
             <text @click="showParse = !showParse">{{ showParse ? "隐藏解析" : "显示解析" }}</text>
          </view>
          <view class="parse" v-if="showParse">
-            <text class="answer" v-if="info.answer !== 'undefined'">正确答案：{{ info.answer }}</text>
+            <text class="answer" v-if="asShow(info.answer)">正确答案：{{ info.answer }}</text>
             <view class="analysis">
                <text class="title">解析：</text>
-               <rich-text v-if="info.analysis !== 'undefined'" :nodes="info.analysis"></rich-text>
+               <rich-text v-if="asShow(info.analysis)" :nodes="info.analysis"></rich-text>
                <text v-else>本题目暂无解析</text>
             </view>
          </view>
@@ -33,7 +33,15 @@ export default {
          showParse: false,
       };
    },
-   methods: {},
+   methods: {
+      asShow(value) {
+         if (value === "undefined" || !Boolean(value)) {
+            return false;
+         } else {
+            return true;
+         }
+      },
+   },
 };
 </script>
 

@@ -1,11 +1,12 @@
 <template>
    <view class="mainBox">
+      <v-navbar :barTitle="barTitle" v-model="nowIndex" :valueId="valueId" @indexChange="indexChange" :quantity="problemList.length || 8"></v-navbar>
       <u-loading-page :loading="skeleton" loading-text="抽取题目中..."></u-loading-page>
       <view class="questionsContent">
-         <swiper class="swiper" v-if="!loading" :current="nowIndex - 1" @change="swiperChange">
+         <swiper class="swiper" v-if="!loading" :current="nowIndex" @change="swiperChange">
             <swiper-item v-for="(item, index) in problemList" :key="index">
                <scroll-view scroll-y="true">
-                  <components :is="setType(item)" :info="item" @getUserAnswer="getUserAnswer"></components>
+                  <components :is="setType(item)" :info="item"></components>
                </scroll-view>
             </swiper-item>
          </swiper>
@@ -13,7 +14,6 @@
             <u-loading-icon></u-loading-icon>
          </view>
       </view>
-      <footer-bar v-if="!skeleton" v-model="nowIndex" :isCollection="isCollection" :valueId="valueId" :problemList="problemList" :quantity="problemList.length || 8" @indexChange="indexChange"></footer-bar>
    </view>
 </template>
 
@@ -25,7 +25,8 @@ import qSelect from "./WorkProblem/qSelect.vue";
 import qJudgment from "./WorkProblem/qJudment.vue";
 import qMultiSelect from "./WorkProblem/qMultiSelect.vue";
 import otherType from "./WorkProblem/otherType.vue";
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
+import vNavbar from "./WorkProblem/navbar.vue";
 
 export default {
    components: {
@@ -34,9 +35,11 @@ export default {
       qJudgment,
       qMultiSelect,
       otherType,
+      vNavbar,
    },
    data() {
       return {
+         barTitle: "模拟练习",
          loading: false,
          nowIndex: 0,
          valueId: 1,
@@ -45,7 +48,6 @@ export default {
          problemList: [],
          collectionList: [],
          showParse: false,
-         isCollection: false,
          skeleton: false,
       };
    },
@@ -61,42 +63,56 @@ export default {
                   this.loading = false;
                }, 300);
             }
-            this.isCollection = this.problemList[newVal - 1].isCollection;
+            this.valueId = this.problemList[newVal].questionId;
          },
       },
    },
    async onLoad(info) {
       this.skeleton = true;
-      const { name, subject, index, max } = info;
-      this.maxlength = max ? max * 1 : 8;
-      this.collectionList = await this.getUserCollection(subject);
+      let { name, subject, index, max, quantity } = info;
+      if (quantity && max) {
+         quantity = quantity * 1;
+         max = max * 1;
+         this.maxlength = Boolean(quantity > max || quantity > 8) ? max : quantity;
+      } else {
+         this.maxlength = max ? max * 1 : 8;
+      }
+      this.barTitle = name ? name : "模拟练习";
       await this.getProblemList(name, subject);
-
-      if (name) uni.setNavigationBarTitle({ title: name });
-
-      this.nowIndex = index ? index * 1 + 1 : 1;
+      this.nowIndex = index ? index * 1 : 0;
+      this.valueId = this.problemList[this.nowIndex].questionId;
    },
    methods: {
+      ...mapMutations(["setProblemList"]),
+      /** 初始化 */
       async getProblemList(name, subject) {
          try {
+            this.collectionList = await this.getUserCollection(subject);
             let list = [];
             if (name === "每日一练" || name === "模拟练习") {
                list = this.extract(this.questions, this.maxlength);
             } else if (name === "收藏练习") {
                list = this.collectionList;
             } else {
-               console.log(this.questions);
                const filterList = this.questions.filter((item) => item.chapter === name);
                list = this.extract(filterList, this.maxlength);
             }
 
-            const colIdList = this.collectionList.map((item) => item.questionId);
-            this.problemList = list.map((item) => {
+            const colIdList = this.collectionList.map((item) => {
                return {
-                  ...item,
-                  isCollection: colIdList.includes(item.questionId),
+                  collectionId: item.collectionId,
+                  questionId: item.questionId,
                };
             });
+            this.problemList = list.map((item) => {
+               const info = colIdList.find((key) => key.questionId === item.questionId);
+               return {
+                  ...item,
+                  isCollection: info ? true : false,
+                  collectionId: info ? info.collectionId : null,
+               };
+            });
+            this.setProblemList(this.problemList);
             this.skeleton = false;
          } catch (error) {
             this.skeleton = false;
@@ -119,10 +135,6 @@ export default {
          }
       },
 
-      getUserAnswer(an) {
-         // console.log(an);
-      },
-
       /**获取题目列表 */
       async getQuestions(subject) {
          const { code, data } = await postQuestionsListAPI({ course: subject });
@@ -132,35 +144,30 @@ export default {
       },
       /**获取收藏列表 */
       async getUserCollection(subject = "") {
-         const sendData = {
-            valueType: "question",
-         };
+         const sendData = { valueType: "question" };
          const { code, data } = await postUserCollectionAPI(sendData);
          if (code === 200) {
-            const list = data
+            let value = data
+               .filter((item) => item.valueType === "question")
                .map((item) => {
-                  if (item.valueType === "question") {
-                     return item.value;
-                  }
-               })
-               .map((item) => {
-                  if (item.course === subject) {
-                     return item;
-                  }
+                  return {
+                     ...item.value,
+                     collectionId: item.collectionId,
+                  };
                });
-
-            return list;
+            value = subject ? value.filter((item) => item.course === subject) : value;
+            return value;
          }
       },
 
       /** 抽取题目 */
       extract(arr, num) {
          const nowList = [];
-         const max = arr.length;
+         const max = arr.length - 1;
 
          for (let i = 0; i < num; i++) {
             while (true) {
-               const nowIndex = Math.floor(Math.random() * max) + 1;
+               const nowIndex = Math.floor(Math.random() * max);
 
                if (nowList.indexOf(nowIndex) === -1) {
                   nowList[i] = nowIndex;
@@ -169,7 +176,6 @@ export default {
             }
          }
          let list = [];
-         console.log();
          nowList.forEach((item, index) => {
             list[index] = arr[item];
          });
@@ -177,7 +183,7 @@ export default {
       },
 
       swiperChange({ detail: { current } }) {
-         this.nowIndex = current + 1;
+         this.nowIndex = current;
       },
 
       indexChange(index) {
@@ -202,7 +208,7 @@ export default {
    }
    .swiper {
       width: 100%;
-      height: calc(100% - 125rpx);
+      height: 100%;
       swiper-item {
          width: 100%;
          height: 100%;

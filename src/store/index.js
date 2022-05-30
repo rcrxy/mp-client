@@ -5,9 +5,10 @@ Vue.use(Vuex);
 export default new Vuex.Store({
    state: {
       token: uni.getStorageSync("token") || "",
-      province: uni.getStorageSync("province") || "江",
       userInfo: uni.getStorageSync("userInfo") || {},
       questions: uni.getStorageSync("questions") || {},
+      collection: uni.getStorageSync("collection") || [],
+      problemList: uni.getStorageSync("problemList") || [],
    },
    mutations: {
       setToken(state, val) {
@@ -22,9 +23,14 @@ export default new Vuex.Store({
          state.questions = val;
          uni.setStorageSync("questions", val)
       },
-      setUserProvince(state, val) {
-         uni.setStorageSync("province", val);
+      setCollection(state, val) {
+         state.collection = val;
+         uni.setStorageSync("collection", val)
       },
+      setProblemList(state, val) {
+         state.problemList = val;
+         uni.setStorageSync("problemList", val)
+      }
 
    },
    getters: {},

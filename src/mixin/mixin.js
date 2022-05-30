@@ -10,17 +10,12 @@ export default {
          },
          methods: {
             /**跳转 */
-            mix_jumpUrl(url, query, shield) {
-               shield = shield || false;
-               if (shield) {
-                  uni.showToast({ title: "当前板块正在开发中", icon: "none" });
+            mix_jumpUrl(url, query) {
+               let tabList = ["/pages/home/home", "/pages/project/project", "/pages/practice/practice", "/pages/user/user"];
+               if (tabList.includes(url)) {
+                  uni.switchTab({ url });
                } else {
-                  let tabList = ["pages/home/home", "/pages/project/project", "pages/practice/practice", "pages/user/user"];
-                  if (tabList.indexOf(url) !== -1) {
-                     uni.switchTab({ url });
-                  } else {
-                     uni.navigateTo({ url: url + (query ? `?${qs.stringify(query)}` : "") });
-                  }
+                  uni.navigateTo({ url: url + (query ? `?${qs.stringify(query)}` : "") });
                }
             },
          },

@@ -8,9 +8,9 @@ module.exports = {
    lintOnSave: false, // 关闭esline验证
    publicPath: "/",
    outputDir: "dist",
-   productionSourceMap: process.env.NODE_ENV === "production" ? false : true, //生产环境不生产map文件
+   productionSourceMap: true,
    devServer: {
-      // open: true, //浏览器自动打开页面
+      open: true, //浏览器自动打开页面
       // port: 8009,
       proxy: {
          "/api": {

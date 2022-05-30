@@ -62,6 +62,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .send-messages {
+   width: auto;
    white-space: nowrap;
    text {
       font-size: 40rpx;

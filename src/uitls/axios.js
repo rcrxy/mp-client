@@ -35,17 +35,16 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
    response => {
       if (response.data.code !== 200) {
-         console.log(response);
-         uni.showModal({
-            content: response.data.message,
-            showCancel: false,
-            success: res => {
-               let { data } = response;
-               if (data.resultCode === "403") {
+         const { data } = response;
+         if (data.resultCode === "403") {
+            uni.showModal({
+               content: "登录失效，请重新登录",
+               showCancel: false,
+               success: res => {
                   uni.navigateTo({ url: "/pages/common/Login" });
-               }
-            },
-         });
+               },
+            });
+         }
       }
       return Promise.resolve(response.data);
    },

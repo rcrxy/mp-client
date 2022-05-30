@@ -22,6 +22,7 @@
 import { getUserInfoAPI } from "@/servers/ServersCommon";
 import { postSetUserInfoAPI } from "@/servers/ServersUser";
 import { mapMutations } from "vuex";
+import { requestAndroidPermission } from "@/common/permission";
 import qs from "qs";
 export default {
    data() {
@@ -80,28 +81,36 @@ export default {
          }
          this.showSetSex = false;
       },
-      changeAvatar() {
+      async changeAvatar() {
          const that = this;
-         uni.chooseImage({
-            count: 1,
-            sizeType: ["original"],
-            sourceType: ["album"],
-            success: res => {
-               this.avatarUrl = res.tempFilePaths[0];
-               // uni.getFileSystemManager().readFile({
-               //    filePath: res.tempFilePaths[0], //选择图片返回的相对路径
-               //    encoding: "base64", //编码格式
-               //    success: res => {
-               //       //成功的回调
-               //       console.log(res);
-               //       let base64 = "data:image/jpeg;base64," + res.data; //不加上这串字符，在页面无法显示的哦
-               //    },
-               //    fail: e => {
-               //       console.log("图片上传失败");
-               //    },
-               // });
-            },
-         });
+         const result = await requestAndroidPermission("android.permission.READ_EXTERNAL_STORAGE");
+         if (result == 1) {
+            uni.chooseImage({
+               count: 1,
+               sizeType: ["original"],
+               sourceType: ["album"],
+               success: (res) => {
+                  this.avatarUrl = res.tempFilePaths[0];
+                  // uni.getFileSystemManager().readFile({
+                  //    filePath: res.tempFilePaths[0], //选择图片返回的相对路径
+                  //    encoding: "base64", //编码格式
+                  //    success: res => {
+                  //       //成功的回调
+                  //       console.log(res);
+                  //       let base64 = "data:image/jpeg;base64," + res.data; //不加上这串字符，在页面无法显示的哦
+                  //    },
+                  //    fail: e => {
+                  //       console.log("图片上传失败");
+                  //    },
+                  // });
+               },
+            });
+         } else {
+            uni.showToast({
+               icon: "none",
+               title: "您拒绝了存储授权，请先前往设置中打开",
+            });
+         }
       },
       jumpUrl(url) {
          uni.navigateTo({ url });

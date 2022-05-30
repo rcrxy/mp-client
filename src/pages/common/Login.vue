@@ -22,7 +22,7 @@
                         <u-icon class="inputLeftIcon" name="lock-fill" color="#cccccc" size="30"></u-icon>
                         <u-input v-model="fromCode.smsCode" placeholder="输入验证码" border="none"></u-input>
                      </view>
-                     <send-messages :mobile="fromCode.mobile" @getCode="getCode" :scale="1.15"></send-messages>
+                     <send-messages :mobile="fromCode.mobile" @getCode="getCode"></send-messages>
                   </view>
                   <u-button class="submit" @click="onSubmit" type="success">登录</u-button>
                </view>

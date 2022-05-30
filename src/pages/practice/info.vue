@@ -48,7 +48,7 @@ export default {
             { name: "每日一练", image: require("../../static/images/practiceIcon1.png"), url: "/pages/practice/common/WorkProblem" },
             { name: "模拟考试", image: require("../../static/images/practiceIcon2.png"), url: "/pages/practice/common/info/mockExam" },
             { name: "我的收藏", image: require("../../static/images/practiceIcon4.png"), url: "/pages/practice/subjectCollection" },
-            { name: "我的错题", image: require("../../static/images/practiceIcon5.png"), url: "/pages/practice/subjectCollection" },
+            // { name: "我的错题", image: require("../../static/images/practiceIcon5.png"), url: "/pages/practice/subjectCollection" },
             { name: "题库纠错", image: require("../../static/images/practiceIcon6.png"), url: "/pages/user/common/Feedback" },
          ],
          sublevelOptions: [],

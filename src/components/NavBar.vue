@@ -1,15 +1,13 @@
 <template>
    <view>
-      <u-navbar :is-back="false" :border="false" :safeAreaInsetTop="true" fixed>
-         <template #left>
+      <u-navbar :is-back="false" :border="false" :safeAreaInsetTop="true" fixed @leftClick="mix_jumpUrl('/pages/practice/practice')">
+         <template slot="left">
             <view class="status_bar">
-               <!-- <view class="left" @click="showPopup = true">
-               <u-icon name="map" color="#000000" size="35"></u-icon>
-               <text class="name">{{ province }}</text>
-            </view> -->
-               <u-search @search="search" :placeholder="placeholder" v-model="searchValue" :clearabled="true" :show-action="false"></u-search>
-               <u-icon name="kefu-ermai" color="#000000" size="20"></u-icon>
+               <u-search disabled :placeholder="placeholder" v-model="searchValue" :show-action="false"></u-search>
             </view>
+         </template>
+         <template slot="right">
+            <u-icon name="kefu-ermai" color="#000000" size="20" @click="mix_jumpUrl('/pages/common/CustomerService')"></u-icon>
          </template>
       </u-navbar>
 
@@ -44,20 +42,13 @@ export default {
          this.province = val;
          this.$refs.drawerLeft.close();
       },
-      clickRight() {},
-      search() {
-         console.log(this.searchValue);
-      },
-      jumpUrl(url) {
-         console.log(url);
-      },
    },
 };
 </script>
 
 <style lang="scss" scoped>
 .status_bar {
-   width: 90vw;
+   width: 85vw;
    margin: auto;
    display: flex;
    flex-direction: row;

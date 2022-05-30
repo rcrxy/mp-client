@@ -13,6 +13,7 @@
 
 <script>
 import { postUserCollectionAPI } from "@/servers/ServersUser";
+import { mapMutations } from "vuex";
 export default {
    data() {
       return {
@@ -21,13 +22,13 @@ export default {
       };
    },
    async onLoad({ subject }) {
-      // subject = "化学";
       this.subject = subject;
       this.collectList = await this.postUserCollection(subject);
    },
    filters: {
       as_text(val) {
-         const newVal = val.replace(/<img src='[\S]+' \/>/, " <i>图片</i> ");
+         let newVal = val.replace(/<img src='[\S]+' \/>/, " <i>图片</i> ").replace(/<br>/g, " ");
+         newVal = "<div class='content' style='overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical;'>".concat(newVal).concat("</div>");
          return newVal;
       },
    },
@@ -36,22 +37,18 @@ export default {
       uni.stopPullDownRefresh();
    },
    methods: {
+      ...mapMutations(["setProblemList"]),
       /**获取题目收藏列表 */
       async postUserCollection(subject) {
          const sendData = { valueType: "question" };
          const { code, data } = await postUserCollectionAPI(sendData);
          if (code === 200) {
-            return data
-               .map(item => {
-                  if (item.valueType === "question") {
-                     return item.value;
-                  }
-               })
-               .map(item => {
-                  if (item.course === subject) {
-                     return item;
-                  }
-               });
+            const list = data
+               .filter((item) => item.valueType === "question")
+               .map((item) => item.value)
+               .filter((item) => item.course === subject);
+            this.setProblemList(list);
+            return list;
          }
       },
       /**分组筛选 */
@@ -62,6 +59,9 @@ export default {
          } else {
             return nowList;
          }
+      },
+      showType(val) {
+         return val.questionType;
       },
    },
 };
@@ -74,6 +74,16 @@ export default {
    justify-content: flex-start;
    .tag {
       margin-right: 10rpx;
+   }
+}
+uni-rich-text {
+   .content {
+      background-color: aqua !important;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
    }
 }
 </style>

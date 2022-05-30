@@ -18,6 +18,7 @@
       /* 空白页 */ { "path": "pages/common/blank", "style": { "navigationStyle": "custom" } },
 
       /* 首页 HomeIndex */ { "path": "pages/home/home", "style": { "navigationStyle": "custom" } },
+      // /* 首页 HomeIndex */ { "path": "pages/home/home", "style": { "navigationBarTitleText": "成考辅导" } },
       /* 成绩查询 ScoreQuery */ { "path": "pages/home/tabs/ScoreQuery", "style": { "navigationBarTitleText": "成绩查询" } },
       /* 成考指南 Guide */ { "path": "pages/home/tabs/Guide", "style": { "navigationBarTitleText": "成考指南" } },
       /* 报名时间 Time */ { "path": "pages/home/process/Time", "style": { "navigationBarTitleText": "报名时间" } },
@@ -55,7 +56,7 @@
       /* 题库 practice */ { "path": "pages/practice/practice", "style": { "navigationStyle": "custom", "enablePullDownRefresh": true } },
       /* 题库内容 info */ { "path": "pages/practice/info", "style": { "navigationBarTitleText": "题库" } },
       /* 模拟练习 mockExam */ { "path": "pages/practice/common/info/mockExam", "style": { "navigationBarTitleText": "模拟练习" } },
-      /* 做题 WorkProblem */ { "path": "pages/practice/common/WorkProblem", "style": { "navigationBarTitleText": "模拟练习" } },
+      /* 做题 WorkProblem */ { "path": "pages/practice/common/WorkProblem", "style": { "navigationStyle": "custom" } },
       /* 我的收藏(仅当前科目) */ { "path": "pages/practice/subjectCollection", "style": { "navigationBarTitleText": "我的收藏", "enablePullDownRefresh": true } },
 
       /* 我的 user */ { "path": "pages/user/user", "style": { "navigationStyle": "custom" } },
@@ -67,7 +68,7 @@
       /* 新增地址 AddAddress */ { "path": "pages/user/Information/AddAddress", "style": { "navigationBarTitleText": "新增地址" } },
 
       /* 我的订单 UserOrder */ { "path": "pages/user/UserOrder", "style": { "navigationBarTitleText": "我的订单" } },
-      /* 我的收藏 UserCollection */ { "path": "pages/user/UserCollection", "style": { "navigationBarTitleText": "我的收藏" } },
+      /* 我的收藏 UserCollection */ { "path": "pages/user/UserCollection", "style": { "navigationBarTitleText": "我的收藏", "enablePullDownRefresh": true } },
 
       /* 软件设置 Setting */ { "path": "pages/user/Setting", "style": { "navigationBarTitleText": "软件设置" } },
 
