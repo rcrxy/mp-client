@@ -28,7 +28,7 @@ export default {
          tabsList: ["课程", "题目"],
       };
    },
-   // FIXME: 无效
+   // FIXME: 下拉刷新暂时无效
    async onPullDownRefresh() {
       await this.$refs.problemList.postUserCollection();
       uni.stopPullDownRefresh();

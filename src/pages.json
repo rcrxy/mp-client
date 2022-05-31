@@ -60,7 +60,7 @@
       /* 我的收藏(仅当前科目) */ { "path": "pages/practice/subjectCollection", "style": { "navigationBarTitleText": "我的收藏", "enablePullDownRefresh": true } },
 
       /* 我的 user */ { "path": "pages/user/user", "style": { "navigationStyle": "custom" } },
-      /* 个人信息 Information */ { "path": "pages/user/Information", "style": { "navigationBarTitleText": "个人信息", "enablePullDownRefresh": true } },
+      /* 账户设置 Information */ { "path": "pages/user/Information", "style": { "navigationBarTitleText": "账户设置", "enablePullDownRefresh": true } },
       /* 通知消息 Notice */ { "path": "pages/user/Notice", "style": { "navigationBarTitleText": "通知消息" } },
       /* 修改信息 ChangeInfo*/ { "path": "pages/user/Information/ChangeInfo", "style": { "navigationBarTitleText": "修改信息" } },
       /* 修改密码 changePassword*/ { "path": "pages/user/Information/changePassword", "style": { "navigationBarTitleText": "修改密码" } },
