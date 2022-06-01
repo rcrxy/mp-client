@@ -9,6 +9,7 @@ export default new Vuex.Store({
       questions: uni.getStorageSync("questions") || {},
       collection: uni.getStorageSync("collection") || [],
       problemList: uni.getStorageSync("problemList") || [],
+      push: uni.getStorageSync("push") || false,
    },
    mutations: {
       setToken(state, val) {
@@ -30,8 +31,11 @@ export default new Vuex.Store({
       setProblemList(state, val) {
          state.problemList = val;
          uni.setStorageSync("problemList", val)
+      },
+      setPush(state, val) {
+         state.push = val;
+         uni.setStorageSync("push", val);
       }
-
    },
    getters: {},
    actions: {},

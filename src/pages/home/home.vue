@@ -46,7 +46,7 @@
          <view class="columnTitle">
             <view class="left">
                <view class="leftIcon"></view>
-               <text class="text">热门专业</text>
+               <text class="text">{{ push ? "推荐专业" : "热门专业" }}</text>
             </view>
             <view class="right" @click="mix_jumpUrl('/pages/home/Specialized')">
                <text>更多专业</text>
@@ -80,8 +80,8 @@ import ProcessList from "@/pages/home/components/home/ProcessList.vue";
 import SpecializedList from "@/pages/home/components/home/SpecializedList.vue";
 import ProjectList from "@/pages/home/components/home/ProjectList.vue";
 import vNavBar from "@/components/NavBar.vue";
-import { getNewsAPI } from "@/servers/ServersHome";
 import news from "@/static/json/news.json";
+import { mapState } from "vuex";
 
 export default {
    components: {
@@ -100,11 +100,16 @@ export default {
             value: "会计学专业培养具有良好思想道德品质，进一步系统地掌握本科水平的会计...",
          },
          newsList: [],
+         push: false,
       };
+   },
+   onShow() {
+      this.push = this.$store.state.push;
    },
    created() {
       this.getNews();
    },
+
    methods: {
       async getNews() {
          this.news = news[0];

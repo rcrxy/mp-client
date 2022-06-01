@@ -26,7 +26,7 @@
 <script>
 import { getUserInfoAPI } from "@/servers/ServersCommon";
 import { postSetUserInfoAPI } from "@/servers/ServersUser";
-import { mapMutations } from "vuex";
+import { mapMutations, mapState } from "vuex";
 import { requestAndroidPermission } from "@/common/permission";
 import qs from "qs";
 export default {
@@ -44,10 +44,12 @@ export default {
          avatar: null,
          avatarUrl: "https://img01.yzcdn.cn/vant/cat.jpeg",
          disabledPush: false,
+         push: false,
       };
    },
    onShow() {
       this.getUserInfo();
+      this.push = this.$store.state.push;
    },
    /**下拉刷新 */
    onPullDownRefresh() {
@@ -58,6 +60,7 @@ export default {
          },
       });
    },
+
    filters: {
       asSex(val) {
          switch (val) {
@@ -71,7 +74,7 @@ export default {
       },
    },
    methods: {
-      ...mapMutations(["setUserInfo"]),
+      ...mapMutations(["setUserInfo", "setPush"]),
       async getUserInfo() {
          let { code, data } = await getUserInfoAPI();
          if (code === 200) {
@@ -95,7 +98,7 @@ export default {
                count: 1,
                sizeType: ["original"],
                sourceType: ["album"],
-               success: (res) => {
+               success: res => {
                   this.avatarUrl = res.tempFilePaths[0];
                   // uni.getFileSystemManager().readFile({
                   //    filePath: res.tempFilePaths[0], //选择图片返回的相对路径
@@ -146,6 +149,7 @@ export default {
                   icon: "none",
                });
             }
+            this.setPush(this.push);
             this.disabledPush = false;
          }, time);
       },
