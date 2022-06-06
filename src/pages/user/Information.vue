@@ -10,11 +10,6 @@
       <u-cell :border="false" isLink title="手机号码" :value="userInfo.mobile" @click="jumpChangePage({ title: '手机', name: 'mobile', info: userInfo.userName })"></u-cell>
       <u-cell :border="false" isLink title="修改密码" @click="mix_jumpUrl('/pages/user/Information/changePassword')"></u-cell>
       <u-cell :border="false" isLink title="地址管理" @click="jumpUrl('/pages/user/Information/Address')"></u-cell>
-      <u-cell :border="false" clickable title="个性化推送">
-         <template #value>
-            <u-switch v-model="push" :disabled="disabledPush" activeColor="#4cd964" @change="pushChange"></u-switch>
-         </template>
-      </u-cell>
 
       <!-- 修改性别 -->
       <u-picker :show="showSetSex" :columns="sexArray" keyName="label" @confirm="setSex" @cancel="showSetSex = false" title="选择性别"></u-picker>
@@ -44,12 +39,10 @@ export default {
          avatar: null,
          avatarUrl: "https://img01.yzcdn.cn/vant/cat.jpeg",
          disabledPush: false,
-         push: false,
       };
    },
    onShow() {
       this.getUserInfo();
-      this.push = this.$store.state.push;
    },
    /**下拉刷新 */
    onPullDownRefresh() {
@@ -74,7 +67,7 @@ export default {
       },
    },
    methods: {
-      ...mapMutations(["setUserInfo", "setPush"]),
+      ...mapMutations(["setUserInfo"]),
       async getUserInfo() {
          let { code, data } = await getUserInfoAPI();
          if (code === 200) {
@@ -128,30 +121,6 @@ export default {
          uni.navigateTo({
             url: `/pages/user/Information/ChangeInfo?${qs.stringify(data)}`,
          });
-      },
-      pushChange() {
-         const time = Math.random() * (500 - 100) + 100;
-         this.disabledPush = true;
-         uni.showLoading({
-            title: "加载中",
-            mask: true,
-         });
-         setTimeout(() => {
-            uni.hideLoading();
-            if (this.push) {
-               uni.showToast({
-                  title: "个性推送开启",
-                  icon: "none",
-               });
-            } else {
-               uni.showToast({
-                  title: "个性推送关闭",
-                  icon: "none",
-               });
-            }
-            this.setPush(this.push);
-            this.disabledPush = false;
-         }, time);
       },
    },
 };

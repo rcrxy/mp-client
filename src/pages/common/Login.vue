@@ -72,6 +72,9 @@ export default {
             mobile: "",
             smsCode: "",
             smsId: "",
+            // #ifdef APP-PLUS
+            source: plus.runtime.channel,
+            // #endif
          },
          fromPwd: {
             mobile: "",
