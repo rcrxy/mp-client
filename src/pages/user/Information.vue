@@ -1,7 +1,7 @@
 <template>
    <view id="information">
       <u-cell :border="false" title="头像" :arrow="false" @click="changeAvatar">
-         <u-image slot="right-icon" width="100rpx" height="100rpx" :src="avatarUrl" shape="circle" :lazy-load="true"></u-image>
+         <u-image slot="right-icon" width="100rpx" height="100rpx" :src="userInfo.headImg" shape="circle" :lazy-load="true"></u-image>
       </u-cell>
 
       <u-cell :border="false" isLink title="用户名" :value="userInfo.userName || userInfo.mobile" @click="jumpChangePage({ title: '用户名', name: 'userName', info: userInfo.userName })"></u-cell>
@@ -23,6 +23,7 @@ import { getUserInfoAPI } from "@/servers/ServersCommon";
 import { postSetUserInfoAPI } from "@/servers/ServersUser";
 import { mapMutations, mapState } from "vuex";
 import { requestAndroidPermission } from "@/common/permission";
+import { pathToBase64, base64ToPath } from "@/common/image-tools";
 import qs from "qs";
 export default {
    data() {
@@ -85,26 +86,37 @@ export default {
       },
       async changeAvatar() {
          const that = this;
-         const result = await requestAndroidPermission("android.permission.READ_EXTERNAL_STORAGE");
+         let result = true;
+         // #ifdef APP-PLUS
+         result = await requestAndroidPermission("android.permission.READ_EXTERNAL_STORAGE");
+         // #endif
+
          if (result == 1) {
             uni.chooseImage({
                count: 1,
                sizeType: ["original"],
                sourceType: ["album"],
-               success: res => {
-                  this.avatarUrl = res.tempFilePaths[0];
-                  // uni.getFileSystemManager().readFile({
-                  //    filePath: res.tempFilePaths[0], //选择图片返回的相对路径
-                  //    encoding: "base64", //编码格式
-                  //    success: res => {
-                  //       //成功的回调
-                  //       console.log(res);
-                  //       let base64 = "data:image/jpeg;base64," + res.data; //不加上这串字符，在页面无法显示的哦
-                  //    },
-                  //    fail: e => {
-                  //       console.log("图片上传失败");
-                  //    },
-                  // });
+               success: async res => {
+                  const info = res.tempFiles[0];
+                  const isLt2M = info.size / 1024 / 1024 < 2;
+
+                  if (isLt2M) {
+                     const path = res.tempFilePaths[0];
+                     let img = await pathToBase64(path);
+                     const { code, data } = await postSetUserInfoAPI({ headImg: img });
+                     if (code === 200) {
+                        uni.showToast({
+                           icon: "none",
+                           title: "修改成功",
+                        });
+                        this.setUserInfo(data);
+                     }
+                  } else {
+                     uni.showToast({
+                        icon: "none",
+                        title: "头像大小不能超过2M",
+                     });
+                  }
                },
             });
          } else {
