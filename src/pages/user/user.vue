@@ -3,7 +3,7 @@
       <view id="myCon" ref="myCon">
          <view class="userInfo">
             <view class="avatar" @click="mix_jumpUrl('/pages/user/Information')">
-               <image src="https://img01.yzcdn.cn/vant/cat.jpeg" mode="aspectFill" />
+               <image :src="userInfo.headImg ? userInfo.headImg : 'https://img01.yzcdn.cn/vant/cat.jpeg'" mode="aspectFill" />
                <text class="text name">{{ userInfo.userName }}</text>
                <text class="text sign">{{ userInfo.sign === "null" ? "还没设置签名~" : userInfo.sign }}</text>
             </view>

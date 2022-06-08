@@ -15,6 +15,8 @@
       <u-picker :show="showSetSex" :columns="sexArray" keyName="label" @confirm="setSex" @cancel="showSetSex = false" title="选择性别"></u-picker>
 
       <u-toast ref="uToast" />
+
+      <compress-image ref="compressImage"></compress-image>
    </view>
 </template>
 
@@ -24,8 +26,12 @@ import { postSetUserInfoAPI } from "@/servers/ServersUser";
 import { mapMutations, mapState } from "vuex";
 import { requestAndroidPermission } from "@/common/permission";
 import { pathToBase64, base64ToPath } from "@/common/image-tools";
+import compressImage from "@/common/compressImage.vue";
 import qs from "qs";
 export default {
+   components: {
+      compressImage,
+   },
    data() {
       return {
          userInfo: {},
@@ -40,6 +46,7 @@ export default {
          avatar: null,
          avatarUrl: "https://img01.yzcdn.cn/vant/cat.jpeg",
          disabledPush: false,
+         canvasSize: "width:100px;height100px",
       };
    },
    onShow() {
@@ -102,15 +109,49 @@ export default {
 
                   if (isLt2M) {
                      const path = res.tempFilePaths[0];
-                     let img = await pathToBase64(path);
-                     const { code, data } = await postSetUserInfoAPI({ headImg: img });
-                     if (code === 200) {
-                        uni.showToast({
-                           icon: "none",
-                           title: "修改成功",
+
+                     this.$refs.compressImage
+                        .compress({
+                           src: path,
+                           maxSize: 50,
+                           fileType: "jpg",
+                           quality: 0.85,
+                           minSize: -1,
+                        })
+                        .then(async res => {
+                           let img = res;
+                           // #ifdef APP-PLUS
+                           img = await pathToBase64(res);
+                           // #endif
+                           postSetUserInfoAPI({ headImg: img })
+                              .then(res => {
+                                 const { code, data } = res;
+                                 if (code === 200) {
+                                    uni.showToast({
+                                       icon: "none",
+                                       title: "修改成功",
+                                    });
+                                    this.userInfo = data;
+                                    this.setUserInfo(data);
+                                 } else {
+                                    uni.showToast({
+                                       icon: "none",
+                                       title: "修改失败",
+                                    });
+                                 }
+                              })
+                              .catch(err => {
+                                 uni.showToast({
+                                    icon: "none",
+                                    title: "修改失败",
+                                 });
+                                 console.log(err);
+                              });
+                        })
+                        .catch(err => {
+                           console.log(err);
+                           // 压缩失败回调
                         });
-                        this.setUserInfo(data);
-                     }
                   } else {
                      uni.showToast({
                         icon: "none",
@@ -138,4 +179,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+#canvas {
+   display: none;
+}
+</style>
