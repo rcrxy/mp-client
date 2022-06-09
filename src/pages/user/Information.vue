@@ -105,7 +105,7 @@ export default {
                sourceType: ["album"],
                success: async res => {
                   const info = res.tempFiles[0];
-                  const isLt2M = info.size / 1024 / 1024 < 2;
+                  const isLt2M = info.size / 1024 / 1024 < 10;
 
                   if (isLt2M) {
                      const path = res.tempFilePaths[0];
@@ -113,9 +113,9 @@ export default {
                      this.$refs.compressImage
                         .compress({
                            src: path,
-                           maxSize: 50,
+                           maxSize: 60,
                            fileType: "jpg",
-                           quality: 0.85,
+                           quality: 1,
                            minSize: -1,
                         })
                         .then(async res => {
