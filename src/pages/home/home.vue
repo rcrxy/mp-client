@@ -79,7 +79,7 @@ import SynthesisList from "@/pages/home/components/home/SynthesisList.vue";
 import ProcessList from "@/pages/home/components/home/ProcessList.vue";
 import SpecializedList from "@/pages/home/components/home/SpecializedList.vue";
 import ProjectList from "@/pages/home/components/home/ProjectList.vue";
-import vNavBar from "@/components/NavBar.vue";
+import vNavBar from "@/pages/home/components/NavBar.vue";
 import news from "@/static/json/news.json";
 import { mapState } from "vuex";
 

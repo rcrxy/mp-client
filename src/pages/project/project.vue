@@ -3,14 +3,14 @@
       <c-tabs-group class="tabs" v-model="tabIndex" :list="['所有课程', '我的课程']"></c-tabs-group>
       <swiper class="tabsContent" :current="tabIndex" @change="swiperChange">
          <swiper-item>
-            <project-card v-for="(item, index) in allProjectList" :key="index" :data="item" text="点击试看" @click.native="mix_jumpUrl('/pages/project/ProjectContent', item)"></project-card>
+            <project-card v-for="(item, index) in allProjectList" :key="index" :data="item" text="查看详情" @click.native="mix_jumpUrl('/pages/project/ProjectContent', item)"></project-card>
          </swiper-item>
          <swiper-item>
             <view class="emptyState" v-if="myProjectList.length === 0">
                <image src="~static/images/emptyImg.png" mode="widthFix" />
             </view>
             <view v-else>
-               <project-card v-for="(item, index) in myProjectList" :key="index" :data="item" text="立即观看" @click.native="mix_jumpUrl('/pages/project/ProjectContent', item)"></project-card>
+               <project-card v-for="(item, index) in myProjectList" :key="index" :data="item" text="查看详情" @click.native="mix_jumpUrl('/pages/project/ProjectContent', item)"></project-card>
             </view>
          </swiper-item>
       </swiper>

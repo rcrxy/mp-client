@@ -3,7 +3,7 @@
       <view class="top">
          <image :src="logo" mode="widthFix" />
          <text class="name">成考辅导</text>
-         <text class="version">版本号：1.0.0</text>
+         <text class="version" v-if="v">版本号：{{v}}</text>
       </view>
 
       <u-cell title="官方网站" value="www.njjcjykj.cn" :arrow="false" hover-class="none"></u-cell>
@@ -18,6 +18,9 @@ export default {
    data() {
       return {
          logo: require("@/static/images/144x144.png"),
+         // #ifdef APP-PLUS
+         v: plus.runtime.version,
+         // #endif
       };
    },
    methods: {},

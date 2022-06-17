@@ -10,6 +10,7 @@ export default new Vuex.Store({
       collection: uni.getStorageSync("collection") || [],
       problemList: uni.getStorageSync("problemList") || [],
       push: uni.getStorageSync("push") || false,
+      province: uni.getStorageSync("province") || "",
    },
    mutations: {
       setToken(state, val) {
@@ -35,8 +36,10 @@ export default new Vuex.Store({
       setPush(state, val) {
          state.push = val;
          uni.setStorageSync("push", val);
+      },
+      setProvince(state, val) {
+         state.province = val;
+         uni.setStorageSync("province", val);
       }
    },
-   getters: {},
-   actions: {},
 });

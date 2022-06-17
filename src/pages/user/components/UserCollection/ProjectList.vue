@@ -36,7 +36,7 @@
                      <view class="purchases">讲师: {{ item.teacher }}</view>
                   </view>
                   <view class="right">
-                     <text>点击试看 ></text>
+                     <text>查看详情 ></text>
                   </view>
                </view>
             </view>
