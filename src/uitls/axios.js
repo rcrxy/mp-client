@@ -22,8 +22,16 @@ const instance = axios.create({
 instance.interceptors.request.use(
    config => {
       config.headers["token"] = uni.getStorageSync("token") || "";
-      // config.headers["Content-Type"] = "application/json;charset=utf-8";
-      return config;
+
+      const { url } = config;
+      const urlReg = /^(http|https)/;
+      if (urlReg.test(url)) {
+         config.baseURL = "";
+         return config
+      } else {
+         return config;
+      }
+
    },
    error => {
       // 对请求错误做些什么

@@ -1,4 +1,5 @@
 import { get, post } from "@/uitls/axios.js";
+import axios from "axios";
 
 /**账号密码登录 */
 export function postAccountLoginAPI(parmas) {
@@ -31,4 +32,9 @@ export function getUserInfoAPI() {
 /**获取科目列表 */
 export function postCourseListAPI() {
    return post("/course/get");
+}
+
+/** 地理信息逆编码 */
+export function addressInverseCodingAPI(params) {
+   return get("http://api.tianditu.gov.cn/geocoder", params)
 }
