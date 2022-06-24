@@ -4,7 +4,7 @@
       <view style="height: var(--status-bar-height); width: 100%"></view>
       <!-- #endif -->
       <view class="content">
-         <view v-if="true" class="address" @click="changePicker">
+         <view v-if="false" class="address" @click="changePicker">
             <u-icon name="map" size="20"></u-icon>
             <text class="name">{{ nowProvince }}</text>
          </view>
@@ -37,7 +37,7 @@ export default {
       };
    },
    created() {
-      this.getAddress();
+      // this.getAddress();
    },
    methods: {
       async changePicker() {
