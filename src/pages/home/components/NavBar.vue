@@ -4,9 +4,9 @@
       <view style="height: var(--status-bar-height); width: 100%"></view>
       <!-- #endif -->
       <view class="content">
-         <view v-if="false" class="address" @click="changePicker">
+         <view v-if="true" class="address" @click="changePopup">
             <u-icon name="map" size="20"></u-icon>
-            <text class="name">{{ nowProvince }}</text>
+            <text class="name">{{ nowProvince || getProvince || "北京市" }}</text>
          </view>
          <view class="status_bar" @click="mix_jumpUrl('/pages/practice/practice')">
             <u-search disabled :placeholder="placeholder" v-model="searchValue" :show-action="false"></u-search>
@@ -14,41 +14,64 @@
          <u-icon class="customerService" name="kefu-ermai" color="#000000" size="20" @click="mix_jumpUrl('/pages/common/CustomerService')"></u-icon>
       </view>
 
-      <u-picker :show="showPicker" :defaultIndex="defaultIndex" :columns="provinceOptions" keyName="label" @cancel="showPicker = false" @confirm="handlderConfirm"></u-picker>
-
-      <!-- <uni-popup ref="popup" type="bottom">底部弹出 Popup</uni-popup> -->
+      <uni-popup ref="popup" type="bottom">
+         <view class="popupContent">
+            <view class="top">
+               <view class="left"></view>
+               <view class="title">选择省份</view>
+               <u-icon @click="closePopup" name="close" size="20"></u-icon>
+            </view>
+            <view class="now">
+               <text>当前定位:</text>
+               <u-tag :text="getProvince" @click="setProvince(getProvince)" plain></u-tag>
+            </view>
+            <scroll-view class="list" scroll-y="true">
+               <u-cell-group>
+                  <u-cell v-for="(item, index) in provinceOptions" :key="index" :title="item.label" @click="setProvince(item.label)" clickable></u-cell>
+               </u-cell-group>
+            </scroll-view>
+         </view>
+      </uni-popup>
    </view>
 </template>
 
 <script>
-import provinceOptions from "@static/json/province.json";
+import provinceJson from "@static/json/province.json";
 import { addressInverseCodingAPI } from "@/servers/ServersCommon";
 import { requestAndroidPermission } from "@/common/permission";
+import { getUserInfoAPI } from "@/servers/ServersCommon";
+import { postSetUserInfoAPI } from "@/servers/ServersUser";
 export default {
    name: "NavBar",
    data() {
       return {
-         provinceOptions,
+         provinceOptions: provinceJson[0],
          searchValue: "",
          placeholder: "大家都在搜：成人高考",
-         showPicker: false,
-         nowProvince: "北京市",
-         defaultIndex: [9],
+         nowProvince: "",
+         getProvince: "",
       };
    },
-   created() {
-      // this.getAddress();
+   async created() {
+      this.getAddress();
    },
    methods: {
-      async changePicker() {
+      async getUserInfo() {
+         const { code, data } = await getUserInfoAPI();
+         if (code === 200) {
+            return data;
+         }
+      },
+
+      async changePopup() {
          let result = true;
          // #ifdef APP-PLUS
          result = await requestAndroidPermission("android.permission.ACCESS_FINE_LOCATION");
          // #endif
 
          if (result == 1) {
-            this.getAddress();
-            this.showPicker = !this.showPicker;
+            this.getAddress(false);
+            this.$refs.popup.open();
          } else {
             uni.showToast({
                icon: "none",
@@ -56,7 +79,7 @@ export default {
             });
          }
       },
-      async getAddress() {
+      async getAddress(passive = true) {
          uni.getLocation({
             type: "gcj02",
             complete: val => {
@@ -72,16 +95,15 @@ export default {
                      tk: "075ae04a49af312b01870f400d9f1ba1",
                   };
 
-                  addressInverseCodingAPI(sendData).then(data => {
+                  addressInverseCodingAPI(sendData).then(async data => {
                      const {
                         result: { addressComponent },
                      } = data;
-                     this.nowProvince = addressComponent.province;
-                     provinceOptions[0].forEach((item, index) => {
-                        if (addressComponent.province === item.label) {
-                           this.defaultIndex[0] = index;
-                        }
-                     });
+                     this.getProvince = addressComponent.province;
+                     if (passive) {
+                        const info = await this.getUserInfo();
+                        if (!info.province || info.province == "null") postSetUserInfoAPI({ province: this.getProvince });
+                     }
                   });
                }
             },
@@ -91,13 +113,12 @@ export default {
       /**选择省份 */
       setProvince(val) {
          this.nowProvince = val;
-         this.$refs.drawerLeft.close();
+         postSetUserInfoAPI({ manualProvince: val });
+         this.$refs.popup.close();
       },
-      handlderConfirm(info) {
-         const { value } = info;
-         this.nowProvince = value[0].label;
 
-         this.showPicker = false;
+      closePopup() {
+         this.$refs.popup.close();
       },
    },
 };
@@ -167,6 +188,52 @@ export default {
          &:active {
             opacity: 0.5;
          }
+      }
+   }
+}
+
+.popupContent {
+   height: 60vh;
+   background-color: #fff;
+   overflow: hidden;
+   position: relative;
+   border-top-left-radius: 30rpx;
+   border-top-right-radius: 30rpx;
+
+   .top {
+      height: 110rpx;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 35rpx;
+      box-sizing: border-box;
+      padding: 30rpx;
+
+      .left {
+         width: 20px;
+         height: 20px;
+      }
+   }
+
+   .now {
+      height: 60rpx;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      font-size: 30rpx;
+      box-sizing: border-box;
+      padding: 0 30rpx;
+      > text {
+         margin-right: 20rpx;
+      }
+   }
+   .list {
+      margin-top: 10rpx;
+      height: calc(100% - 180rpx);
+      position: relative;
+
+      .listContent {
+         height: 100%;
       }
    }
 }
