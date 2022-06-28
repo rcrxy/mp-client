@@ -1,7 +1,7 @@
 <template>
    <view id="information">
       <u-cell :border="false" title="头像" :arrow="false" @click="changeAvatar">
-         <u-image slot="right-icon" width="100rpx" height="100rpx" :src="userInfo.headImg" shape="circle" :lazy-load="true"></u-image>
+         <u-image slot="right-icon" width="100rpx" height="100rpx" :src="userInfo.headImg ? 'http://app.jsskdx.com/' + userInfo.headImg : undefined" shape="circle" :lazy-load="true"></u-image>
       </u-cell>
 
       <u-cell :border="false" isLink title="用户名" :value="userInfo.userName || userInfo.mobile" @click="jumpChangePage({ title: '用户名', name: 'userName', info: userInfo.userName })"></u-cell>
@@ -22,10 +22,9 @@
 
 <script>
 import { getUserInfoAPI } from "@/servers/ServersCommon";
-import { postSetUserInfoAPI } from "@/servers/ServersUser";
+import { postSetUserInfoAPI, getQTokenAPI } from "@/servers/ServersUser";
 import { mapMutations, mapState } from "vuex";
 import { requestAndroidPermission } from "@/common/permission";
-import { pathToBase64, base64ToPath } from "@/common/image-tools";
 import compressImage from "@/common/compressImage.vue";
 import qs from "qs";
 export default {
@@ -52,6 +51,8 @@ export default {
    onShow() {
       this.getUserInfo();
    },
+
+   mounted() {},
    /**下拉刷新 */
    onPullDownRefresh() {
       uni.startPullDownRefresh({
@@ -108,50 +109,38 @@ export default {
                   const isLt2M = info.size / 1024 / 1024 < 10;
 
                   if (isLt2M) {
-                     const path = res.tempFilePaths[0];
-
-                     this.$refs.compressImage
-                        .compress({
-                           src: path,
-                           maxSize: 60,
-                           fileType: "jpg",
-                           quality: 1,
-                           minSize: -1,
-                        })
-                        .then(async res => {
-                           let img = res;
-                           // #ifdef APP-PLUS
-                           img = await pathToBase64(res);
-                           // #endif
-                           postSetUserInfoAPI({ headImg: img })
-                              .then(res => {
-                                 const { code, data } = res;
-                                 if (code === 200) {
-                                    uni.showToast({
-                                       icon: "none",
-                                       title: "修改成功",
-                                    });
-                                    this.userInfo = data;
-                                    this.setUserInfo(data);
-                                 } else {
-                                    uni.showToast({
-                                       icon: "none",
-                                       title: "修改失败",
-                                    });
-                                 }
-                              })
-                              .catch(err => {
-                                 uni.showToast({
-                                    icon: "none",
-                                    title: "修改失败",
+                     const { code, data } = await getQTokenAPI();
+                     if (code === 200) {
+                        uni.uploadFile({
+                           url: "http://upload-z2.qiniup.com",
+                           filePath: res.tempFilePaths[0],
+                           name: "file",
+                           formData: {
+                              token: data,
+                           },
+                           success: res => {
+                              console.log(res.data);
+                              if (typeof res.data === "string") {
+                                 const body = JSON.parse(res.data);
+                                 postSetUserInfoAPI({ headImg: body.key }).then(({ code: setCode }) => {
+                                    if (setCode === 200) {
+                                       uni.showToast({
+                                          icon: "none",
+                                          title: "修改成功",
+                                       });
+                                       this.getUserInfo();
+                                    }
                                  });
-                                 console.log(err);
+                              }
+                           },
+                           fail: val => {
+                              uni.showToast({
+                                 icon: "none",
+                                 title: "上传失败，请重试",
                               });
-                        })
-                        .catch(err => {
-                           console.log(err);
-                           // 压缩失败回调
+                           },
                         });
+                     }
                   } else {
                      uni.showToast({
                         icon: "none",

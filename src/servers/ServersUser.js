@@ -45,3 +45,8 @@ export function postdeleteAddressAPI(params) {
 export function postUserCollectionAPI(params) {
    return post("/collection/get", params);
 }
+
+/** 获取七牛云token */
+export function getQTokenAPI() {
+   return post("/upload/getToken", { "bucket": "app-pic-2022-6-13" })
+}
