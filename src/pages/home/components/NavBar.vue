@@ -52,7 +52,7 @@ export default {
          getProvince: "",
       };
    },
-   async created() {
+   created() {
       this.getAddress();
    },
    methods: {
@@ -67,6 +67,7 @@ export default {
          let result = true;
          // #ifdef APP-PLUS
          result = await requestAndroidPermission("android.permission.ACCESS_FINE_LOCATION");
+         console.log("result", result);
          // #endif
 
          if (result == 1) {
@@ -99,7 +100,7 @@ export default {
                      const {
                         result: { addressComponent },
                      } = data;
-                     this.getProvince = addressComponent.province;
+                     this.getProvince = addressComponent.province || "获取失败";
                      if (passive) {
                         const info = await this.getUserInfo();
                         if (!info.province || info.province == "null") postSetUserInfoAPI({ province: this.getProvince });
@@ -112,9 +113,13 @@ export default {
 
       /**选择省份 */
       setProvince(val) {
-         this.nowProvince = val;
-         postSetUserInfoAPI({ manualProvince: val });
-         this.$refs.popup.close();
+         if (val === "获取失败") {
+            this.getProvince();
+         } else {
+            this.nowProvince = val;
+            postSetUserInfoAPI({ manualProvince: val });
+            this.$refs.popup.close();
+         }
       },
 
       closePopup() {

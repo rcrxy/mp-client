@@ -1,5 +1,20 @@
 import { get, post } from "@/uitls/axios.js";
 
+/** 获取课程层次 */
+export function getCourseLevel_API() {
+   return get("/api/course/getLevel");
+}
+
+/** 获取课程类别 */
+export function getCourseCategory_API(params) {
+   return get("/api/course/getCategory", params);
+}
+
+/**获取科目列表 */
+export function postCourseListAPI(params) {
+   return post("/api/course/get", params);
+}
+
 /**获取题目列表
  * @param {Object} params
  * @param {String} params.course - 科目名称

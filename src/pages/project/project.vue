@@ -20,7 +20,7 @@
 <script>
 import cTabsGroup from "@/components/customize/c-tabs-group.vue";
 import projectCard from "./components/projectIndex/projectCard.vue";
-import { postCourseListAPI } from "@/servers/ServersCommon";
+import { postCourseListAPI } from "@/servers/ServersPractice";
 export default {
    components: {
       cTabsGroup,

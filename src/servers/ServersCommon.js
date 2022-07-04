@@ -29,10 +29,6 @@ export function getUserInfoAPI() {
    return get("/user/info");
 }
 
-/**获取科目列表 */
-export function postCourseListAPI() {
-   return post("/course/get");
-}
 
 /** 地理信息逆编码 */
 export function addressInverseCodingAPI(params) {

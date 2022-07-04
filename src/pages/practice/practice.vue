@@ -1,15 +1,18 @@
 <template>
    <view class="main">
       <v-nav-bar></v-nav-bar>
-      <view class="list" v-if="options.length >= 1">
+      <view class="skeleton">
+         <u-skeleton rows="3" :loading="loading"></u-skeleton>
+      </view>
+      <view class="list" v-if="options.length >= 1 && !loading">
          <view class="li" v-for="item in options" :key="item.id" @click="mix_jumpUrl('/pages/practice/info', item)">
             <view class="info">
                <text class="title">{{ item.className }}</text>
                <view class="tag" style="background-color: #709eff">
-                  <text>{{ item.firstType }}</text>
+                  <text>{{ item.level }}</text>
                </view>
-               <view v-if="item.secondType" class="tag" style="background-color: #eb5cf4">
-                  <text>{{ item.secondType }}</text>
+               <view v-if="item.category" class="tag" style="background-color: #eb5cf4">
+                  <text>{{ item.category }}</text>
                </view>
             </view>
             <view class="button">
@@ -18,7 +21,7 @@
             </view>
          </view>
       </view>
-      <view class="nullHint" v-else>
+      <view class="nullHint" v-else-if="options.length <= 0 && !loading">
          <view>
             <image src="~static/images/emptyImg.png" mode="widthFix" />
             <text>尚未找到符合的课程~</text>
@@ -30,7 +33,7 @@
 <script>
 import bus from "@/uitls/bus";
 import vNavBar from "./components/NavBar.vue";
-import { postCourseListAPI } from "@/servers/ServersCommon";
+import { postCourseListAPI } from "@/servers/ServersPractice";
 export default {
    components: {
       vNavBar,
@@ -38,16 +41,14 @@ export default {
    data() {
       return {
          options: [],
-         allData: [],
          loading: false,
          finished: true,
-         loading: false,
       };
    },
    created() {
       this.postCourseList();
-      bus.$on("practiceSearch", val => {
-         this.searchResult(val);
+      bus.$on("searchCourse", val => {
+         this.postCourseList(val);
       });
    },
    // 下拉刷新重载数据
@@ -56,29 +57,13 @@ export default {
       uni.stopPullDownRefresh();
    },
    methods: {
-      async postCourseList() {
-         const { code, data } = await postCourseListAPI();
+      async postCourseList(form) {
+         this.loading = true;
+         const { code, data } = await postCourseListAPI(form);
          if (code === 200) {
-            this.allData = data;
-            this.allData.forEach((item, index) => {
-               item.id = index;
-            });
-            this.options = this.allData;
+            this.options = data.map((item, index) => ({ ...item, id: index }));
          }
-         if (this.options === 0) this.postCourseList();
-      },
-      // 返回搜索结果
-      searchResult(val) {
-         if (!val) {
-            this.options = this.allData;
-         } else {
-            let newList = this.allData.filter(item => {
-               const { className, firstType, secondType } = item;
-               return className.indexOf(val) !== -1 || firstType.indexOf(val) !== -1 || secondType.indexOf(val) !== -1;
-            });
-            this.$nextTick();
-            this.options = newList ? newList : [];
-         }
+         this.loading = false;
       },
    },
 };
@@ -86,11 +71,19 @@ export default {
 
 <style lang="scss" scoped>
 .main {
-   width: 92vw;
+   width: 100vw;
    margin: auto;
-   padding-top: 88px;
+   // #ifdef H5
+   padding-top: 84px;
+   // #endif
+   .skeleton {
+      width: 92vw;
+      margin: auto;
+   }
    .list {
-      width: 100%;
+      width: 92vw;
+      margin: auto;
+      padding-bottom: 20rpx;
       .li {
          margin: 20rpx auto;
          padding: 20rpx 15rpx;

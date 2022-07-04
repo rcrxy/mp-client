@@ -108,7 +108,7 @@ export default {
                   this.setToken(acceptInfo.data.token);
                   uni.switchTab({ url: "/pages/home/home" });
                } else {
-                  uni.uToast.show({ message: "网路错误，请稍后重试", type: "error" });
+                  uni.showToast({ title: acceptInfo.message, icon: "none" });
                }
             }
          } catch (error) {
