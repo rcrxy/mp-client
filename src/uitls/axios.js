@@ -2,8 +2,10 @@ import axios from "axios";
 
 // 根据环境修改baseURL
 const baseURL = (() => {
-   const { VUE_APP_PLATFORM } = process.env;
-   if (VUE_APP_PLATFORM === "app-plus") {
+   const { VUE_APP_PLATFORM, NODE_ENV } = process.env;
+   if (NODE_ENV === "development" && VUE_APP_PLATFORM === "app-plus") {
+      return "http://192.168.2.254:23099";
+   } else if (VUE_APP_PLATFORM === "app-plus") {
       return "http://www.njjcjykj.cn:23099";
    } else {
       return "/api";
@@ -27,11 +29,10 @@ instance.interceptors.request.use(
       const urlReg = /^(http|https)/;
       if (urlReg.test(url)) {
          config.baseURL = "";
-         return config
+         return config;
       } else {
          return config;
       }
-
    },
    error => {
       // 对请求错误做些什么
@@ -39,25 +40,39 @@ instance.interceptors.request.use(
    }
 );
 
+var globalIsLogin = [];
+
 /** 添加响应拦截器  **/
 instance.interceptors.response.use(
    response => {
+      console.log("response", response);
       if (response.data.code !== 200) {
          const { data } = response;
-         if (data.resultCode === "403") {
-            uni.showModal({
-               content: "登录失效，请重新登录",
-               showCancel: false,
-               success: res => {
-                  uni.navigateTo({ url: "/pages/common/Login" });
-               },
-            });
+         if (data.code === 401) {
+            if (globalIsLogin.length === 0) {
+               globalIsLogin.push(true);
+               uni.showModal({
+                  content: "登录验证失败，请重新登录",
+                  showCancel: false,
+                  success: res => {
+                     uni.navigateTo({ url: "/pages/common/Login" });
+                     globalIsLogin.unshift();
+                  },
+               });
+            }
          }
       }
       return Promise.resolve(response.data);
    },
    error => {
       if (error.response) {
+         const { status } = error.response;
+         if (status === 500) {
+            uni.showToast({
+               icon: "none",
+               title: "网络错误，请重启应用或检查网络",
+            });
+         }
          return Promise.reject(error);
       } else {
          console.log("请求超时, 请刷新重试");

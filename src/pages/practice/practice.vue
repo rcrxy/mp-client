@@ -21,17 +21,15 @@
             </view>
          </view>
       </view>
-      <view class="nullHint" v-else-if="options.length <= 0 && !loading">
-         <view>
-            <image src="~static/images/emptyImg.png" mode="widthFix" />
-            <text>尚未找到符合的课程~</text>
-         </view>
+      <view class="nullHint" v-else-if="options.length == 0 && !loading">
+         <image src="~static/images/emptyImg.png" mode="widthFix" />
+         <text>尚未找到符合的课程~</text>
       </view>
    </view>
 </template>
 
 <script>
-import bus from "@/uitls/bus";
+import bus from "@/uitls/bus.js";
 import vNavBar from "./components/NavBar.vue";
 import { postCourseListAPI } from "@/servers/ServersPractice";
 export default {
@@ -50,6 +48,9 @@ export default {
       bus.$on("searchCourse", val => {
          this.postCourseList(val);
       });
+   },
+   beforeDestroy() {
+      bus.$off("searchCourse");
    },
    // 下拉刷新重载数据
    async onPullDownRefresh() {
@@ -137,21 +138,26 @@ export default {
       }
    }
    .nullHint {
-      position: relative;
-      > view {
-         position: absolute;
-         left: 50%;
-         transform: translate(-50%, 30px);
-         image {
-            display: block;
-            width: 460rpx;
-         }
-         text {
-            display: block;
-            margin: 50rpx auto;
-            text-align: center;
-            font-size: 30rpx;
-         }
+      width: 100vw;
+      // #ifdef H5
+      height: calc(100vh - 134px);
+      // #endif
+      // #ifndef H5
+      height: calc(100vh - var(--status-bar-height));
+      // #endif
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-flow: column nowrap;
+      image {
+         display: block;
+         width: 460rpx;
+      }
+      text {
+         display: block;
+         margin: 50rpx auto;
+         text-align: center;
+         font-size: 30rpx;
       }
    }
 }

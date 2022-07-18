@@ -1,6 +1,6 @@
 <template>
    <view class="mainBox">
-      <view style="min-height: var(--status-bar-height); width: 100%"></view>
+      <view class="statusBar" style="min-height: var(--status-bar-height); width: 100%"></view>
       <view class="navBar">
          <view class="top">
             <text>题库</text>
@@ -56,7 +56,6 @@ export default {
             this.levelList = data;
          }
       },
-
       /** 获取课程类别 */
       async getCourseCategory(level) {
          const { code, data } = await getCourseCategory_API({ level });
@@ -64,7 +63,6 @@ export default {
             this.categoryList = data;
          }
       },
-
       async changePopupShow(type) {
          if (this.timeout) {
             this.timeout = false;
@@ -90,7 +88,6 @@ export default {
             this.nowType = type;
          }
       },
-
       async itemClick(item) {
          this.showPopup = false;
          this.popupStyle = "";
@@ -118,6 +115,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.statusBar {
+   position: relative;
+   z-index: 1024;
+   background-color: #ffffff;
+}
+
 .mainBox {
    position: fixed;
    top: 0;

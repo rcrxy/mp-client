@@ -98,6 +98,7 @@ export default {
             } else {
                let acceptInfo = {};
 
+               // TODO 表单验证
                if (this.tabIndex === 0) {
                   acceptInfo = await postSmsLoginAPI(this.fromCode);
                } else {

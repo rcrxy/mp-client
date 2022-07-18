@@ -38,6 +38,11 @@ export default {
    created() {
       this.postCourseList();
    },
+   async onPullDownRefresh() {
+      await this.postCourseList();
+      uni.showToast({ icon: "none", title: "刷新成功" });
+      uni.stopPullDownRefresh();
+   },
    methods: {
       async postCourseList() {
          const { code, data } = await postCourseListAPI();
