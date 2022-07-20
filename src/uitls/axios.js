@@ -1,4 +1,5 @@
 import axios from "axios";
+import axiosAdapterUniapp from "axios-adapter-uniapp";
 
 // 根据环境修改baseURL
 const baseURL = (() => {
@@ -18,6 +19,7 @@ const instance = axios.create({
    // withCredentials: true, // send cookies when cross-domain requests 注意：withCredentials和后端配置的cross跨域不可同时使用
    timeout: 10000, // request timeout
    // crossDomain: true,
+   adapter: axiosAdapterUniapp,
 });
 
 /** 添加请求拦截器 **/
@@ -45,7 +47,6 @@ var globalIsLogin = [];
 /** 添加响应拦截器  **/
 instance.interceptors.response.use(
    response => {
-      console.log("response", response);
       if (response.data.code !== 200) {
          const { data } = response;
          if (data.code === 401) {
@@ -75,7 +76,6 @@ instance.interceptors.response.use(
          }
          return Promise.reject(error);
       } else {
-         console.log("请求超时, 请刷新重试");
          return Promise.reject(new Error("请求超时, 请刷新重试"));
       }
    }

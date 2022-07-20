@@ -15,27 +15,27 @@
                <view class="tabs left" v-show="tabIndex === 0">
                   <view class="input inputPhone">
                      <u-icon class="inputLeftIcon" name="account-fill" color="#cccccc" size="30"></u-icon>
-                     <u-input v-model="fromCode.mobile" placeholder="输入手机号" border="none"></u-input>
+                     <u-input v-model="formCode.mobile" placeholder="输入手机号" border="none"></u-input>
                   </view>
                   <view class="input code">
                      <view class="inputCode">
                         <u-icon class="inputLeftIcon" name="lock-fill" color="#cccccc" size="30"></u-icon>
-                        <u-input v-model="fromCode.smsCode" placeholder="输入验证码" border="none"></u-input>
+                        <u-input v-model="formCode.smsCode" placeholder="输入验证码" border="none"></u-input>
                      </view>
-                     <send-messages :mobile="fromCode.mobile" @getCode="getCode"></send-messages>
+                     <send-messages :mobile="formCode.mobile" @getCode="getCode"></send-messages>
                   </view>
-                  <u-button class="submit" @click="onSubmit" type="success">登录</u-button>
+                  <u-button class="submit" @click="onSubmit" :loading="loading" loadingText="登录中" :disabled="loading" type="success">登录</u-button>
                </view>
                <view class="tabs right" v-show="tabIndex === 1">
                   <view class="input">
                      <u-icon class="inputLeftIcon" name="account-fill" color="#cccccc" size="30"></u-icon>
-                     <u-input v-model="fromPwd.mobile" placeholder="输入账号" border="none"></u-input>
+                     <u-input v-model="formPwd.mobile" placeholder="输入账号" border="none"></u-input>
                   </view>
                   <view class="input">
                      <u-icon class="inputLeftIcon" name="lock-fill" color="#cccccc" size="30"></u-icon>
-                     <u-input type="password" v-model="fromPwd.password" placeholder="输入密码" border="none"></u-input>
+                     <u-input type="password" v-model="formPwd.password" placeholder="输入密码" border="none"></u-input>
                   </view>
-                  <u-button class="submit" @click="onSubmit" type="success">登录</u-button>
+                  <u-button class="submit" @click="onSubmit" :loading="loading" loadingText="登录中" :disabled="loading" type="success">登录</u-button>
                </view>
             </view>
             <view class="tabsFooter">
@@ -60,6 +60,8 @@
 import { postAccountLoginAPI, postSmsLoginAPI } from "@/servers/ServersCommon";
 import { mapMutations } from "vuex";
 import sendMessages from "@/components/sendMessages.vue";
+
+const mobileTest = /^(?:(?:\+|00)86)?1\d{10}$/;
 export default {
    components: {
       sendMessages,
@@ -68,7 +70,7 @@ export default {
       return {
          tabIndex: 0,
          protocolState: false,
-         fromCode: {
+         formCode: {
             mobile: "",
             smsCode: "",
             smsId: "",
@@ -76,10 +78,11 @@ export default {
             source: plus.runtime.channel,
             // #endif
          },
-         fromPwd: {
+         formPwd: {
             mobile: "",
             password: "",
          },
+         loading: false,
       };
    },
    mounted() {
@@ -96,13 +99,15 @@ export default {
             if (!this.protocolState) {
                this.$refs.uToast.show({ message: "请先阅读并同意协议及政策", type: "error" });
             } else {
+               this.loading = true;
                let acceptInfo = {};
 
-               // TODO 表单验证
                if (this.tabIndex === 0) {
-                  acceptInfo = await postSmsLoginAPI(this.fromCode);
+                  const { verify, data } = this.verifyFormCode();
+                  acceptInfo = verify ? await postSmsLoginAPI(this.formCode) : data;
                } else {
-                  acceptInfo = await postAccountLoginAPI(this.fromPwd);
+                  const { verify, data } = this.verifyFormPwd();
+                  acceptInfo = verify ? await postAccountLoginAPI(this.formPwd) : data;
                }
 
                if (acceptInfo.code === 200) {
@@ -111,18 +116,44 @@ export default {
                } else {
                   uni.showToast({ title: acceptInfo.message, icon: "none" });
                }
+               this.loading = false;
             }
          } catch (error) {
+            this.loading = false;
             console.log(error);
          }
       },
       getCode(info) {
-         this.fromCode.smsId = info;
+         this.formCode.smsId = info;
       },
       /**协议选中状态 */
       protocolChange(stateArr) {
          let state = stateArr[0];
          state === "protocol" ? (this.protocolState = true) : (this.protocolState = false);
+      },
+      verifyFormCode() {
+         const form = this.formCode;
+         const data = { code: 500, message: "" };
+         if (!form.mobile || !form.smsCode) {
+            data.message = "请输入账号或验证码";
+            return { verify: false, data };
+         } else {
+            if (!mobileTest.test(form.mobile)) {
+               data.message = "手机号码格式错误";
+               return { verify: false, data };
+            }
+         }
+         return { verify: true };
+      },
+      verifyFormPwd() {
+         const { mobile, password } = this.formPwd;
+         const data = { code: 500, message: "" };
+         if (!mobile || !password) {
+            data.message = "请输入账号或密码";
+            return { verify: false, data };
+         } else {
+            return { verify: true };
+         }
       },
    },
 };

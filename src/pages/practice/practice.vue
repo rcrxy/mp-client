@@ -1,6 +1,6 @@
 <template>
-   <view class="main">
-      <v-nav-bar></v-nav-bar>
+   <view class="main" :style="mainStyle">
+      <v-nav-bar class="navBar" ref="navBar"></v-nav-bar>
       <view class="skeleton">
          <u-skeleton rows="3" :loading="loading"></u-skeleton>
       </view>
@@ -8,12 +8,12 @@
          <view class="li" v-for="item in options" :key="item.id" @click="mix_jumpUrl('/pages/practice/info', item)">
             <view class="info">
                <text class="title">{{ item.className }}</text>
-               <view class="tag" style="background-color: #709eff">
+               <!-- <view class="tag" style="background-color: #709eff">
                   <text>{{ item.level }}</text>
                </view>
                <view v-if="item.category" class="tag" style="background-color: #eb5cf4">
                   <text>{{ item.category }}</text>
-               </view>
+               </view> -->
             </view>
             <view class="button">
                <image src="~static/images/practiceIndexButton.png" mode="widthFix" />
@@ -41,21 +41,27 @@ export default {
          options: [],
          loading: false,
          finished: true,
+         mainStyle: "",
       };
+   },
+   async onPullDownRefresh() {
+      await this.postCourseList();
+      uni.stopPullDownRefresh();
    },
    created() {
       this.postCourseList();
+      this.$refs.navBar.getCourseLevel();
+      this.$refs.navBar.getCourseCategory();
       bus.$on("searchCourse", val => {
          this.postCourseList(val);
       });
    },
+   // 下拉刷新重载数据
+   mounted() {
+      this.setPadding();
+   },
    beforeDestroy() {
       bus.$off("searchCourse");
-   },
-   // 下拉刷新重载数据
-   async onPullDownRefresh() {
-      await this.postCourseList();
-      uni.stopPullDownRefresh();
    },
    methods: {
       async postCourseList(form) {
@@ -65,6 +71,16 @@ export default {
             this.options = data.map((item, index) => ({ ...item, id: index }));
          }
          this.loading = false;
+      },
+      setPadding() {
+         const that = this;
+         const query = uni.createSelectorQuery().in(this);
+         query
+            .select(".navBar")
+            .boundingClientRect(data => {
+               that.mainStyle = `padding-top: ${data.height}px`;
+            })
+            .exec();
       },
    },
 };
@@ -87,7 +103,7 @@ export default {
       padding-bottom: 20rpx;
       .li {
          margin: 20rpx auto;
-         padding: 20rpx 15rpx;
+         padding: 20rpx 25rpx;
          border-radius: 15rpx;
          box-sizing: border-box;
          box-shadow: 0 0 10rpx 1rpx rgba($color: #000000, $alpha: 0.1);

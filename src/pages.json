@@ -29,7 +29,7 @@
       /* 院校专业 */ { "path": "pages/home/Specialized", "style": { "navigationBarTitleText": "院校专业" } },
       /* 专业详情 */ { "path": "pages/home/Specialized/ProfessionalDetails", "style": { "navigationBarTitleText": "专业详情" } },
 
-      /* 课程     */ { "path": "pages/project/project", "style": { "navigationBarTitleText": "课程", "enablePullDownRefresh": true } },
+      /* 课程     */ { "path": "pages/project/project", "style": { "navigationBarTitleText": "课程" } },
       /* 课程详情 */ { "path": "pages/project/ProjectContent", "style": { "navigationStyle": "custom" } },
       /* 播放视频 */ { "path": "pages/project/PlayVideo", "style": { "navigationBarTitleText": "观看视频" } },
 
@@ -111,7 +111,7 @@
       "list": [
          {
             "name": "", //模式名称
-            "path": "", //启动页面，必选
+            "path": "pages/practice/practice", //启动页面，必选
             "query": "" //启动参数，在页面的onLoad函数里面得到
          }
       ]
