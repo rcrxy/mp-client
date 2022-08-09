@@ -24,6 +24,7 @@
 
 <script>
 import { getCourseLevel_API, getCourseCategory_API } from "@/servers/ServersPractice";
+import { getLevelAndCategory_API } from "@/servers/ServersCommon.js";
 import bus from "@/uitls/bus";
 
 export default {
@@ -45,24 +46,32 @@ export default {
       };
    },
    created() {
-      this.getCourseLevel();
-      this.getCourseCategory();
+      this.getLevelAndCategory();
    },
    methods: {
-      /** 获取课程层次 */
-      async getCourseLevel() {
-         const { code, data } = await getCourseLevel_API();
+      // 获取层次及类别
+      async getLevelAndCategory(level) {
+         const { code, data } = await getLevelAndCategory_API({ level });
          if (code === 200) {
-            this.levelList = data;
+            if (!level) {
+               this.levelList = this.setList(data.level);
+               this.levelList.unshift({ label: "全部层次", value: "", class: "on" });
+            }
+            this.categoryList = this.setList(data.category);
+            this.categoryList.unshift({ label: "全部类别", value: "", class: "on" });
          }
       },
-      /** 获取课程类别 */
-      async getCourseCategory(level) {
-         const { code, data } = await getCourseCategory_API({ level });
-         if (code === 200) {
-            this.categoryList = data;
-         }
+
+      setList(arr = []) {
+         return [...arr].map(item => {
+            return {
+               label: item,
+               value: item,
+               class: "",
+            };
+         });
       },
+
       async changePopupShow(type) {
          if (this.timeout) {
             this.timeout = false;
@@ -96,7 +105,7 @@ export default {
             this.list = this.levelList;
             this.form.level = item.value;
             this.form.category = "";
-            this.getCourseCategory(item.value);
+            this.getLevelAndCategory(item.value);
          } else if (this.nowType === "category") {
             this.categoryList.forEach(key => (key.label === item.label ? (key.class = "on") : (key.class = "")));
             this.list = this.categoryList;

@@ -8,12 +8,6 @@
          <view class="li" v-for="item in options" :key="item.id" @click="mix_jumpUrl('/pages/practice/info', item)">
             <view class="info">
                <text class="title">{{ item.className }}</text>
-               <!-- <view class="tag" style="background-color: #709eff">
-                  <text>{{ item.level }}</text>
-               </view>
-               <view v-if="item.category" class="tag" style="background-color: #eb5cf4">
-                  <text>{{ item.category }}</text>
-               </view> -->
             </view>
             <view class="button">
                <image src="~static/images/practiceIndexButton.png" mode="widthFix" />
@@ -42,21 +36,23 @@ export default {
          loading: false,
          finished: true,
          mainStyle: "",
+         form: {},
       };
    },
+   // 下拉刷新重载数据
    async onPullDownRefresh() {
-      await this.postCourseList();
+      await this.postCourseList(this.form);
+      this.$refs.navBar.getLevelAndCategory();
       uni.stopPullDownRefresh();
    },
    created() {
       this.postCourseList();
-      this.$refs.navBar.getCourseLevel();
-      this.$refs.navBar.getCourseCategory();
       bus.$on("searchCourse", val => {
+         this.form = val;
          this.postCourseList(val);
       });
    },
-   // 下拉刷新重载数据
+
    mounted() {
       this.setPadding();
    },

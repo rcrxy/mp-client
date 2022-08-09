@@ -34,3 +34,7 @@ export function getUserInfoAPI() {
 export function addressInverseCodingAPI(params) {
    return get("http://api.tianditu.gov.cn/geocoder", params)
 }
+
+export function getLevelAndCategory_API(params) {
+   return get("/api/course/getLevelAndCategory", { params });
+}
