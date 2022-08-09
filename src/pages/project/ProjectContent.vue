@@ -1,22 +1,23 @@
 <template>
    <view class="mainBox">
+      <view class="status-bar"></view>
       <view class="navbar">
-         <view style="width: 100vw; height: 44px; background-color: #ffffff"></view>
+         <view class="back">
+            <u-icon name="arrow-left" size="25" @click="leftClick"></u-icon>
+         </view>
+         <view class="status"></view>
          <view class="navbarContent">
-            <view class="backButton" @click="leftClick">
-               <u-icon name="arrow-left" size="25" :color="backButtonColor"></u-icon>
-            </view>
+            <text class="title titleActive">{{ info.className }}</text>
          </view>
       </view>
 
-      <view class="banner" :style="`height:${bannerHeight}px`">
+      <view class="banner">
          <image src="~static/images/projectBack.png" mode="windthFix" />
          <text>{{ info.className }}</text>
       </view>
 
       <view class="tabsBox">
          <view class="info">
-            <text :class="scrollTop >= 180 ? 'title titleActive' : 'title'">{{ info.className }}</text>
             <view>
                <text>课时: {{ info.time || "30" }} 课时</text>
                <text>老师: {{ info.teacher || "老师" }}</text>
@@ -59,6 +60,7 @@ export default {
          scrollTop: 0,
          backButtonColor: "#FFFFFF",
          bannerHeight: 250,
+         opacity: 0,
       };
    },
    onLoad(info) {
@@ -66,12 +68,6 @@ export default {
    },
    onPageScroll({ scrollTop }) {
       this.scrollTop = scrollTop;
-      this.bannerHeight = 250 - scrollTop;
-      if (scrollTop >= 125) {
-         this.backButtonColor = "#000000";
-      } else {
-         this.backButtonColor = "#FFFFFF";
-      }
    },
    methods: {
       tabsClick(info) {
@@ -91,26 +87,46 @@ export default {
 .mainBox {
    width: 100vw;
    height: 100vh;
-   padding-top: 44px;
    box-sizing: border-box;
+   .status-bar {
+      width: 100vw;
+      height: var(--status-bar-height);
+      background-color: #ffffff;
+   }
+
    .navbar {
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       z-index: 1024;
+      height: calc(44px + var(--status-bar-height));
+      background-color: white;
+      .back {
+         position: absolute;
+         top: var(--status-bar-height);
+         left: 0;
+         height: 44px;
+         width: 100vw;
+         box-sizing: border-box;
+         padding: 0 2.5vw;
+         display: flex;
+         align-items: center;
+         justify-content: flex-start;
+         z-index: 1;
+      }
+
+      .status {
+         height: var(--status-bar-height);
+      }
+
       .navbarContent {
-         padding: 7px 3px;
+         width: 100%;
          height: 44px;
          box-sizing: border-box;
          display: flex;
          align-items: center;
-         justify-content: flex-start;
-         .backButton {
-            .u-icon {
-               transition: all 0.3s;
-            }
-         }
+         justify-content: center;
       }
    }
    .banner {

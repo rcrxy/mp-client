@@ -42,7 +42,7 @@ export default {
    // 下拉刷新重载数据
    async onPullDownRefresh() {
       await this.postCourseList(this.form);
-      this.$refs.navBar.getLevelAndCategory();
+      if (this.$refs.navBar.list.length === 0) this.$refs.navBar.getLevelAndCategory();
       uni.stopPullDownRefresh();
    },
    created() {

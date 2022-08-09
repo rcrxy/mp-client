@@ -35,6 +35,7 @@ export function addressInverseCodingAPI(params) {
    return get("http://api.tianditu.gov.cn/geocoder", params)
 }
 
+// 获取课程层次和类别
 export function getLevelAndCategory_API(params) {
-   return get("/api/course/getLevelAndCategory", { params });
+   return get("/api/course/getLevelAndCategory", params);
 }
