@@ -23,7 +23,6 @@
 </template>
 
 <script>
-import { getCourseLevel_API, getCourseCategory_API } from "@/servers/ServersPractice";
 import { getLevelAndCategory_API } from "@/servers/ServersCommon.js";
 import bus from "@/uitls/bus";
 
@@ -46,6 +45,7 @@ export default {
       };
    },
    created() {
+      // TODO 网络异常时会获取失效
       this.getLevelAndCategory();
    },
    methods: {
