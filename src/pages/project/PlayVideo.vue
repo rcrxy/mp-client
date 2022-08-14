@@ -16,7 +16,6 @@ export default {
       };
    },
    onLoad(info) {
-      console.log("info", info);
       uni.setNavigationBarTitle({ title: info.project_name });
       this.videoUrl = info.url;
    },

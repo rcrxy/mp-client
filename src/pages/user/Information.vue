@@ -8,6 +8,7 @@
       <u-cell :border="false" isLink title="性别" :value="userInfo.sex | asSex" @click="showSetSex = true"></u-cell>
       <u-cell :border="false" isLink title="个性签名" :value="userInfo.sign" @click="jumpChangePage({ title: '签名', name: 'sign', info: userInfo.userName })"></u-cell>
       <u-cell :border="false" isLink title="手机号码" :value="userInfo.mobile" @click="jumpChangePage({ title: '手机', name: 'mobile', info: userInfo.userName })"></u-cell>
+      <u-cell :border="false" isLink title="绑定课程" :value="userInfo.bindVideos" @click="mix_jumpUrl('/pages/user/Information/bindVideos')"></u-cell>
       <u-cell :border="false" isLink title="修改密码" @click="mix_jumpUrl('/pages/user/Information/changePassword')"></u-cell>
       <u-cell :border="false" isLink title="地址管理" @click="jumpUrl('/pages/user/Information/Address')"></u-cell>
 
@@ -119,7 +120,6 @@ export default {
                               token: data,
                            },
                            success: res => {
-                              console.log(res.data);
                               if (typeof res.data === "string") {
                                  const body = JSON.parse(res.data);
                                  postSetUserInfoAPI({ headImg: body.key }).then(({ code: setCode }) => {

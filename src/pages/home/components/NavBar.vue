@@ -67,7 +67,6 @@ export default {
          let result = true;
          // #ifdef APP-PLUS
          result = await requestAndroidPermission("android.permission.ACCESS_FINE_LOCATION");
-         console.log("result", result);
          // #endif
 
          if (result == 1) {

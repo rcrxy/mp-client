@@ -24,7 +24,6 @@ export default {
       // // }, 1000);
       // wv = currentWebview.children()[0];
       // wv.setStyle({ top: 34, height: "100vh" });
-      // console.log(wv);
       // // #endif
    },
    methods: {},

@@ -9,3 +9,8 @@ export function getProjectMenuAPI() {
 export function getProjectVideos_API(params) {
    return get("/api/project/videos", params);
 }
+
+// 获取用户已拥有课程列表
+export function getUsersProject_API() {
+   return get("/api/project/userProject")
+}

@@ -87,6 +87,9 @@ export default {
                   this.changePopupShow(type);
                }, 300);
             }
+
+            if (this.levelList.length === 0 || this.categoryList.length === 0) this.getLevelAndCategory();
+
             if (type === "level") {
                this.nowType != type ? (this.list = this.levelList) : setTimeout(() => (this.list = this.levelList), 300);
             } else if (type === "category") {

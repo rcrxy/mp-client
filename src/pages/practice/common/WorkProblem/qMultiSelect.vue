@@ -60,7 +60,6 @@ export default {
    },
    methods: {
       radioChange(res) {
-         console.log(res);
          const {
             detail: { value },
          } = res;

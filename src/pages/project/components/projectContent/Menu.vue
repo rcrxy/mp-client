@@ -2,16 +2,16 @@
    <view class="menuBox">
       <u-collapse v-if="options.length > 0">
          <u-collapse-item v-for="(item, index) in options" :key="index" :title="item.name">
-            <!-- <u-cell v-for="(key, i) in item.videos" :key="i" :title="key.name" :border="false" clickable @click="mix_jumpUrl('/pages/project/PlayVideo', info)"> -->
             <u-cell v-for="(key, i) in item.children" :key="i" :title="key.name" @click="playerVideo(key, index, i)" :border="false" clickable>
                <template #value>
-                  <u-icon :name="index < 2 && i < 2 ? 'play-right' : 'lock'"></u-icon>
+                  <u-icon v-if="info.tabName === '我的课程'" name="play-right"></u-icon>
+                  <u-icon v-else :name="index < 2 && i < 2 ? 'play-right' : 'lock'"></u-icon>
                </template>
             </u-cell>
          </u-collapse-item>
       </u-collapse>
 
-      <view class="nullHint" v-else-if="options.length == 0">
+      <view class="nullHint" v-else>
          <image src="~static/images/emptyImg.png" mode="widthFix" />
          <text>当前课程暂无视频内容~</text>
       </view>
@@ -44,13 +44,11 @@ export default {
          }
       },
       playerVideo(info, index, i) {
-         if (index < 2 && i < 2) {
+         if (this.info.tabName === "我的课程" || (index < 2 && i < 2)) {
             this.mix_jumpUrl("/pages/project/PlayVideo", info);
          } else {
             uni.showToast({ icon: "none", title: "该视频暂未开放" });
          }
-
-         console.log("info", info);
       },
    },
 };

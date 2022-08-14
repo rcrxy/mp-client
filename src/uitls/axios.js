@@ -25,10 +25,12 @@ const instance = axios.create({
 /** 添加请求拦截器 **/
 instance.interceptors.request.use(
    config => {
-      config.headers["token"] = uni.getStorageSync("token") || "";
-
       const { url } = config;
       const urlReg = /^(http|https)/;
+
+      if (!url.includes("stu.jsskdx")) config.headers["token"] = uni.getStorageSync("token") || "";
+      detectionNetwork();
+
       if (urlReg.test(url)) {
          config.baseURL = "";
          return config;
@@ -37,7 +39,6 @@ instance.interceptors.request.use(
       }
    },
    error => {
-      // 对请求错误做些什么
       return Promise.reject(error);
    }
 );
@@ -47,8 +48,9 @@ var globalIsLogin = [];
 /** 添加响应拦截器  **/
 instance.interceptors.response.use(
    response => {
-      if (response.data.code !== 200) {
-         const { data } = response;
+      const { status, data } = response
+
+      if (status === 200) {
          if (data.code === 401) {
             if (globalIsLogin.length === 0) {
                globalIsLogin.push(true);
@@ -62,8 +64,15 @@ instance.interceptors.response.use(
                });
             }
          }
+         if (Object.keys(data).includes("msg")) {
+            data.data = data.body;
+            data.message = data.msg;
+         }
+
+         return Promise.resolve(response.data);
+      } else {
+         return Promise.resolve({ code: 500, data: null, message: "请求失败" })
       }
-      return Promise.resolve(response.data);
    },
    error => {
       if (error.response) {
@@ -143,3 +152,16 @@ export const post = (url, data, config = {}) => {
          });
    });
 };
+
+// 检查网络状态
+function detectionNetwork() {
+   uni.getNetworkType({
+      success: ({ networkType }) => {
+         if (networkType === "none") {
+            uni.showToast({ icon: "none", title: "网络连接失败，请检查网络!" });
+         } else {
+            uni.hideToast()
+         }
+      }
+   })
+}

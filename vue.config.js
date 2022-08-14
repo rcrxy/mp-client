@@ -5,7 +5,6 @@ const resolve = dir => path.join(__dirname, dir);
 const BASEURL = process.env.BASE_URL;
 
 module.exports = {
-   lintOnSave: false, // 关闭esline验证
    publicPath: "/",
    outputDir: "dist",
    productionSourceMap: true,

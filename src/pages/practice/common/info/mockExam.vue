@@ -29,10 +29,9 @@ export default {
    },
    onLoad(info) {
       const { subject } = info;
-      this.list.forEach((item) => {
+      this.list.forEach(item => {
          item.subject = subject;
       });
-      console.log(subject, this.list);
    },
    methods: {},
 };

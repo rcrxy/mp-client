@@ -66,6 +66,7 @@ export default {
          this.index = index;
          this.$emit("input", index);
          this.$emit("change", { item, index });
+         this.$emit("title-click", { item, index });
       },
    },
 };

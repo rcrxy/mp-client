@@ -102,7 +102,6 @@ export default {
       async submit() {
          let { code, data } = await postSetUserInfoAPI(this.sendData);
          if (code === 200) {
-            // console.log(data);
             this.setUserInfo(data);
             uni.navigateBack({
                success() {

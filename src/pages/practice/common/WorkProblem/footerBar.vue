@@ -76,7 +76,6 @@ export default {
          const condition = this.collect;
          this.collect = !condition;
          this.collect = true;
-         console.log(this.collect);
       },
 
       async postAddCollection() {

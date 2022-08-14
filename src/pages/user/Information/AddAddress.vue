@@ -52,7 +52,6 @@ export default {
          Object.keys(this.form).forEach(item => {
             if (item !== "detail") this.form[item] = info[item];
          });
-         console.log(this.form);
          this.address = info.detail.slice(0, info.detail.indexOf(";"));
          this.detail = info.detail.slice(info.detail.indexOf(";") + 1);
       } else {

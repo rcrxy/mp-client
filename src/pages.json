@@ -55,6 +55,8 @@
       /* 通知消息 */ { "path": "pages/user/Notice", "style": { "navigationBarTitleText": "通知消息" } },
       /* 修改信息 */ { "path": "pages/user/Information/ChangeInfo", "style": { "navigationBarTitleText": "修改信息" } },
       /* 修改密码 */ { "path": "pages/user/Information/changePassword", "style": { "navigationBarTitleText": "修改密码" } },
+      /* 绑定课程 */ { "path": "pages/user/Information/bindVideos", "style": { "navigationBarTitleText": "绑定课程" } },
+      /* 检索信息 */ { "path": "pages/user/Information/bindVideos/info", "style": { "navigationBarTitleText": "检索信息" } },
       /* 我的地址 */ { "path": "pages/user/Information/Address", "style": { "navigationBarTitleText": "我的地址" } },
       /* 新增地址 */ { "path": "pages/user/Information/AddAddress", "style": { "navigationBarTitleText": "新增地址" } },
 
