@@ -22,8 +22,8 @@ export default {
    data() {
       return {
          form: {
-            account: "340621199908134561",
-            password: "134561",
+            account: "",
+            password: "",
          },
          rules: {
             account: { type: "string", required: true, message: "请输入学习中心账号", trigger: ["blur", "change"] },
@@ -38,11 +38,13 @@ export default {
    methods: {
       // 提交信息
       submit() {
-         this.loading = true;
-         this.buttonText = "验证中...";
          try {
-            this.$refs.form.validate().then(async validate => {
-               if (validate) {
+            this.$refs.form
+               .validate()
+               .then(async () => {
+                  this.loading = true;
+                  this.buttonText = "验证中...";
+
                   let isBind = true;
                   const { code: bindCode, data: bindData } = await detectBindingStatus_API({ account: this.form.account });
                   if (bindCode === 200) {
@@ -78,10 +80,12 @@ export default {
                         uni.showToast({ icon: "none", title: message, duration: 2000 });
                      }
                   }
-               }
-               this.loading = false;
-               this.buttonText = "登录";
-            });
+                  this.loading = false;
+                  this.buttonText = "登录";
+               })
+               .catch(() => {
+                  console.log("1", 1);
+               });
          } catch (error) {
             this.loading = false;
             console.log("error", error);

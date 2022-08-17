@@ -20,7 +20,7 @@
                   <view class="input code">
                      <view class="inputCode">
                         <u-icon class="inputLeftIcon" name="lock-fill" color="#cccccc" size="30"></u-icon>
-                        <u-input v-model="formCode.smsCode" placeholder="输入验证码" border="none"></u-input>
+                        <u-input v-model="formCode.code" placeholder="输入验证码" border="none"></u-input>
                      </view>
                      <send-messages :mobile="formCode.mobile" @getCode="getCode"></send-messages>
                   </view>
@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import { postAccountLoginAPI, postSmsLoginAPI } from "@/servers/ServersCommon";
+import { postAccountLoginAPI, smgLogin_API } from "@/servers/ServersCommon";
 import { mapMutations } from "vuex";
 import sendMessages from "@/components/sendMessages.vue";
 
@@ -72,8 +72,8 @@ export default {
          protocolState: false,
          formCode: {
             mobile: "",
-            smsCode: "",
-            smsId: "",
+            code: "",
+            smgId: "",
             // #ifdef APP-PLUS
             source: plus.runtime.channel,
             // #endif
@@ -81,6 +81,9 @@ export default {
          formPwd: {
             mobile: "",
             password: "",
+            // #ifdef APP-PLUS
+            source: plus.runtime.channel,
+            // #endif
          },
          loading: false,
       };
@@ -104,7 +107,8 @@ export default {
 
                if (this.tabIndex === 0) {
                   const { verify, data } = this.verifyFormCode();
-                  acceptInfo = verify ? await postSmsLoginAPI(this.formCode) : data;
+                  console.log("this.formCode", this.formCode);
+                  acceptInfo = verify ? await smgLogin_API(this.formCode) : data;
                } else {
                   const { verify, data } = this.verifyFormPwd();
                   acceptInfo = verify ? await postAccountLoginAPI(this.formPwd) : data;
@@ -124,7 +128,7 @@ export default {
          }
       },
       getCode(info) {
-         this.formCode.smsId = info;
+         this.formCode.smgId = info;
       },
       /**协议选中状态 */
       protocolChange(stateArr) {
@@ -134,7 +138,7 @@ export default {
       verifyFormCode() {
          const form = this.formCode;
          const data = { code: 500, message: "" };
-         if (!form.mobile || !form.smsCode) {
+         if (!form.mobile || !form.code) {
             data.message = "请输入账号或验证码";
             return { verify: false, data };
          } else {

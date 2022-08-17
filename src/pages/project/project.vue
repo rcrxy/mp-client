@@ -1,34 +1,24 @@
 <template>
    <view class="project">
       <c-tabs-group class="tabs" v-model="tabIndex" :list="['所有课程', '我的课程']" @title-click="titleClick"></c-tabs-group>
-      <swiper class="tabsContent" :current="tabIndex" @change="swiperChange">
-         <swiper-item>
-            <view class="emptyState" v-if="allProjectList.length === 0">
-               <image src="~static/images/emptyImg.png" mode="widthFix" />
-            </view>
-            <view v-else>
-               <project-card v-for="(item, index) in allProjectList" :key="index" :data="item" text="查看详情" @click.native="mix_jumpUrl('/pages/project/ProjectContent', { ...item, tabName: '所有课程' })"></project-card>
-            </view>
-         </swiper-item>
-         <swiper-item>
-            <view class="emptyState" v-if="myProjectList.length === 0">
-               <image src="~static/images/emptyImg.png" mode="widthFix" />
-            </view>
-            <view v-else>
-               <project-card v-for="(item, index) in myProjectList" :key="index" :data="item" text="查看详情" @click.native="mix_jumpUrl('/pages/project/ProjectContent', { ...item, tabName: '我的课程' })"></project-card>
-            </view>
-         </swiper-item>
-      </swiper>
+      <view class="list">
+         <empty v-if="list.length === 0"></empty>
+         <view class="cardUl" v-else>
+            <project-card v-for="(item, index) in list" :key="index" :data="item" text="查看详情" @click.native="mix_jumpUrl('/pages/project/ProjectContent', { ...item, tabName: activeTab })"></project-card>
+         </view>
+      </view>
    </view>
 </template>
 
 <script>
 import cTabsGroup from "@/components/customize/c-tabs-group.vue";
 import projectCard from "./components/projectIndex/projectCard.vue";
+import empty from "@/components/emptyState.vue";
 import { postCourseListAPI } from "@/servers/ServersPractice";
 import { getUsersProject_API } from "@/servers/ServersProject";
 export default {
    components: {
+      empty,
       cTabsGroup,
       projectCard,
    },
@@ -36,30 +26,32 @@ export default {
       return {
          tabIndex: 0,
          active: 0,
-         footerIndex: 1,
          allProjectList: [],
          myProjectList: [],
-         scrollTop: 0,
-         triggered: true,
+         list: [],
       };
    },
-   created() {
-      this.postCourseList();
-      this.getUsersProject();
+   onPullDownRefresh() {
+      this.tabIndex === 0 ? this.postCourseList() : this.getUsersProject();
+
+      uni.stopPullDownRefresh();
+   },
+   async created() {
+      await this.postCourseList();
+      await this.getUsersProject();
+      this.list = this.tabIndex === 0 ? this.allProjectList : this.myProjectList;
    },
    methods: {
+      swiperChange({ detail: { current } }) {
+         this.tabIndex = current;
+      },
+
+      // 获取所有课程列表
       async postCourseList() {
          const { code, data } = await postCourseListAPI();
          if (code === 200) {
             this.allProjectList = data;
          }
-      },
-
-      swiperChange({ detail: { current } }) {
-         this.tabIndex = current;
-      },
-      titleClick(info) {
-         if (info.item == "所有课程" && this.allProjectList.length == 0) this.postCourseList();
       },
 
       // 获取用户课程列表
@@ -73,6 +65,10 @@ export default {
                };
             });
          }
+      },
+
+      titleClick({ index }) {
+         this.list = index === 0 ? this.allProjectList : this.myProjectList;
       },
    },
 };
@@ -88,37 +84,42 @@ export default {
 .project {
    width: 100vw;
    height: 100vh;
-   display: flex;
-   flex-flow: column nowrap;
-   align-items: inherit;
-   justify-content: flex-start;
+
    .tabs {
-      flex-shrink: 0;
+      position: fixed;
+      top: 0;
+      width: 100vw;
+      z-index: 10;
+      background: #fff;
+      // #ifdef H5
+      top: 44px;
+      // #endif
    }
-   .tabsContent {
-      flex: 1;
-      swiper-item {
-         width: 100%;
-         height: 100%;
+
+   .list {
+      padding-top: 37px;
+
+      .cardUl {
          display: flex;
          flex-flow: column nowrap;
          align-items: center;
          justify-content: flex-start;
-         overflow: auto;
       }
    }
 }
 
 .emptyState {
    width: 100vw;
-   height: 100%;
-   position: relative;
+   height: 100vh;
+   position: fixed;
+   display: flex;
+   flex-flow: column nowrap;
+   align-items: center;
+   justify-content: center;
    image {
       display: block;
       width: 460rpx;
-      position: absolute;
-      left: 50%;
-      transform: translate(-50%, 100%);
+      margin-bottom: 20rpx;
    }
 }
 </style>

@@ -16,12 +16,13 @@ export function postSmsSendAPI(params) {
 
 /**短信登录
  * @param {object} params
- * @param {string} params.smsCode 验证码
- * @param {string} params.smsId   smsId
- * @param {string} params.mobile  手机号码
+ * @param {string} params.code   验证码
+ * @param {string} params.smsId  smsId
+ * @param {string} params.mobile 手机号码
+ * @param {string} params.source 来源
  */
-export function postSmsLoginAPI(params) {
-   return post("/user/smsLogin", params);
+export function smgLogin_API(params) {
+   return post("/api/user/smgLogin", params);
 }
 
 /**获取用户信息 */

@@ -29,7 +29,19 @@
       /* 院校专业 */ { "path": "pages/home/Specialized", "style": { "navigationBarTitleText": "院校专业" } },
       /* 专业详情 */ { "path": "pages/home/Specialized/ProfessionalDetails", "style": { "navigationBarTitleText": "专业详情" } },
 
-      /* 课程     */ { "path": "pages/project/project", "style": { "navigationBarTitleText": "课程" } },
+      /* 课程     */ {
+         "path": "pages/project/project",
+         "style": {
+            "navigationBarTitleText": "课程",
+            "enablePullDownRefresh": true,
+            "app-plus": {
+               "pullToRefresh": {
+                  "support": true,
+                  "offset": "36px"
+               }
+            }
+         }
+      },
       /* 课程详情 */ { "path": "pages/project/ProjectContent", "style": { "navigationStyle": "custom" } },
       /* 播放视频 */ { "path": "pages/project/PlayVideo", "style": { "navigationBarTitleText": "观看视频" } },
 
