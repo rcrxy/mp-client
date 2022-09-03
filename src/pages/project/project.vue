@@ -16,6 +16,7 @@ import projectCard from "./components/projectIndex/projectCard.vue";
 import empty from "@/components/emptyState.vue";
 import { postCourseListAPI } from "@/servers/ServersPractice";
 import { getUsersProject_API } from "@/servers/ServersProject";
+
 export default {
    components: {
       empty,
@@ -29,6 +30,7 @@ export default {
          allProjectList: [],
          myProjectList: [],
          list: [],
+         activeTab: "",
       };
    },
    onPullDownRefresh() {
@@ -67,7 +69,8 @@ export default {
          }
       },
 
-      titleClick({ index }) {
+      titleClick({ item, index }) {
+         this.activeTab = item;
          this.list = index === 0 ? this.allProjectList : this.myProjectList;
       },
    },
